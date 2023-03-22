@@ -15,26 +15,19 @@ public class Voter {
     private String last_name;
     private int poolingStationID;
 
-    @OneToMany(mappedBy = "voter")
-    private ArrayList<Lista> liste;
 
     @OneToOne(mappedBy = "voter")
-    private ArrayList<PoolingStation> poolingStations;
+    private PollingStation pollingStations;
 
-    public ArrayList<Lista> getListe() {
-        return liste;
+    @OneToMany(mappedBy = "vote")
+    private ArrayList<Vote> votes;
+
+    public PollingStation getPoolingStations() {
+        return pollingStations;
     }
 
-    public void setListe(ArrayList<Lista> liste) {
-        this.liste = liste;
-    }
-
-    public ArrayList<PoolingStation> getPoolingStations() {
-        return poolingStations;
-    }
-
-    public void setPoolingStations(ArrayList<PoolingStation> poolingStations) {
-        this.poolingStations = poolingStations;
+    public void setPoolingStations(PollingStation pollingStations) {
+        this.pollingStations = pollingStations;
     }
 
     public String getLast_name() {
@@ -69,14 +62,13 @@ public class Voter {
         return id;
     }
 
-    @OneToMany(mappedBy = "voters")
-    private Collection<Vote> vote;
+
 
     public Collection<Vote> getVote() {
-        return vote;
+        return votes;
     }
 
-    public void setVote(Collection<Vote> vote) {
-        this.vote = vote;
+    public void setVote(ArrayList<Vote> vote) {
+        this.votes = vote;
     }
 }

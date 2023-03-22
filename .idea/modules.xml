@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/NWT-E-izbori.iml" filepath="$PROJECT_DIR$/.idea/NWT-E-izbori.iml" />
+      <module fileurl="file://$PROJECT_DIR$/voter-microservice/voter-microservice.iml" filepath="$PROJECT_DIR$/voter-microservice/voter-microservice.iml" />
+    </modules>
+  </component>
+</project>

@@ -42,15 +42,15 @@ public class Election {
     }
 
     public ArrayList<ElectionPollingStation> getElectionPoolingStations() {
-        return electionPoolingStations;
+        return electionPollingStations;
     }
 
-    public void setElectionPoolingStations(ArrayList<ElectionPollingStation> electionPoolingStations) {
-        this.electionPoolingStations = electionPoolingStations;
+    public void setElectionPoolingStations(ArrayList<ElectionPollingStation> electionPollingStations) {
+        this.electionPollingStations = electionPollingStations;
     }
 
-    @OneToMany(mappedBy = "election_pooling_station")
-    private ArrayList<ElectionPollingStation> electionPoolingStations;
+    @OneToMany(mappedBy = "election_polling_station")
+    private ArrayList<ElectionPollingStation> electionPollingStations;
 
 
 

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 
 @Entity
-public class PoolingStation {
+public class PollingStation {
 
 
     @Id
@@ -14,7 +14,7 @@ public class PoolingStation {
     private Long id;
 
 
-    @OneToMany(mappedBy = "election_polling_station")
+    @OneToMany(mappedBy = "electionstation")
     private ArrayList<ElectionPollingStation> electionPollingStations;
 
     @OneToOne
