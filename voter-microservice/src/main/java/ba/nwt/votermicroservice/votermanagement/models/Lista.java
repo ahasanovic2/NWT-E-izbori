@@ -12,21 +12,20 @@ public class Lista {
     private Long id;
 
 
-    @OneToMany(mappedBy = "liste")
-    private ArrayList<Candidate> liste;
+    @OneToMany(mappedBy = "lista")
+    private ArrayList<Candidate> candidates;
 
-    @OneToMany(mappedBy = "liste")
+    @OneToMany(mappedBy = "lista")
     private ArrayList<Vote> votes;
 
 
-    public ArrayList<Candidate> getListe() {
-        return liste;
+    public ArrayList<Candidate> getCandidates() {
+        return candidates;
     }
 
-    public void setListe(ArrayList<Candidate> liste) {
-        this.liste = liste;
+    public void setCandidates(ArrayList<Candidate> candidates) {
+        this.candidates = candidates;
     }
-
 
     public ArrayList<Vote> getVotes() {
         return votes;

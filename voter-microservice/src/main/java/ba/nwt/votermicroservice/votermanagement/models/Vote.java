@@ -11,41 +11,38 @@ public class Vote {
     @Id
     @GeneratedValue
    private Long id;
+    private int voter_id;
+    private int election_id;
+    private int candidate_id;
+    private int list_id;
 
     private LocalDateTime timestamp;
 
 
 
     @ManyToOne
-    @JoinColumn(name = "lista_id")
-    private Lista liste;
+    @JoinColumn(name = "vote_id")
+    private Vote vote;
 
     @ManyToOne
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
 
-    public Lista getListe() {
-        return liste;
-    }
+    @ManyToOne
+    @JoinColumn(name = "election_id")
+    private Election election;
 
-    public void setListe(Lista liste) {
-        this.liste = liste;
-    }
 
-    public Election getVote() {
+    @OneToMany(mappedBy = "vote")
+    private ArrayList<Lista> liste;
+
+    public Vote getVote() {
         return vote;
     }
 
-    public void setVote(Election vote) {
+    public void setVote(Vote vote) {
         this.vote = vote;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "election_id")
-    private Election vote;
-
-
-
 
     public Candidate getCandidate() {
         return candidate;
@@ -56,14 +53,20 @@ public class Vote {
     }
 
     public Election getElection() {
-        return vote;
+        return election;
     }
 
     public void setElection(Election election) {
-        this.vote = election;
+        this.election = election;
     }
 
+    public ArrayList<Lista> getListe() {
+        return liste;
+    }
 
+    public void setListe(ArrayList<Lista> liste) {
+        this.liste = liste;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -73,6 +76,38 @@ public class Vote {
         return id;
     }
 
+
+    public int getVoter_id() {
+        return voter_id;
+    }
+
+    public void setVoter_id(int voter_id) {
+        this.voter_id = voter_id;
+    }
+
+    public int getElection_id() {
+        return election_id;
+    }
+
+    public void setElection_id(int election_id) {
+        this.election_id = election_id;
+    }
+
+    public int getCandidate_id() {
+        return candidate_id;
+    }
+
+    public void setCandidate_id(int candidate_id) {
+        this.candidate_id = candidate_id;
+    }
+
+    public int getList_id() {
+        return list_id;
+    }
+
+    public void setList_id(int list_id) {
+        this.list_id = list_id;
+    }
 
     public LocalDateTime getTimestamp() {
         return timestamp;

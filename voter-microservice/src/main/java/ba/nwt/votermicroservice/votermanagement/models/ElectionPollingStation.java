@@ -8,41 +8,38 @@ public class ElectionPollingStation {
     @Id
     @GeneratedValue
     private Long id;
-
-    public Long getPollingStationID() {
-        return PollingStationID;
-    }
-
-    public void setPollingStationID(Long pollingStationID) {
-        PollingStationID = pollingStationID;
-    }
-
-
-
-    private Long PollingStationID;
+    private Long PoolingStationID;
 
     @ManyToOne
     @JoinColumn(name = "election_id")
-    private Election election_polling_station;
+    private Election election;
 
     @ManyToOne
-    @JoinColumn(name = "pollingstation_id")
-    private PollingStation electionstation;
+    @JoinColumn(name = "poolingstation_id")
+    private PoolingStation poolingStation;
 
-    public Election getElection_polling_station() {
-        return election_polling_station;
+    public Long getPoolingStationID() {
+        return PoolingStationID;
     }
 
-    public void setElection_polling_station(Election election_polling_station) {
-        this.election_polling_station = election_polling_station;
+    public void setPoolingStationID(Long poolingStationID) {
+        PoolingStationID = poolingStationID;
     }
 
-    public PollingStation getElectionstation() {
-        return electionstation;
+    public Election getElection() {
+        return election;
     }
 
-    public void setElectionstation(PollingStation electionstation) {
-        this.electionstation = electionstation;
+    public void setElection(Election election) {
+        this.election = election;
+    }
+
+    public PoolingStation getPoolingStation() {
+        return poolingStation;
+    }
+
+    public void setPoolingStation(PoolingStation poolingStation) {
+        this.poolingStation = poolingStation;
     }
 
     public void setId(Long id) {
