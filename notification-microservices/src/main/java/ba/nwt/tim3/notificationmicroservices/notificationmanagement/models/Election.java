@@ -1,4 +1,4 @@
-package ba.nwt.tim3.notificationmicroservices.models;
+package ba.nwt.tim3.notificationmicroservices.notificationmanagement.models;
 
 
 import jakarta.persistence.*;
