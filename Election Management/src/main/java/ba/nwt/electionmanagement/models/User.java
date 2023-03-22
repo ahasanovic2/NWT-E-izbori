@@ -5,15 +5,11 @@ import jakarta.persistence.*;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String first_name;
     private String last_name;
-
-    @ManyToOne
-    @JoinColumn(name = "election_id")
-    private Election election;
 
     @ManyToOne
     @JoinColumn(name = "polling_station_id")
@@ -41,14 +37,6 @@ public class User {
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
-    }
-
-    public Election getElection() {
-        return election;
-    }
-
-    public void setElection(Election election) {
-        this.election = election;
     }
 
     public PollingStation getPollingStation() {

@@ -3,17 +3,18 @@ package ba.nwt.electionmanagement.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Lista {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
 
     @OneToMany(mappedBy = "lista")
-    private ArrayList<Kandidat> candidates;
+    private List<Kandidat> candidates;
 
     @ManyToOne
     @JoinColumn(name = "election_id")
@@ -35,7 +36,7 @@ public class Lista {
         this.name = name;
     }
 
-    public ArrayList<Kandidat> getCandidates() {
+    public List<Kandidat> getCandidates() {
         return candidates;
     }
 

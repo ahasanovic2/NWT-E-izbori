@@ -3,19 +3,20 @@ package ba.nwt.electionmanagement.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class PollingStation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
     private String address;
 
     @OneToMany(mappedBy = "pollingStation")
-    private ArrayList<User> voters;
+    private List<User> voters = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "election_id")
@@ -45,12 +46,16 @@ public class PollingStation {
         this.address = address;
     }
 
-    public ArrayList<User> getVoters() {
+    public List<User> getVoters() {
         return voters;
     }
 
     public void setVoters(ArrayList<User> voters) {
         this.voters = voters;
+    }
+
+    public void addVoter(User voter) {
+        this.voters.add(voter);
     }
 
     public Election getElection() {

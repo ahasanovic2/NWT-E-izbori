@@ -1,11 +1,10 @@
 package ba.nwt.electionmanagement;
 
+import ba.nwt.electionmanagement.interfaces.*;
 import ba.nwt.electionmanagement.models.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class ElectionManagementService {
@@ -24,6 +23,13 @@ public class ElectionManagementService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private User kreirajKorisnika(String ime, String prezime) {
+        User user = new User();
+        user.setFirst_name(ime);
+        user.setLast_name(prezime);
+        return user;
+    }
 
     @Transactional
     public void createRows() {
@@ -48,9 +54,45 @@ public class ElectionManagementService {
 //
 //        listaRepository.save(lista);
 //        electionRepository.save(elections);
-        User user = new User();
-        user.setFirst_name("Ahmedin");
-        user.setLast_name("Hasanovic");
-        userRepository.save(user);
+        userRepository.deleteAll();
+        candidateRepository.deleteAll();
+        listaRepository.deleteAll();
+        pollingStationRepository.deleteAll();
+        electionRepository.deleteAll();
+
+
+
+        User user1 = kreirajKorisnika("Ahmedin", "Hasanović");
+        User user2 = kreirajKorisnika("Vedad", "Dervisevic");
+        User user3 = kreirajKorisnika("Ema", "Kalmar");
+        User user4 = kreirajKorisnika("Amina", "Šehić");
+
+
+
+        PollingStation pollingStation = new PollingStation();
+        PollingStation pollingStation2 = new PollingStation();
+        Election election1 = new Election();
+        pollingStation.setElection(election1);
+        pollingStation2.setElection(election1);
+        pollingStation.setName("Hotonj 1");
+        pollingStation.addVoter(user1);
+        pollingStation.addVoter(user2);
+        election1.addPollingStation(pollingStation);
+
+
+        user1.setPollingStation(pollingStation);
+        user2.setPollingStation(pollingStation);
+        user3.setPollingStation(pollingStation2);
+        user4.setPollingStation(pollingStation2);
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
+        userRepository.save(user4);
+
+        electionRepository.save(election1);
+        pollingStationRepository.save(pollingStation);
+        pollingStationRepository.save(pollingStation2);
+
+
     }
 }

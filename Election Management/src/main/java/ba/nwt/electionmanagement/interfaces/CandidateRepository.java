@@ -1,11 +1,11 @@
-package ba.nwt.electionmanagement;
+package ba.nwt.electionmanagement.interfaces;
 
 import ba.nwt.electionmanagement.models.Election;
-import ba.nwt.electionmanagement.models.User;
+import ba.nwt.electionmanagement.models.Kandidat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface CandidateRepository extends JpaRepository<Kandidat, Long> {
 
 }

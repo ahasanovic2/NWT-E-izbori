@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Election {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
 
@@ -20,13 +21,25 @@ public class Election {
     private String status;
 
     @OneToMany(mappedBy = "election")
-    private ArrayList<Lista> list;
+    private List<Lista> list = new ArrayList<>();
 
     @OneToMany(mappedBy = "election")
-    private ArrayList<User> voters;
+    private List<PollingStation> pollingStations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "election")
-    private ArrayList<PollingStation> pollingStations;
+    public Election() {
+
+    }
+
+    public Election(Long id, String name, String description, LocalDateTime start_time, LocalDateTime end_time, String status, List<Lista> list, List<User> voters, List<PollingStation> pollingStations) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.status = status;
+        this.list = list;
+        this.pollingStations = pollingStations;
+    }
 
     public Long getId() {
         return id;
@@ -76,27 +89,27 @@ public class Election {
         this.status = status;
     }
 
-    public ArrayList<Lista> getList() {
+    public List<Lista> getList() {
         return list;
     }
 
-    public void setList(ArrayList<Lista> list) {
+    public void setList(List<Lista> list) {
         this.list = list;
     }
 
-    public ArrayList<User> getVoters() {
-        return voters;
+    public void addLista(Lista list) {
+        this.list.add(list);
     }
 
-    public void setVoters(ArrayList<User> voters) {
-        this.voters = voters;
-    }
-
-    public ArrayList<PollingStation> getPollingStations() {
+    public List<PollingStation> getPollingStations() {
         return pollingStations;
     }
 
-    public void setPollingStations(ArrayList<PollingStation> pollingStations) {
+    public void addPollingStation(PollingStation pollingStation) {
+        this.pollingStations.add(pollingStation);
+    }
+
+    public void setPollingStations(List<PollingStation> pollingStations) {
         this.pollingStations = pollingStations;
     }
 }
