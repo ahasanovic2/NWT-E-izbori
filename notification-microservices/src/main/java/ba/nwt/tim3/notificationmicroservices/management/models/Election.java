@@ -1,6 +1,7 @@
-package ba.nwt.tim3.notificationmicroservices.notificationmanagement.models;
+package ba.nwt.tim3.notificationmicroservices.management.models;
 
 
+import ba.nwt.tim3.notificationmicroservices.management.models.Notification;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -9,13 +10,12 @@ import java.time.LocalDateTime;
 public class Election {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     private String name;
     private LocalDateTime start_time;
     private LocalDateTime end_time;
 
-    @OneToOne(mappedBy = "election")
-    private Notification notification;
 
     public String getName() {
         return name;
@@ -41,13 +41,6 @@ public class Election {
         this.end_time = end_time;
     }
 
-    public Notification getNotification() {
-        return notification;
-    }
-
-    public void setNotification(Notification notification) {
-        this.notification = notification;
-    }
 
     public void setId(Long id) {
         this.id = id;

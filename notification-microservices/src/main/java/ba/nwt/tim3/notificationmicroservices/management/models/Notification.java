@@ -1,7 +1,9 @@
-package ba.nwt.tim3.notificationmicroservices.notificationmanagement.models;
+package ba.nwt.tim3.notificationmicroservices.management.models;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import java.time.LocalDateTime;
 
@@ -17,12 +19,20 @@ public class Notification {
     private String message;
     private LocalDateTime timestamp;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "election_id", referencedColumnName = "id")
+    @JoinColumn(name = "election_id")
     private Election election;
-
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User user;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
 
 
 
