@@ -33,27 +33,6 @@ public class ElectionManagementService {
 
     @Transactional
     public void createRows() {
-//        Lista lista = new Lista();
-//        Election elections = new Election();
-//        User user = new User();
-//        PollingStation pollingStation = new PollingStation();
-//
-//
-//        ArrayList<Kandidat> lista_kandidata = new ArrayList<>();
-//        Kandidat candidate = new Kandidat();
-//        candidate.setFirst_name("Ahmedin");
-//        candidate.setLast_name("Hasanovic");
-//        candidate.setDescription("Najbolji izbor za predsjednika");
-//        candidate.setLista(lista);
-//        lista_kandidata.add(candidate);
-//        candidateRepository.save(candidate);
-//
-//        lista.setCandidates(lista_kandidata);
-//        lista.setName("Nezavisna");
-//        lista.setElection(elections);
-//
-//        listaRepository.save(lista);
-//        electionRepository.save(elections);
         userRepository.deleteAll();
         candidateRepository.deleteAll();
         listaRepository.deleteAll();
