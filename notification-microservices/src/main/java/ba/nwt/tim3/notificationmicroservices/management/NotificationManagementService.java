@@ -40,15 +40,6 @@ public class NotificationManagementService {
         userRepository.save(user3);
         userRepository.save(user4);
 
-        not1.setUser(user1);
-        not2.setUser(user2);
-        not3.setUser(user3);
-        not4.setUser(user4);
-
-        notificationRepository.save(not1);
-        notificationRepository.save(not2);
-        notificationRepository.save(not3);
-        notificationRepository.save(not4);
 
 
 

@@ -12,8 +12,7 @@ public class User {
     private String first_name;
     private String last_name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL , mappedBy = "user")
     private Notification notification;
 
     public void setId(Long id) {

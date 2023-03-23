@@ -19,10 +19,8 @@ public class Notification {
     private String message;
     private LocalDateTime timestamp;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "election_id")
     private Election election;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
     private User user;
     public User getUser() {
         return user;
