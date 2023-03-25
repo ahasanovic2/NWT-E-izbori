@@ -6,17 +6,17 @@ import jakarta.persistence.*;
 @Entity
 public class ElectionPollingStation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long PoolingStationID;
 
     @ManyToOne
-    @JoinColumn(name = "election_id")
+    @JoinColumn(name = "election")
     private Election election;
 
     @ManyToOne
-    @JoinColumn(name = "poolingstation_id")
-    private PoolingStation poolingStation;
+    @JoinColumn(name = "pollingstation")
+    private PollingStation pollingstation;
 
     public Long getPoolingStationID() {
         return PoolingStationID;
@@ -34,12 +34,12 @@ public class ElectionPollingStation {
         this.election = election;
     }
 
-    public PoolingStation getPoolingStation() {
-        return poolingStation;
+    public PollingStation getPoolingStation() {
+        return pollingstation;
     }
 
-    public void setPoolingStation(PoolingStation poolingStation) {
-        this.poolingStation = poolingStation;
+    public void setPoolingStation(PollingStation pollingStation) {
+        this.pollingstation = pollingStation;
     }
 
     public void setId(Long id) {

@@ -4,19 +4,22 @@ package ba.nwt.votermicroservice.votermanagement.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Election {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String first_name;
     private String description;
 
 
-    @OneToMany(mappedBy = "vote")
-    private ArrayList<Vote> votes;
+    @OneToMany(mappedBy = "election")
+    private List<Vote> votes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "election")
+    private ArrayList<ElectionPollingStation> electionPollingStations;
     public String getFirst_name() {
         return first_name;
     }
@@ -33,24 +36,23 @@ public class Election {
         this.description = description;
     }
 
-    public ArrayList<Vote> getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void setVotes(ArrayList<Vote> votes) {
+    public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 
-    public ArrayList<ElectionPollingStation> getElectionPoolingStations() {
-        return electionPoolingStations;
+    public ArrayList<ElectionPollingStation> getElectionPollingStations() {
+        return electionPollingStations;
     }
 
-    public void setElectionPoolingStations(ArrayList<ElectionPollingStation> electionPoolingStations) {
-        this.electionPoolingStations = electionPoolingStations;
+    public void setElectionPoolingStations(ArrayList<ElectionPollingStation> electionPollingStations) {
+        this.electionPollingStations = electionPollingStations;
     }
 
-    @OneToMany(mappedBy = "election_pooling_station")
-    private ArrayList<ElectionPollingStation> electionPoolingStations;
+
 
 
 

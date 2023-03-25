@@ -8,7 +8,7 @@ import java.util.ArrayList;
 @Entity
 public class Lista {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 

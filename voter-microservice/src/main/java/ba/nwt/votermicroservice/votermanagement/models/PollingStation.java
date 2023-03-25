@@ -6,15 +6,15 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 
 @Entity
-public class PoolingStation {
+public class PollingStation {
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
-    @OneToMany(mappedBy = "election_polling_station")
+    @OneToMany(mappedBy = "pollingstation")
     private ArrayList<ElectionPollingStation> electionPollingStations;
 
     @OneToOne

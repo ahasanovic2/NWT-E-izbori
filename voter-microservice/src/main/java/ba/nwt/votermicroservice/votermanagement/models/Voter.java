@@ -4,37 +4,38 @@ package ba.nwt.votermicroservice.votermanagement.models;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 
 public class Voter {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String first_name;
     private String last_name;
-    private int poolingStationID;
+
 
     @OneToMany(mappedBy = "voter")
-    private ArrayList<Lista> liste;
+    private List<Vote> votes = new ArrayList<>();
 
-    @OneToOne(mappedBy = "voter")
-    private ArrayList<PoolingStation> poolingStations;
+    @OneToOne(cascade = CascadeType.ALL)
+    private PollingStation pollingStation;
 
-    public ArrayList<Lista> getListe() {
-        return liste;
+    public List<Vote> getVotes() {
+        return votes;
     }
 
-    public void setListe(ArrayList<Lista> liste) {
-        this.liste = liste;
+    public void setVotes(List<Vote> liste) {
+        this.votes = votes;
     }
 
-    public ArrayList<PoolingStation> getPoolingStations() {
-        return poolingStations;
+    public PollingStation getPoolingStations() {
+        return pollingStation;
     }
 
-    public void setPoolingStations(ArrayList<PoolingStation> poolingStations) {
-        this.poolingStations = poolingStations;
+    public void setPoolingStations(PollingStation pollingStation) {
+        this.pollingStation = pollingStation;
     }
 
     public String getLast_name() {
@@ -45,13 +46,6 @@ public class Voter {
         this.last_name = last_name;
     }
 
-    public int getPoolingStationID() {
-        return poolingStationID;
-    }
-
-    public void setPoolingStationID(int poolingStationID) {
-        this.poolingStationID = poolingStationID;
-    }
 
     public String getFirst_name() {
         return first_name;
@@ -69,14 +63,6 @@ public class Voter {
         return id;
     }
 
-    @OneToMany(mappedBy = "voters")
-    private Collection<Vote> vote;
 
-    public Collection<Vote> getVote() {
-        return vote;
-    }
 
-    public void setVote(Collection<Vote> vote) {
-        this.vote = vote;
-    }
 }

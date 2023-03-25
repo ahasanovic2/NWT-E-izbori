@@ -4,51 +4,52 @@ package ba.nwt.votermicroservice.votermanagement.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Candidate {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int listaID;
+
     private int electionID;
     private String first_name;
     private String last_name;
 
     @OneToMany(mappedBy = "candidate")
-    private ArrayList<Vote> votes;
+    private List<Vote> votes = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "lista_id")
-    private Lista liste;
+    private Lista lista;
 
-    public ArrayList<Vote> getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void setVotes(ArrayList<Vote> votes) {
+    public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 
-    public Lista getListe() {
-        return liste;
+    public Lista getLista() {
+        return lista;
     }
 
-    public void setListe(Lista liste) {
-        this.liste = liste;
+    public void setLista(Lista lista) {
+        this.lista = lista;
     }
 
     public Candidate() {
     }
 
-
-    public int getListaID() {
-        return listaID;
+    public Long getId() {
+        return id;
     }
 
-    public void setListaID(int listaID) {
-        this.listaID = listaID;
+    public void setId(Long id) {
+        this.id = id;
     }
+
 
     public int getElectionID() {
         return electionID;
@@ -72,13 +73,5 @@ public class Candidate {
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 }
