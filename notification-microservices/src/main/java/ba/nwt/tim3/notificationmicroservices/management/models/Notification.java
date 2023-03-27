@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Notification {
@@ -20,18 +21,18 @@ public class Notification {
     private LocalDateTime timestamp;
     @OneToOne(cascade = CascadeType.ALL)
     private Election election;
-    @OneToOne(cascade = CascadeType.ALL)
-    private User user;
-    public User getUser() {
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<User> user;
+    public List<User> getUsers() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(List<User> user) {
         this.user = user;
     }
 
 
-
+    public void addUser(User user) { this.user.add(user); }
 
 
     public Long getId() {
