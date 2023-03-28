@@ -13,8 +13,8 @@ public class Lista {
 
     private String name;
 
-    @OneToMany(mappedBy = "lista")
-    private List<Kandidat> candidates;
+    @OneToMany(mappedBy = "lista", cascade = CascadeType.ALL)
+    private List<Kandidat> candidates = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "election_id")
@@ -43,6 +43,8 @@ public class Lista {
     public void setCandidates(ArrayList<Kandidat> candidates) {
         this.candidates = candidates;
     }
+
+    public void addCandidates(Kandidat kandidat) { this.candidates.add(kandidat); }
 
     public Election getElection() {
         return election;

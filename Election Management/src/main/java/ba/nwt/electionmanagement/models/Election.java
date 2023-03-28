@@ -1,8 +1,11 @@
 package ba.nwt.electionmanagement.models;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +19,8 @@ public class Election {
     private String name;
 
     private String description;
-    private LocalDateTime start_time;
-    private LocalDateTime end_time;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String status;
 
     @OneToMany(mappedBy = "election")
@@ -30,12 +33,18 @@ public class Election {
 
     }
 
+    public Election(String name, String description, String status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
     public Election(Long id, String name, String description, LocalDateTime start_time, LocalDateTime end_time, String status, List<Lista> list, List<User> voters, List<PollingStation> pollingStations) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.startTime = start_time;
+        this.endTime = end_time;
         this.status = status;
         this.list = list;
         this.pollingStations = pollingStations;
@@ -65,20 +74,20 @@ public class Election {
         this.description = description;
     }
 
-    public LocalDateTime getStart_time() {
-        return start_time;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(LocalDateTime start_time) {
-        this.start_time = start_time;
+    public void setStartTime(LocalDateTime start_time) {
+        this.startTime = start_time;
     }
 
-    public LocalDateTime getEnd_time() {
-        return end_time;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(LocalDateTime end_time) {
-        this.end_time = end_time;
+    public void setEndTime(LocalDateTime end_time) {
+        this.endTime = end_time;
     }
 
     public String getStatus() {
@@ -111,5 +120,13 @@ public class Election {
 
     public void setPollingStations(List<PollingStation> pollingStations) {
         this.pollingStations = pollingStations;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = LocalDateTime.parse(endTime,DateTimeFormatter.ISO_DATE_TIME);
     }
 }
