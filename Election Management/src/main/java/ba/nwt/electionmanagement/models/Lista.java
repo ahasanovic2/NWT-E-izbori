@@ -12,7 +12,7 @@ public class Lista {
     @Id
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(
-            name = "sequence-generator2",
+            name = "sequence-generator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @org.hibernate.annotations.Parameter(name = "sequence_name", value = "list_sequence"),
