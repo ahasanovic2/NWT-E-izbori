@@ -1,7 +1,9 @@
 package ba.nwt.electionmanagement.controllers;
 
 import ba.nwt.electionmanagement.interfaces.ElectionRepository;
+import ba.nwt.electionmanagement.interfaces.ListaRepository;
 import ba.nwt.electionmanagement.models.Election;
+import ba.nwt.electionmanagement.models.Kandidat;
 import ba.nwt.electionmanagement.models.Lista;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +21,9 @@ public class ElectionController {
 
     @Autowired
     private ElectionRepository electionRepository;
+
+    @Autowired
+    private ListaRepository listaRepository;
 
     @GetMapping("")
     public String getElections() {
@@ -40,27 +45,43 @@ public class ElectionController {
         return "redirect:/elections/" + election.getId() + "/add-lists";
     }
 
-    @GetMapping("/{electionId}/add-lists")
-    public String addCandidatesAndLists(@PathVariable Long electionId, Model model) {
-        // Retrieve the election from the database using the ID
+    @PostMapping("/{electionId}/add-lists")
+    public String addLists(@PathVariable Long electionId, @RequestBody List<Lista> liste) {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (optionalElection.isPresent()) {
             Election election = optionalElection.get();
-            model.addAttribute("election", election);
-            return "add-lists"; // Return the name of the HTML file for the add candidates and lists page
-        } else {
-            // Handle case where election with given ID does not exist
-            return "redirect:/elections";
+            for (Lista lista : liste) {
+                lista.setElection(election);
+                listaRepository.save(lista);
+            }
         }
+        return "Uspjesno izvrsena ruta";
     }
 
-    @PostMapping("/{electionId}/add-lists")
-    public String addLists(@PathVariable Long electionId, @RequestBody List<Lista> liste) {
-        for (Lista lista : liste)
-            System.out.println(lista.getName());
+    @GetMapping("/{electionId}/lists")
+    public String getListsForElections(@PathVariable Long electionId) {
+        Optional<Election> optionalElection = electionRepository.findById(electionId);
+        if (optionalElection.isPresent()) {
+            Election election = optionalElection.get();
+            List<Lista> lists = listaRepository.findAllByElectionId(electionId);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = null;
+            try {
+                json = objectMapper.writeValueAsString(lists);
+            }
+            catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            return json;
+        }
         return "Uspjesno izvrsena ruta";
     }
 
 
 
+
+    @PostMapping("/{electionId}/add-candidates")
+    public String addCandidates(@PathVariable Long electionId, @RequestBody List<Kandidat> candidates) {
+        return "Nista";
+    }
 }
