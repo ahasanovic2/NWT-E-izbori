@@ -1,6 +1,8 @@
 package ba.nwt.electionmanagement.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
@@ -11,8 +13,18 @@ import java.util.List;
 
 @Entity
 public class Election {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "user_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "4"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     private Long id;
 
 
@@ -23,9 +35,11 @@ public class Election {
     private LocalDateTime endTime;
     private String status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "election")
     private List<Lista> list = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "election")
     private List<PollingStation> pollingStations = new ArrayList<>();
 
@@ -33,11 +47,7 @@ public class Election {
 
     }
 
-    public Election(String name, String description, String status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
+
 
     public Election(Long id, String name, String description, LocalDateTime start_time, LocalDateTime end_time, String status, List<Lista> list, List<User> voters, List<PollingStation> pollingStations) {
         this.id = id;

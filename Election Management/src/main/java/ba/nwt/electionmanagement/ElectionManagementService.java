@@ -2,6 +2,7 @@ package ba.nwt.electionmanagement;
 
 import ba.nwt.electionmanagement.interfaces.*;
 import ba.nwt.electionmanagement.models.*;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,6 @@ public class ElectionManagementService {
         listaRepository.deleteAll();
         pollingStationRepository.deleteAll();
         electionRepository.deleteAll();
-
 
 
         User user1 = kreirajKorisnika("Ahmedin", "Hasanović");
