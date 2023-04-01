@@ -33,6 +33,8 @@ public class Election {
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+
+    @Pattern(regexp = "^(Active|Finished|Not started)$", message = "This field can only be Active, Finished and Not started")
     private String status;
 
     @JsonIgnore
