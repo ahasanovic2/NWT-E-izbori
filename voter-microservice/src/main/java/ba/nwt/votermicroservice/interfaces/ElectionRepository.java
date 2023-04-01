@@ -1,4 +1,4 @@
-package ba.nwt.votermicroservice;
+package ba.nwt.votermicroservice.interfaces;
 
 
 import ba.nwt.votermicroservice.votermanagement.models.Election;

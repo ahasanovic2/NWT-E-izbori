@@ -1,40 +1,72 @@
 package ba.nwt.votermicroservice.votermanagement.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class PollingStation {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+    private String adress;
 
-    @OneToMany(mappedBy = "pollingstation")
-    private ArrayList<ElectionPollingStation> electionPollingStations;
+    @JsonIgnore
+    @OneToMany(mappedBy = "pollingStation")
+    private List<ElectionPollingStation> electionPollingStations = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "voter_id")
-    private Voter voter;
+    @JsonIgnore
+    @OneToMany(mappedBy = "pollingStation")
+    private List<Voter> voters = new ArrayList<Voter>();
 
-    public ArrayList<ElectionPollingStation> getElectionPollingStations() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+
+
+    public PollingStation() {
+    }
+
+    public PollingStation(Long id, ArrayList<ElectionPollingStation> electionPollingStations, List<Voter> voter) {
+        this.id = id;
+        this.electionPollingStations = electionPollingStations;
+        this.voters = voter;
+    }
+
+    public List<ElectionPollingStation> getElectionPollingStations() {
         return electionPollingStations;
     }
 
-    public void setElectionPollingStations(ArrayList<ElectionPollingStation> electionPollingStations) {
+    public void setElectionPollingStations(List<ElectionPollingStation> electionPollingStations) {
         this.electionPollingStations = electionPollingStations;
     }
 
-    public Voter getVoter() {
-        return voter;
+    public List<Voter> getVoters() {
+        return voters;
     }
 
-    public void setVoter(Voter voter) {
-        this.voter = voter;
+    public void setVoters(List<Voter> voters) {
+        this.voters = voters;
     }
 
     public void setId(Long id) {

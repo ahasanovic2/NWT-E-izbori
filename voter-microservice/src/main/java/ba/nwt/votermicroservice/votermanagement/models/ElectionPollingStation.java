@@ -6,24 +6,26 @@ import jakarta.persistence.*;
 @Entity
 public class ElectionPollingStation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long PoolingStationID;
+
 
     @ManyToOne
     @JoinColumn(name = "election")
     private Election election;
 
     @ManyToOne
-    @JoinColumn(name = "pollingstation")
-    private PollingStation pollingstation;
+    @JoinColumn(name = "pollingStationId")
+    private PollingStation pollingStation;
 
-    public Long getPoolingStationID() {
-        return PoolingStationID;
+
+
+    public PollingStation getPollingStation() {
+        return pollingStation;
     }
 
-    public void setPoolingStationID(Long poolingStationID) {
-        PoolingStationID = poolingStationID;
+    public void setPollingStation(PollingStation pollingStation) {
+        this.pollingStation = pollingStation;
     }
 
     public Election getElection() {
@@ -35,11 +37,11 @@ public class ElectionPollingStation {
     }
 
     public PollingStation getPoolingStation() {
-        return pollingstation;
+        return pollingStation;
     }
 
     public void setPoolingStation(PollingStation pollingStation) {
-        this.pollingstation = pollingStation;
+        this.pollingStation = pollingStation;
     }
 
     public void setId(Long id) {

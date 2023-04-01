@@ -1,4 +1,4 @@
-package ba.nwt.votermicroservice;
+package ba.nwt.votermicroservice.interfaces;
 
 import ba.nwt.votermicroservice.votermanagement.models.PollingStation;
 import org.springframework.data.jpa.repository.JpaRepository;

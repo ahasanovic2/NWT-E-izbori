@@ -9,10 +9,10 @@ import java.util.List;
 @Entity
 public class Candidate {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int electionID;
+
     private String first_name;
     private String last_name;
 
@@ -51,13 +51,6 @@ public class Candidate {
     }
 
 
-    public int getElectionID() {
-        return electionID;
-    }
-
-    public void setElectionID(int electionID) {
-        this.electionID = electionID;
-    }
 
     public String getFirst_name() {
         return first_name;

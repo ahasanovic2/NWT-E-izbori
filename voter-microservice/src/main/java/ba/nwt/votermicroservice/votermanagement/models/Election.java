@@ -1,6 +1,7 @@
 package ba.nwt.votermicroservice.votermanagement.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -9,24 +10,32 @@ import java.util.List;
 @Entity
 public class Election {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String first_name;
+
     private String description;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "election")
     private List<Vote> votes = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "election")
-    private ArrayList<ElectionPollingStation> electionPollingStations;
-    public String getFirst_name() {
-        return first_name;
+    private List<ElectionPollingStation> electionPollingStations;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "election")
+    private List<Lista> lists = new ArrayList<>();
+
+
+    public List<Lista> getLists() {
+        return lists;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setLists(List<Lista> lists) {
+        this.lists = lists;
     }
+
+
 
     public String getDescription() {
         return description;
@@ -44,11 +53,11 @@ public class Election {
         this.votes = votes;
     }
 
-    public ArrayList<ElectionPollingStation> getElectionPollingStations() {
+    public List<ElectionPollingStation> getElectionPollingStations() {
         return electionPollingStations;
     }
 
-    public void setElectionPoolingStations(ArrayList<ElectionPollingStation> electionPollingStations) {
+    public void setElectionPoolingStations(List<ElectionPollingStation> electionPollingStations) {
         this.electionPollingStations = electionPollingStations;
     }
 

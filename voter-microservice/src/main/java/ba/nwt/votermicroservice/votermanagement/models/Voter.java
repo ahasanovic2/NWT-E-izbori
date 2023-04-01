@@ -1,6 +1,7 @@
 package ba.nwt.votermicroservice.votermanagement.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,17 +11,22 @@ import java.util.List;
 
 public class Voter {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String first_name;
     private String last_name;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "voter")
     private List<Vote> votes = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name="pollingStationId")
     private PollingStation pollingStation;
+
+
+
+
 
     public List<Vote> getVotes() {
         return votes;
@@ -30,13 +36,16 @@ public class Voter {
         this.votes = votes;
     }
 
-    public PollingStation getPoolingStations() {
+
+    public PollingStation getPollingStation() {
         return pollingStation;
     }
 
-    public void setPoolingStations(PollingStation pollingStation) {
+    public void setPollingStation(PollingStation pollingStation) {
         this.pollingStation = pollingStation;
     }
+
+
 
     public String getLast_name() {
         return last_name;

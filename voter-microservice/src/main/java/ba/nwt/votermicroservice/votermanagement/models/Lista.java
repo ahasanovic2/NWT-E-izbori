@@ -1,40 +1,64 @@
 package ba.nwt.votermicroservice.votermanagement.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Lista {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
+    private String name;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "lista")
-    private ArrayList<Candidate> candidates;
-
+    private List<Candidate> candidates;
+    @JsonIgnore
     @OneToMany(mappedBy = "lista")
-    private ArrayList<Vote> votes;
+    private List<Vote> votes;
+
+    @ManyToOne
+    @JoinColumn(name="electionId")
+    private Election election;
 
 
-    public ArrayList<Candidate> getCandidates() {
+    public List<Candidate> getCandidates() {
         return candidates;
     }
 
-    public void setCandidates(ArrayList<Candidate> candidates) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Election getElection() {
+        return election;
+    }
+
+    public void setElection(Election election) {
+        this.election = election;
+    }
+
+    public void setCandidates(List<Candidate> candidates) {
         this.candidates = candidates;
     }
 
-    public ArrayList<Vote> getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void setVotes(ArrayList<Vote> votes) {
+    public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
-
 
     public void setId(Long id) {
         this.id = id;
