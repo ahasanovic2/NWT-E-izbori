@@ -1,7 +1,6 @@
-package ba.nwt.electionmanagement.interfaces;
+package ba.nwt.electionmanagement.repositories;
 
-import ba.nwt.electionmanagement.models.Election;
-import ba.nwt.electionmanagement.models.Kandidat;
+import ba.nwt.electionmanagement.entities.Kandidat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

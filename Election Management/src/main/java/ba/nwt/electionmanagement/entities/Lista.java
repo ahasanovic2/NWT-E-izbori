@@ -1,4 +1,4 @@
-package ba.nwt.electionmanagement.models;
+package ba.nwt.electionmanagement.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class PollingStation {
-
+public class Lista {
     @Id
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(
             name = "sequence-generator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ps_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "list_sequence"),
                     @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
@@ -24,10 +23,9 @@ public class PollingStation {
     private Long id;
 
     private String name;
-    private String address;
 
-    @OneToMany(mappedBy = "pollingStation")
-    private List<User> voters = new ArrayList<>();
+    @OneToMany(mappedBy = "lista", cascade = CascadeType.ALL)
+    private List<Kandidat> candidates = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "electionId")
@@ -49,25 +47,15 @@ public class PollingStation {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public List<Kandidat> getCandidates() {
+        return candidates;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCandidates(ArrayList<Kandidat> candidates) {
+        this.candidates = candidates;
     }
 
-    public List<User> getVoters() {
-        return voters;
-    }
-
-    public void setVoters(ArrayList<User> voters) {
-        this.voters = voters;
-    }
-
-    public void addVoter(User voter) {
-        this.voters.add(voter);
-    }
+    public void addCandidates(Kandidat kandidat) { this.candidates.add(kandidat); }
 
     public Election getElection() {
         return election;

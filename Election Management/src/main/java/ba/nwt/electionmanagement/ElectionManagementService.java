@@ -1,8 +1,7 @@
 package ba.nwt.electionmanagement;
 
-import ba.nwt.electionmanagement.interfaces.*;
-import ba.nwt.electionmanagement.models.*;
-import jakarta.persistence.EntityManager;
+import ba.nwt.electionmanagement.repositories.*;
+import ba.nwt.electionmanagement.entities.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ public class ElectionManagementService {
 
     @Transactional
     public void createRows() {
-        userRepository.deleteAll();
+        /*userRepository.deleteAll();
         candidateRepository.deleteAll();
         listaRepository.deleteAll();
         pollingStationRepository.deleteAll();
@@ -106,7 +105,7 @@ public class ElectionManagementService {
 
         electionRepository.save(election1);
         pollingStationRepository.save(pollingStation);
-        pollingStationRepository.save(pollingStation2);
+        pollingStationRepository.save(pollingStation2);*/
 
 
     }

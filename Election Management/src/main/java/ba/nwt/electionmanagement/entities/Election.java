@@ -1,11 +1,10 @@
-package ba.nwt.electionmanagement.models;
+package ba.nwt.electionmanagement.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.cglib.core.Local;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,7 +26,8 @@ public class Election {
     )
     private Long id;
 
-
+    @NotBlank(message = "Name is mandatory")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
 
     private String description;

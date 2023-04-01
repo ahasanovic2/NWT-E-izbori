@@ -1,4 +1,4 @@
-package ba.nwt.electionmanagement.models;
+package ba.nwt.electionmanagement.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;

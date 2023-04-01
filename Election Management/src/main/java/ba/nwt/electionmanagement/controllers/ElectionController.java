@@ -1,14 +1,14 @@
 package ba.nwt.electionmanagement.controllers;
 
-import ba.nwt.electionmanagement.interfaces.ElectionRepository;
-import ba.nwt.electionmanagement.interfaces.ListaRepository;
-import ba.nwt.electionmanagement.models.Election;
-import ba.nwt.electionmanagement.models.Kandidat;
-import ba.nwt.electionmanagement.models.Lista;
+import ba.nwt.electionmanagement.repositories.ElectionRepository;
+import ba.nwt.electionmanagement.repositories.ListaRepository;
+import ba.nwt.electionmanagement.entities.Election;
+import ba.nwt.electionmanagement.entities.Kandidat;
+import ba.nwt.electionmanagement.entities.Lista;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,7 +39,7 @@ public class ElectionController {
     }
 
     @PostMapping("/create")
-    public String createElection(@RequestBody Election election, RedirectAttributes redirectAttributes) {
+    public String createElection(@Valid @RequestBody Election election, RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("electionId", election.getId());
         electionRepository.save(election);
         return "redirect:/elections/" + election.getId() + "/add-lists";
