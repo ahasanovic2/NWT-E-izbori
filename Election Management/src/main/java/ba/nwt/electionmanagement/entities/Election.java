@@ -26,15 +26,24 @@ public class Election {
     )
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
+    @NotNull(message = "This field cannot be null")
+    @NotBlank(message = "This field cannot be empty")
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
 
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 20, message = "This field must contain at least 20 characters.")
     private String description;
+
+    @NotNull(message = "Start time must not be null")
     private LocalDateTime startTime;
+
+    @NotNull(message = "This field cannot be null")
+    @Future(message = "End time must be after start time")
     private LocalDateTime endTime;
 
-    @Pattern(regexp = "^(Active|Finished|Not started)$", message = "This field can only be Active, Finished and Not started")
+    @NotBlank(message = "This field cannot be empty")
+    @Pattern(regexp = "^(Active|Finished|NotStarted)$", message = "This field can only be Active, Finished and NotStarted")
     private String status;
 
     @JsonIgnore
@@ -45,6 +54,13 @@ public class Election {
     @OneToMany(mappedBy = "election")
     private List<PollingStation> pollingStations = new ArrayList<>();
 
+    @AssertTrue(message = "End time must be after start time")
+    public boolean isEndTime() {
+        if (endTime == null || startTime == null) {
+            return true;
+        }
+        return endTime.isAfter(startTime);
+    }
     public Election() {
 
     }
@@ -83,7 +99,7 @@ public class Election {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.trim();
     }
 
     public LocalDateTime getStartTime() {
