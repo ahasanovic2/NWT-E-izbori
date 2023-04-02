@@ -1,7 +1,7 @@
-package ba.nwt.votermicroservice.interfaces;
+package ba.nwt.votermicroservice.repositories;
 
 
-import ba.nwt.votermicroservice.votermanagement.models.Vote;
+import ba.nwt.votermicroservice.models.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

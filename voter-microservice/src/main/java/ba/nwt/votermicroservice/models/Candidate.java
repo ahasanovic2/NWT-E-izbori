@@ -1,4 +1,4 @@
-package ba.nwt.votermicroservice.votermanagement.models;
+package ba.nwt.votermicroservice.models;
 
 
 import jakarta.persistence.*;
@@ -19,7 +19,7 @@ public class Candidate {
     @OneToMany(mappedBy = "candidate")
     private List<Vote> votes = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "lista_id")
     private Lista lista;
 

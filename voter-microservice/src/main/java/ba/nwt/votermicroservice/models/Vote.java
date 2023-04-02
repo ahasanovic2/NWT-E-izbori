@@ -1,9 +1,8 @@
-package ba.nwt.votermicroservice.votermanagement.models;
+package ba.nwt.votermicroservice.models;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Entity
 public class Vote {
@@ -12,20 +11,20 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="voter_id", nullable=false)
     private Voter voter;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "election_id")
     private Election election;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "lista_id")
     private Lista lista;
 

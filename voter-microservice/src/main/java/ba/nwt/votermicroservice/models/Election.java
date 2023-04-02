@@ -1,4 +1,4 @@
-package ba.nwt.votermicroservice.votermanagement.models;
+package ba.nwt.votermicroservice.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,7 +1,8 @@
 package ba.nwt.votermicroservice;
 
-import ba.nwt.votermicroservice.interfaces.*;
-import ba.nwt.votermicroservice.votermanagement.models.*;
+import ba.nwt.votermicroservice.repositories.*;
+import ba.nwt.votermicroservice.models.*;
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

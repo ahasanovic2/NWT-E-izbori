@@ -1,4 +1,4 @@
-package ba.nwt.votermicroservice.votermanagement.models;
+package ba.nwt.votermicroservice.models;
 
 
 import jakarta.persistence.*;
@@ -10,11 +10,11 @@ public class ElectionPollingStation {
     private Long id;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "election")
     private Election election;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "pollingStationId")
     private PollingStation pollingStation;
 

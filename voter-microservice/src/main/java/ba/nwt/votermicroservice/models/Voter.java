@@ -1,10 +1,9 @@
-package ba.nwt.votermicroservice.votermanagement.models;
+package ba.nwt.votermicroservice.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -20,7 +19,7 @@ public class Voter {
     @OneToMany(mappedBy = "voter")
     private List<Vote> votes = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="pollingStationId")
     private PollingStation pollingStation;
 

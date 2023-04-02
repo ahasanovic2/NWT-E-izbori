@@ -1,15 +1,15 @@
 package ba.nwt.votermicroservice.controllers;
 
 
-import ba.nwt.votermicroservice.interfaces.PollingStationRepository;
-import ba.nwt.votermicroservice.interfaces.*;
+import ba.nwt.votermicroservice.repositories.PollingStationRepository;
+import ba.nwt.votermicroservice.repositories.*;
+import ba.nwt.votermicroservice.models.PollingStation;
+import ba.nwt.votermicroservice.models.Voter;
 import ba.nwt.votermicroservice.votermanagement.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,11 +1,13 @@
 package ba.nwt.votermicroservice.controllers;
 
 
-import ba.nwt.votermicroservice.interfaces.*;
+import ba.nwt.votermicroservice.repositories.*;
+import ba.nwt.votermicroservice.models.Candidate;
+import ba.nwt.votermicroservice.models.Lista;
+import ba.nwt.votermicroservice.models.Vote;
 import ba.nwt.votermicroservice.votermanagement.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +54,7 @@ public class VoteController {
             }
             return ResponseEntity.ok(json);
         }
-        else return new ResponseEntity<>("Ne postoje izbori sa zadanim ID-em", HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>("Ne postoje izbori sa zadanim ID-em", HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/{electionId}/lists/{listaId}/candidates")
     public ResponseEntity<String> getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId) {
@@ -74,7 +76,7 @@ public class VoteController {
                 return ResponseEntity.ok(json);
             }
         }
-        return new ResponseEntity<>("Ne postoji lista sa zadanim ID-em na zadanim izborima!", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Ne postoji lista sa zadanim ID-em na zadanim izborima!", HttpStatus.BAD_REQUEST);
     }
 
 
