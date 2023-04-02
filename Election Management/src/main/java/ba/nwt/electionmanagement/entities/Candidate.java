@@ -20,13 +20,20 @@ public class Candidate {
     @Column(name = "id")
     private Long id;
 
+
+
     @NotNull(message = "This field cannot be null")
+    @Size(min = 1, message = "This field must contain at least 1 character")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String firstName;
 
     @NotNull(message = "This field cannot be null")
+    @Size(min = 1, message = "This field must contain at least 1 character")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String lastName;
 
     @NotNull(message = "This field cannot be null")
+    @Size(min = 20, message = "This field must contain at least 20 characters.")
     private String description;
 
 

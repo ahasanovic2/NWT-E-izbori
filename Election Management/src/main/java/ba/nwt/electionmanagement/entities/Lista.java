@@ -34,12 +34,14 @@ public class Lista {
         this.candidates = candidates;
     }
 
+    @NotNull(message = "This field cannot be null")
     private Boolean nezavisna;
 
     @JsonIgnore
     @OneToMany(mappedBy = "lista")
     private List<Candidate> candidates = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "electionId")
     private Election election;

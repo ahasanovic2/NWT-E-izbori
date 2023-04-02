@@ -63,7 +63,7 @@ public class ElectionController {
     }
 
     @PostMapping("/{electionId}/add-lists")
-    public ResponseEntity<String> addLists(@PathVariable Long electionId, @RequestBody List<Lista> liste) {
+    public ResponseEntity<String> addLists(@PathVariable Long electionId, @Valid @RequestBody List<Lista> liste) {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (!optionalElection.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Election ID not found");
@@ -97,7 +97,7 @@ public class ElectionController {
 
 
     @PostMapping("/{electionId}/lists/{listId}/add-candidates")
-    public ResponseEntity<String> addCandidates(@PathVariable Long electionId, @PathVariable Long listId, @RequestBody List<Candidate> candidates) {
+    public ResponseEntity<String> addCandidates(@PathVariable Long electionId, @PathVariable Long listId, @Valid @RequestBody List<Candidate> candidates) {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (!optionalElection.isPresent())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Election ID not found");
