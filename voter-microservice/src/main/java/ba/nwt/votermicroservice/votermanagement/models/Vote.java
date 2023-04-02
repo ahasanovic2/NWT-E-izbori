@@ -12,20 +12,20 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="voter_id", nullable=false)
     private Voter voter;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "election_id")
     private Election election;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lista_id")
     private Lista lista;
 
@@ -47,6 +47,10 @@ public class Vote {
 
     public Voter getVoter() {
         return voter;
+    }
+
+    public void setLista(Lista lista) {
+        this.lista = lista;
     }
 
     public void setVoter(Voter voter) {

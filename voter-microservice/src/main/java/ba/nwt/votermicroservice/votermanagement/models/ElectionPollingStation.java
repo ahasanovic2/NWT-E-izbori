@@ -10,11 +10,11 @@ public class ElectionPollingStation {
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "election")
     private Election election;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pollingStationId")
     private PollingStation pollingStation;
 

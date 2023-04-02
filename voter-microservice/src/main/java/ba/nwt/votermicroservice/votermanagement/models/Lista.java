@@ -23,7 +23,7 @@ public class Lista {
     @OneToMany(mappedBy = "lista")
     private List<Vote> votes;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="electionId")
     private Election election;
 

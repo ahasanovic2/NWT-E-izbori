@@ -7,12 +7,12 @@ import ba.nwt.votermicroservice.votermanagement.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,7 +49,7 @@ public class PollingStationController {
 
 
     @GetMapping("/{pollingStationId}/voters")
-    public String getVotersByPollingStation(@PathVariable Long pollingStationId) {
+    public ResponseEntity<String> getVotersByPollingStation(@PathVariable Long pollingStationId) {
         Optional<PollingStation> optionalPollingStation = pollingStationRepository.findById(pollingStationId);
         if (optionalPollingStation.isPresent()) {
             PollingStation pollingStation = optionalPollingStation.get();
@@ -62,9 +62,10 @@ public class PollingStationController {
             catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            return json;
+            return ResponseEntity.ok(json);
         }
-        return "Uspjesno izvrsena ruta";
+        else return new ResponseEntity<>("Biracko mjesto sa zadanim ID-em ne postoji!", HttpStatus.NOT_FOUND);
+
     }
 
 

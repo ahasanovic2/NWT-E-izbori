@@ -20,7 +20,7 @@ public class Voter {
     @OneToMany(mappedBy = "voter")
     private List<Vote> votes = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="pollingStationId")
     private PollingStation pollingStation;
 

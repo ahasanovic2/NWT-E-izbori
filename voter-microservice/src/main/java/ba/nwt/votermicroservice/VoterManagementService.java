@@ -30,6 +30,7 @@ public class VoterManagementService {
 
     @Transactional
     public void createRows(){
+
         Vote vote = new Vote();
         Voter voter = new Voter();
         Election election = new Election();

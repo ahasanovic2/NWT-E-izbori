@@ -19,7 +19,7 @@ public class Candidate {
     @OneToMany(mappedBy = "candidate")
     private List<Vote> votes = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lista_id")
     private Lista lista;
 

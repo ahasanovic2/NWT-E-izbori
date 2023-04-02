@@ -5,11 +5,11 @@ import ba.nwt.votermicroservice.interfaces.*;
 import ba.nwt.votermicroservice.votermanagement.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +37,7 @@ public class VoteController {
     private CandidateRepository candidateRepository;
 
     @GetMapping("/{electionId}/lists")
-    public String getListsByElectionId(@PathVariable Long electionId){
+    public ResponseEntity<String> getListsByElectionId(@PathVariable Long electionId){
         Optional<Vote> optionalVote = voteRepository.findById(electionId);
         if(optionalVote.isPresent()){
             Vote vote = optionalVote.get();
@@ -50,14 +50,12 @@ public class VoteController {
             catch (JsonProcessingException e){
                 e.printStackTrace();
             }
-            return json;
+            return ResponseEntity.ok(json);
         }
-        return "Uspjesno izvrsena ruta";
-
-
+        else return new ResponseEntity<>("Ne postoje izbori sa zadanim ID-em", HttpStatus.NOT_FOUND);
     }
     @GetMapping("/{electionId}/lists/{listaId}/candidates")
-    public String getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId) {
+    public ResponseEntity<String> getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId) {
         Optional<Vote> optionalVote = voteRepository.findById(electionId);
         if (optionalVote.isPresent()) {
             Vote vote = optionalVote.get();
@@ -73,10 +71,11 @@ public class VoteController {
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                return json;
+                return ResponseEntity.ok(json);
             }
         }
-        return "Uspjesno izvrsena ruta";
+        return new ResponseEntity<>("Ne postoji lista sa zadanim ID-em na zadanim izborima!", HttpStatus.NOT_FOUND);
     }
+
 
 }
