@@ -1,6 +1,8 @@
 package ba.nwt.electionmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
@@ -22,10 +24,21 @@ public class Lista {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "This field cannot be null")
+    @NotBlank(message = "This field cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-]+(\\s+[a-zA-Z0-9\\-]+)*$", message = "You can only enter alphabet characters, numbers, and hyphens.")
     private String name;
 
-    @OneToMany(mappedBy = "lista", cascade = CascadeType.ALL)
-    private List<Kandidat> candidates = new ArrayList<>();
+
+    public void setCandidates(List<Candidate> candidates) {
+        this.candidates = candidates;
+    }
+
+    private Boolean nezavisna;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "lista")
+    private List<Candidate> candidates = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "electionId")
@@ -47,15 +60,15 @@ public class Lista {
         this.name = name;
     }
 
-    public List<Kandidat> getCandidates() {
+    public List<Candidate> getCandidates() {
         return candidates;
     }
 
-    public void setCandidates(ArrayList<Kandidat> candidates) {
+    public void setCandidates(ArrayList<Candidate> candidates) {
         this.candidates = candidates;
     }
 
-    public void addCandidates(Kandidat kandidat) { this.candidates.add(kandidat); }
+    public void addCandidates(Candidate kandidat) { this.candidates.add(kandidat); }
 
     public Election getElection() {
         return election;
@@ -63,5 +76,12 @@ public class Lista {
 
     public void setElection(Election election) {
         this.election = election;
+    }
+    public Boolean getNezavisna() {
+        return nezavisna;
+    }
+
+    public void setNezavisna(Boolean nezavisna) {
+        this.nezavisna = nezavisna;
     }
 }

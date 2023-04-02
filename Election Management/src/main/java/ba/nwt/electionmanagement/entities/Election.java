@@ -13,6 +13,8 @@ import java.util.List;
 @Entity
 public class Election {
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     @Id
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(
@@ -156,5 +158,17 @@ public class Election {
 
     public void setEndTime(String endTime) {
         this.endTime = LocalDateTime.parse(endTime,DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":\"" + id +
+                "\", \"name\":\"" + name + '\"' +
+                ", \"startTime\":\"" + startTime.format(DATE_TIME_FORMATTER) +
+                "\", \"endTime\":\"" + endTime.format(DATE_TIME_FORMATTER) +
+                "\", \"status\":\"" + status + '\"' +
+                ", \"description\":\"" + description + '\"' +
+                '}';
     }
 }

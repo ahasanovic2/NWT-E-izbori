@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Kandidat {
+public class Candidate {
     @Id
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(
@@ -30,8 +30,8 @@ public class Kandidat {
     private String description;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="lista_id")
+    @ManyToOne
+    @JoinColumn(name="listId")
     private Lista lista;
 
     public Long getId() {
