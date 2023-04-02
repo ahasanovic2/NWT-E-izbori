@@ -1,6 +1,7 @@
 package ba.nwt.electionmanagement.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -19,9 +20,15 @@ public class Kandidat {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "This field cannot be null")
     private String firstName;
+
+    @NotNull(message = "This field cannot be null")
     private String lastName;
+
+    @NotNull(message = "This field cannot be null")
     private String description;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="lista_id")
