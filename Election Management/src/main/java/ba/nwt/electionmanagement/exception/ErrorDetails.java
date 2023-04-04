@@ -1,7 +1,6 @@
 package ba.nwt.electionmanagement.exception;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class ErrorDetails {
     private LocalDateTime timestamp;
@@ -35,4 +34,12 @@ public class ErrorDetails {
         this.message = message;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "\"timestamp\":\"" + timestamp.toString() +
+                "\", \"field\":\"" + field + '\"' +
+                ", \"message\":\"" + message +
+                "\"}";
+    }
 }
