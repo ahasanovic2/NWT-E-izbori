@@ -1,9 +1,5 @@
 package ba.nwt.tim3.models;
 
-import ba.nwt.tim3.models.Candidate;
-import ba.nwt.tim3.models.Election;
-import ba.nwt.tim3.models.List;
-import ba.nwt.tim3.models.PollingStation;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,8 +22,8 @@ public class Result {
     private int vote_count;
 
 
-    @OneToOne
-    @JoinColumn(name = "candidateId")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "candidateId", referencedColumnName = "id")
     private Candidate candidate;
 
     @OneToOne
@@ -88,5 +84,17 @@ public class Result {
 
     public void setPollingStation(PollingStation pollingStation) {
         this.pollingStation = pollingStation;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":\"" + id +
+                "\", \"vote_count\":\"" + vote_count + '\"' +
+                ", \"candidate\":\"" + candidate +
+                "\", \"pollingStation\":\"" + pollingStation +
+                "\", \"list\":\"" + list + '\"' +
+                ", \"election\":\"" + election + '\"' +
+                '}';
     }
 }

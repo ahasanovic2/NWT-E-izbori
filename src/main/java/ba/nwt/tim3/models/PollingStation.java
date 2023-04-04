@@ -1,5 +1,6 @@
 package ba.nwt.tim3.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,6 +21,7 @@ public class PollingStation {
     private String name;
     private String adress;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "pollingStation")
     private Result result;
 

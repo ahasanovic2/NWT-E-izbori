@@ -29,16 +29,28 @@ public class ResultController {
     @Autowired PollingStationRepository pollingStationRepository;
 
     @GetMapping("")
-    public String getResults() {
+    public ResponseEntity<String> getResults() {
         List<Result> results = resultRepository.findAll();
         ObjectMapper objectMapper = new ObjectMapper();
         String json = null;
         try {
-            json = objectMapper.writeValueAsString(results);
-        } catch (JsonProcessingException e) {
+            StringBuilder sb = new StringBuilder("[");
+            for (Result result: results) {
+                sb.append(result.toString()).append(",");
+            }
+            if (results.size() > 0) {
+                sb.deleteCharAt(sb.length() - 1);
+            }
+            sb.append("]");
+            json = sb.toString();
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error serializing elections to JSON: " + e.getMessage());
         }
-        return json;
+
+
+        return ResponseEntity.ok(json);
+
     }
 
 

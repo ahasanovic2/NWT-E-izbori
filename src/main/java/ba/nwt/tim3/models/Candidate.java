@@ -1,9 +1,11 @@
 package ba.nwt.tim3.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name = "Candidates")
 public class Candidate {
     @Id
     @GeneratedValue(generator = "sequence-generator")
@@ -20,6 +22,7 @@ public class Candidate {
     private int id;
     private String name;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "candidate")
     private Result result;
 

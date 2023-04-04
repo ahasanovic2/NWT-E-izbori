@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ResultService {
 
     @Autowired
-    private CandidateRepository candidateRepository;
+    private CandidatesRepository candidateRepository;
 
     @Autowired
     private ElectionRepository electionRepository;
