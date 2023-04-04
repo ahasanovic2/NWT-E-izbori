@@ -1,4 +1,4 @@
-package ba.nwt.tim3;
+package ba.nwt.tim3.interfaces;
 
 import ba.nwt.tim3.models.List;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -5,14 +5,25 @@ import ba.nwt.tim3.models.Election;
 import ba.nwt.tim3.models.List;
 import ba.nwt.tim3.models.PollingStation;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Result {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "result_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
+
     private int id;
-    private Long vote_count;
+    private int vote_count;
 
 
     @OneToOne
@@ -39,11 +50,11 @@ public class Result {
         this.id = id;
     }
 
-    public Long getVote_count() {
+    public int getVote_count() {
         return vote_count;
     }
 
-    public void setVote_count(Long vote_count) {
+    public void setVote_count(int vote_count) {
         this.vote_count = vote_count;
     }
 
