@@ -1,148 +1,52 @@
 package ba.nwt.electionmanagement.controllers;
 
-import ba.nwt.electionmanagement.exception.ErrorDetails;
-import ba.nwt.electionmanagement.repositories.CandidateRepository;
-import ba.nwt.electionmanagement.repositories.ElectionRepository;
-import ba.nwt.electionmanagement.repositories.ListaRepository;
-import ba.nwt.electionmanagement.entities.Election;
-import ba.nwt.electionmanagement.entities.Candidate;
-import ba.nwt.electionmanagement.entities.Lista;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ba.nwt.electionmanagement.entities.*;
+import ba.nwt.electionmanagement.services.ElectionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/elections")
 public class ElectionController {
 
     @Autowired
-    private ElectionRepository electionRepository;
-
-    @Autowired
-    private ListaRepository listaRepository;
-
-    @Autowired
-    private CandidateRepository candidateRepository;
+    private ElectionService electionService = new ElectionService();
 
     @GetMapping("")
     public ResponseEntity<String> getElections() {
-        List<Election> elections = electionRepository.findAll();
-        String json = null;
-        try {
-            StringBuilder sb = new StringBuilder("[");
-            for (Election election : elections) {
-                sb.append(election.toString()).append(",");
-            }
-            if (elections.size() > 0) {
-                sb.deleteCharAt(sb.length() - 1);
-            }
-            sb.append("]");
-            json = sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error serializing elections to JSON: " + e.getMessage());
-        }
-        System.out.println("Serialized JSON: " + json);
-        return ResponseEntity.ok(json);
+        return ResponseEntity.ok(electionService.getElections());
     }
-
-
 
     @PostMapping("/create")
     public String createElection(@Valid @RequestBody Election election, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("electionId", election.getId());
-        electionRepository.save(election);
-        return "redirect:/elections/" + election.getId() + "/add-lists";
+        Long id = electionService.createElection(election,redirectAttributes);
+        return "redirect:/elections/" + id + "/add-lists";
     }
 
     @PostMapping("/{electionId}/add-lists")
     public ResponseEntity<String> addLists(@PathVariable Long electionId, @Valid @RequestBody List<Lista> liste) {
-        Optional<Election> optionalElection = electionRepository.findById(electionId);
-        if (!optionalElection.isPresent()) {
-            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
-        }
-        Election election = optionalElection.get();
-        for (Lista lista : liste) {
-            lista.setElection(election);
-            listaRepository.save(lista);
-        }
-        return ResponseEntity.ok("Lists added successfully");
+        return electionService.addLists(electionId,liste);
     }
 
 
     @GetMapping("/{electionId}/lists")
     public ResponseEntity<String> getListsForElections(@PathVariable Long electionId) {
-        Optional<Election> optionalElection = electionRepository.findById(electionId);
-        if (!optionalElection.isPresent()) {
-            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
-        }
-        List<Lista> lists = listaRepository.findAllByElectionId(electionId);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = null;
-        try {
-            json = objectMapper.writeValueAsString(lists);
-        }
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok(json);
+        return electionService.getListsForElections(electionId);
     }
 
 
     @PostMapping("/{electionId}/lists/{listId}/add-candidates")
     public ResponseEntity<String> addCandidates(@PathVariable Long electionId, @PathVariable Long listId, @Valid @RequestBody List<Candidate> candidates) {
-        Optional<Election> optionalElection = electionRepository.findById(electionId);
-        if (!optionalElection.isPresent()) {
-            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
-        }
-        Optional<Lista> optionalLista = listaRepository.findById(listId);
-        if (!optionalLista.isPresent()) {
-            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"listId","List ID not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
-        }
-        Lista list = optionalLista.get();
-        for (Candidate candidate: candidates) {
-            candidate.setLista(list);
-            candidateRepository.save(candidate);
-        }
-        return ResponseEntity.ok("Lists added successfully");
+        return electionService.addCandidates(electionId,listId,candidates);
     }
 
     @GetMapping("/{electionId}/lists/{listId}/candidates")
     public ResponseEntity<String> getCandidates(@PathVariable Long electionId, @PathVariable Long listId) {
-        Optional<Election> optionalElection = electionRepository.findById(electionId);
-        if (!optionalElection.isPresent()) {
-            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
-        }
-
-        Optional<Lista> optionalLista = listaRepository.findById(listId);
-        if (!optionalLista.isPresent()) {
-            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"listId","List ID not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
-        }
-
-        List<Candidate> candidates = candidateRepository.findAllByListaId(listId);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = null;
-        try {
-            json = objectMapper.writeValueAsString(candidates);
-        }
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok(json);
+        return electionService.getCandidates(electionId,listId);
     }
 }
