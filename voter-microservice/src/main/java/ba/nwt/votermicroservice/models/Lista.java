@@ -3,6 +3,8 @@ package ba.nwt.votermicroservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -12,7 +14,8 @@ public class Lista {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 5, message = "This field must contain at least 5 character")
     private String name;
 
     @JsonIgnore

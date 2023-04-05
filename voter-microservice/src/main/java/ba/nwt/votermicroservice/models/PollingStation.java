@@ -3,6 +3,9 @@ package ba.nwt.votermicroservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,14 @@ public class PollingStation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 3, message = "This field must contain at least 3 character")
     private String name;
+
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 5, message = "This field must contain at least 5 character")
     private String adress;
 
     @JsonIgnore

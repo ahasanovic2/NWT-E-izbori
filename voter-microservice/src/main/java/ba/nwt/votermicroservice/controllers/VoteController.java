@@ -5,7 +5,7 @@ import ba.nwt.votermicroservice.repositories.*;
 import ba.nwt.votermicroservice.models.Candidate;
 import ba.nwt.votermicroservice.models.Lista;
 import ba.nwt.votermicroservice.models.Vote;
-import ba.nwt.votermicroservice.votermanagement.models.*;
+import ba.nwt.votermicroservice.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
