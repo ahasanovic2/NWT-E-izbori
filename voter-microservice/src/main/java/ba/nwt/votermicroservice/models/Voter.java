@@ -16,12 +16,12 @@ public class Voter {
     private Long id;
     @NotNull(message = "This field cannot be null")
     @Size(min = 1, message = "This field must contain at least 1 character")
-    @Pattern(regexp = "^[a-zA-Z0-9]", message = "You can only enter alphabet characters.")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "You can only enter alphabet characters.")
     private String first_name;
 
     @NotNull(message = "This field cannot be null")
     @Size(min = 1, message = "This field must contain at least 1 character")
-    @Pattern(regexp = "^[a-zA-Z0-9]", message = "You can only enter alphabet characters.")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "You can only enter alphabet characters.")
     private String last_name;
 
     @JsonIgnore

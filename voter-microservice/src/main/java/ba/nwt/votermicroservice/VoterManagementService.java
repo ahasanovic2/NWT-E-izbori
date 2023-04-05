@@ -45,7 +45,7 @@ public class VoterManagementService {
         List<Vote> glasovi = new ArrayList<>();
         Candidate candidate = new Candidate();
         candidate.setFirst_name("Ahmedin");
-        candidate.setLast_name("Hasanović");
+        candidate.setLast_name("Hasanovic");
 
         Candidate candidate1 = new Candidate();
         candidate1.setFirst_name("Samir");
