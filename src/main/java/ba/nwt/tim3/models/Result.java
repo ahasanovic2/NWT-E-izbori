@@ -1,5 +1,6 @@
 package ba.nwt.tim3.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -35,6 +36,7 @@ public class Result {
     private List list;
 
     @ManyToOne
+    @JsonIgnoreProperties("result")
     @JoinColumn(name = "election_id")
     private Election election;
 

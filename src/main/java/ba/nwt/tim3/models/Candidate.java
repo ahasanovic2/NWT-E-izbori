@@ -2,10 +2,13 @@ package ba.nwt.tim3.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "Candidates")
+@Table(name = "Candidate")
 public class Candidate {
     @Id
     @GeneratedValue(generator = "sequence-generator")
@@ -20,11 +23,19 @@ public class Candidate {
     )
 
     private int id;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 2, message = "This field must be at least 2 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
 
     @JsonIgnore
     @OneToOne(mappedBy = "candidate")
     private Result result;
+
+    @ManyToOne
+    @JoinColumn(name = "listId")
+    private List list;
 
     public int getId() {
         return id;
@@ -48,5 +59,13 @@ public class Candidate {
 
     public void setResult(Result result) {
         this.result = result;
+    }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
     }
 }

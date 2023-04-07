@@ -1,6 +1,10 @@
 package ba.nwt.tim3.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
@@ -20,8 +24,17 @@ public class Election {
             }
     )
     private int id;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 2, message = "This field must be at least 2 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
+
+    @NotNull(message = "This field cannot be null")
     private LocalDateTime start_time;
+
+    @NotNull(message = "This field cannot be null")
+    @Future(message = "End time must be after start time")
     private LocalDateTime end_time;
 
     @OneToMany

@@ -2,6 +2,9 @@ package ba.nwt.tim3.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -18,7 +21,15 @@ public class PollingStation {
             }
     )
     private int id;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 2, message = "This field must be at least 2 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 2, message = "This field must be at least 2 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String adress;
 
     @JsonIgnore

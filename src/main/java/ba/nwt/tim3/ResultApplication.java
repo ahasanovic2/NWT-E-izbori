@@ -18,5 +18,4 @@ public class ResultApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		resultService.createRows();
 	}
-
 }
