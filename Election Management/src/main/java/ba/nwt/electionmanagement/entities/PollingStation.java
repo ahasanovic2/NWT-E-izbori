@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class PollingStation {
@@ -29,9 +31,11 @@ public class PollingStation {
     @OneToMany(mappedBy = "pollingStation")
     private List<User> voters = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "electionId")
-    private Election election;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "polling_station_election",
+            joinColumns = @JoinColumn(name = "polling_station_id"),
+            inverseJoinColumns = @JoinColumn(name = "election_id"))
+    private Set<Election> elections = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -69,11 +73,14 @@ public class PollingStation {
         this.voters.add(voter);
     }
 
-    public Election getElection() {
-        return election;
+    public Set<Election> getElections() {
+        return elections;
     }
 
-    public void setElection(Election election) {
-        this.election = election;
+    public void setElections(Set<Election> elections) {
+        this.elections = elections;
+    }
+    public void addElections(Election election) {
+        this.elections.add(election);
     }
 }

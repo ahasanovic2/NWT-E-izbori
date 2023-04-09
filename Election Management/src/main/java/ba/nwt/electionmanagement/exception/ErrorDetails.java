@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class ErrorDetails {
     private LocalDateTime timestamp;
-    private String message;
     private String field;
+    private String message;
 
     public ErrorDetails(LocalDateTime timestamp, String field, String message) {
         super();

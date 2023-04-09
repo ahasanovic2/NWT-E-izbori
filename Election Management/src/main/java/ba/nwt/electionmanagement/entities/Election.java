@@ -8,7 +8,9 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Election {
@@ -52,8 +54,7 @@ public class Election {
     @OneToMany(mappedBy = "election")
     private List<Lista> list = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "election")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "elections")
     private List<PollingStation> pollingStations = new ArrayList<>();
 
     @AssertTrue(message = "End time must be after start time")

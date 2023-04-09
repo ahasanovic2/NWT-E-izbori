@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/elections")
@@ -23,10 +24,22 @@ public class ElectionController {
     }
 
     @PostMapping("/create")
-    public String createElection(@Valid @RequestBody Election election, RedirectAttributes redirectAttributes) {
-        Long id = electionService.createElection(election,redirectAttributes);
-        return "redirect:/elections/" + id + "/add-lists";
+    public ResponseEntity<String> createElection(@Valid @RequestBody Election election, RedirectAttributes redirectAttributes) {
+        return electionService.createElection(election,redirectAttributes);
     }
+
+    @PostMapping("/{electionId}/pollingStations")
+    public ResponseEntity<String> addElectionToPollingStations(@PathVariable Long electionId, @RequestBody List<Long> pollingStationIds) {
+        return electionService.addElectionToPollingStations(electionId,pollingStationIds);
+    }
+
+    @GetMapping("/{electionId}/pollingStations")
+    public ResponseEntity<String> getPollingStations(@PathVariable Long electionId) {
+        return electionService.getPollingStations(electionId);
+    }
+
+    /*@PostMapping("/{electionId}/set-polling-stations")
+    public ResponseEntity<String> setPollingStations()*/
 
     @PostMapping("/{electionId}/add-lists")
     public ResponseEntity<String> addLists(@PathVariable Long electionId, @Valid @RequestBody List<Lista> liste) {

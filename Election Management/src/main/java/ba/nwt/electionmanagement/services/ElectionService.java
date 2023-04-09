@@ -3,10 +3,12 @@ package ba.nwt.electionmanagement.services;
 import ba.nwt.electionmanagement.entities.Candidate;
 import ba.nwt.electionmanagement.entities.Election;
 import ba.nwt.electionmanagement.entities.Lista;
+import ba.nwt.electionmanagement.entities.PollingStation;
 import ba.nwt.electionmanagement.exception.ErrorDetails;
 import ba.nwt.electionmanagement.repositories.CandidateRepository;
 import ba.nwt.electionmanagement.repositories.ElectionRepository;
 import ba.nwt.electionmanagement.repositories.ListaRepository;
+import ba.nwt.electionmanagement.repositories.PollingStationRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ElectionService {
@@ -30,6 +31,19 @@ public class ElectionService {
 
     @Autowired
     private CandidateRepository candidateRepository;
+
+    @Autowired
+    private PollingStationRepository pollingStationRepository;
+
+    private ResponseEntity<String> checkElectionExists(Long electionId) {
+        Optional<Election> optionalElection = electionRepository.findById(electionId);
+        if (optionalElection.isEmpty()) {
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        return null;
+    }
+
 
     public String getElections() {
         List<Election> elections = electionRepository.findAll();
@@ -52,10 +66,26 @@ public class ElectionService {
         return json;
     }
 
-    public Long createElection(Election election, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<String> createElection(Election election, RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("electionId", election.getId());
+        List<PollingStation> pollingStations = new ArrayList<>();
+        for (PollingStation pollingStation: election.getPollingStations()) {
+            Long id = pollingStation.getId();
+            Optional<PollingStation> optionalPollingStation = pollingStationRepository.findById(id);
+            if (optionalPollingStation.isPresent()) {
+                pollingStations.add(optionalPollingStation.get());
+            }
+            else {
+                ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"pollingStationId","Polling Station ID not found");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+            }
+        }
+        for (PollingStation pollingStation: pollingStations) {
+            pollingStation.getElections().add(election);
+            pollingStationRepository.save(pollingStation);
+        }
         electionRepository.save(election);
-        return election.getId();
+        return ResponseEntity.ok("Successfully created elections " + election.getId());
     }
 
     public ResponseEntity<String> addLists(Long electionId, List<Lista> liste) {
@@ -132,5 +162,38 @@ public class ElectionService {
             e.printStackTrace();
         }
         return ResponseEntity.ok(json);
+    }
+
+    public ResponseEntity<String> getPollingStations(Long electionId) {
+        ResponseEntity<String> responseEntity = checkElectionExists(electionId);
+        if (responseEntity != null) return responseEntity;
+
+
+
+        return null;
+    }
+
+    public ResponseEntity<String> addElectionToPollingStations(Long electionId, List<Long> pollingStationIds) {
+        Optional<Election> optionalElection = electionRepository.findById(electionId);
+        if (optionalElection.isEmpty()) {
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","Election ID not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        Election election = optionalElection.get();
+        List<PollingStation> pollingStations = pollingStationRepository.findAllById(pollingStationIds);
+        if (pollingStations.size() != pollingStationIds.size()) {
+            Set<Long> notFoundIds = new HashSet<>(pollingStationIds);
+            for (PollingStation ps: pollingStations) {
+                notFoundIds.remove(ps.getId());
+            }
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"pollingStationIds","Polling Station IDs not found: " + notFoundIds);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        election.getPollingStations().addAll(pollingStations);
+        for (PollingStation pollingStation : pollingStations) {
+            pollingStation.getElections().add(election);
+        }
+        electionRepository.save(election);
+        return ResponseEntity.ok("Election added to polling stations successfully.");
     }
 }
