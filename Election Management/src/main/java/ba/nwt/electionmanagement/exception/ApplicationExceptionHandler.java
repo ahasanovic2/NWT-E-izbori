@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,4 +56,15 @@ public class ApplicationExceptionHandler {
         return errorResponses;
     }
 
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public List<ErrorDetails> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+        List<ErrorDetails> errorResponses = new ArrayList<>();
+
+        ErrorDetails errorResponse = new ErrorDetails(LocalDateTime.now(), "Unique key", ex.getMessage());
+        errorResponses.add(errorResponse);
+
+        return errorResponses;
+    }
 }

@@ -1,7 +1,10 @@
 package ba.nwt.electionmanagement.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +28,13 @@ public class PollingStation {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "This field cannot be null")
+    @Column(unique = true)
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
+
+    @NotNull(message = "This field cannot be null")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String address;
 
     @OneToMany(mappedBy = "pollingStation")

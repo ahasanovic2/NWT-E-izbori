@@ -112,7 +112,9 @@ public class ElectionManagementService {
         PollingStation pollingStation2 = new PollingStation();
 
         pollingStation1.setName("Prva baza");
+        pollingStation1.setAddress("Hotonj 1");
         pollingStation2.setName("Druga baza");
+        pollingStation2.setAddress("Hotonj 2");
 
         Election election1 = new Election();
         Election election2 = new Election();
