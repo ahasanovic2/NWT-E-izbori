@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Candidate")
 public class Candidate {
@@ -22,7 +25,7 @@ public class Candidate {
             }
     )
 
-    private int id;
+    private Long id;
 
     @NotNull(message = "This field cannot be null")
     @Size(min = 2, message = "This field must be at least 2 characters")
@@ -30,18 +33,14 @@ public class Candidate {
     private String name;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "candidate")
-    private Result result;
+    @OneToMany(mappedBy = "candidate")
+    private java.util.List<Result> results = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "listId")
-    private List list;
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,19 +52,11 @@ public class Candidate {
         this.name = name;
     }
 
-    public Result getResult() {
-        return result;
+    public List<Result> getResults() {
+        return results;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
-    }
-
-    public List getList() {
-        return list;
-    }
-
-    public void setList(List list) {
-        this.list = list;
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 }

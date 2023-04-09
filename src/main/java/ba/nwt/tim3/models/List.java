@@ -25,6 +25,8 @@ public class List {
 
     private int id;
 
+    private int vote_count;
+
     private Boolean nezavisna;
 
     @NotNull(message = "This field cannot be null")
@@ -33,20 +35,8 @@ public class List {
     private String name;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "list")
-    private Result result;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "list")
-    private java.util.List<Candidate> candidateList;
-
-    public Result getResult() {
-        return result;
-    }
-
-    public void setResult(Result result) {
-        this.result = result;
-    }
+    private java.util.List<Result> results = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -72,11 +62,19 @@ public class List {
         this.nezavisna = nezavisna;
     }
 
-    public java.util.List<Candidate> getCandidateList() {
-        return candidateList;
+    public java.util.List<Result> getResults() {
+        return results;
     }
 
-    public void setCandidateList(java.util.List<Candidate> candidateList) {
-        this.candidateList = candidateList;
+    public void setResults(java.util.List<Result> results) {
+        this.results = results;
+    }
+
+    public int getVote_count() {
+        return vote_count;
+    }
+
+    public void setVote_count(int vote_count) {
+        this.vote_count = vote_count;
     }
 }

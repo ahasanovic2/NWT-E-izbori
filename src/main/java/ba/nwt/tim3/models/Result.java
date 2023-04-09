@@ -2,6 +2,8 @@ package ba.nwt.tim3.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -19,32 +21,34 @@ public class Result {
             }
     )
 
-    private int id;
+    private Long id;
+
+    @Min(value = 0, message = "Vote count cannot be less than zero")
+    @Digits(integer = 15, fraction = 0, message = "Vote count must be a number")
     private int vote_count;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "candidateId", referencedColumnName = "id")
-    private Candidate candidate;
-
-    @OneToOne
-    @JoinColumn(name = "pollingStationId")
-    private PollingStation pollingStation;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "listId")
     private List list;
 
     @ManyToOne
-    @JsonIgnoreProperties("result")
+    @JoinColumn(name = "pollingStationId")
+    private PollingStation pollingStation;
+
+    @ManyToOne
+    @JoinColumn(name = "candidateId")
+    private Candidate candidate;
+
+    @ManyToOne
     @JoinColumn(name = "election_id")
     private Election election;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

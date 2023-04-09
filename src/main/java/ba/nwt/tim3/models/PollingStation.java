@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class PollingStation {
     @Id
@@ -20,7 +23,7 @@ public class PollingStation {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-    private int id;
+    private Long id;
 
     @NotNull(message = "This field cannot be null")
     @Size(min = 2, message = "This field must be at least 2 characters")
@@ -33,14 +36,14 @@ public class PollingStation {
     private String adress;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "pollingStation")
-    private Result result;
+    @OneToMany(mappedBy = "pollingStation")
+    private List<Result> results = new ArrayList<>();
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -60,11 +63,11 @@ public class PollingStation {
         this.adress = adress;
     }
 
-    public Result getResult() {
-        return result;
+    public List<Result> getResults() {
+        return results;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 }
