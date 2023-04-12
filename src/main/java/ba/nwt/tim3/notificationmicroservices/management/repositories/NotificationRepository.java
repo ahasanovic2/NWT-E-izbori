@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-//@Transactional(readOnly = true)
 public interface NotificationRepository extends JpaRepository<Notification,Long> {
 
 }
