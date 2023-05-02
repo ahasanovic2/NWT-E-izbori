@@ -178,5 +178,7 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:6.0.7" level="project" />
     <orderEntry type="library" name="Maven: com.stoyanr:evictor:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-config:4.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-config-client:4.0.2" level="project" />
   </component>
 </module>
