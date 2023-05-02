@@ -108,47 +108,6 @@ public class ElectionManagementService {
         pollingStationRepository.save(pollingStation);
         pollingStationRepository.save(pollingStation2);*/
 
-        PollingStation pollingStation1 = new PollingStation();
-        PollingStation pollingStation2 = new PollingStation();
 
-        pollingStation1.setName("Prva baza");
-        pollingStation1.setAddress("Hotonj 1");
-        pollingStation2.setName("Druga baza");
-        pollingStation2.setAddress("Hotonj 2");
-
-        Election election1 = new Election();
-        Election election2 = new Election();
-
-        election1.setName("Prvi izbori");
-        election2.setName("Drugi izbori");
-
-        pollingStation1.addElections(election1);
-        pollingStation1.addElections(election2);
-
-        pollingStation2.addElections(election1);
-        pollingStation2.addElections(election2);
-
-        election1.addPollingStation(pollingStation1);
-        election1.addPollingStation(pollingStation2);
-
-        election2.addPollingStation(pollingStation1);
-        election2.addPollingStation(pollingStation2);
-
-        election1.setStartTime("2023-04-08T12:00:00");
-        election1.setEndTime("2023-04-30T12:00:00");
-        election1.setDescription("Ovo je probni opis za izbore. Treba nam samo da prodje validaciju.");
-        election1.setStatus("Active");
-
-        election2.setStartTime("2023-04-08T12:00:00");
-        election2.setEndTime("2023-04-30T12:00:00");
-        election2.setDescription("Ovo je probni opis za izbore. Treba nam samo da prodje validaciju.");
-        election2.setStatus("Active");
-
-
-        electionRepository.save(election1);
-        electionRepository.save(election2);
-
-        pollingStationRepository.save(pollingStation1);
-        pollingStationRepository.save(pollingStation2);
     }
 }
