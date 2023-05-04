@@ -24,9 +24,6 @@ public class ElectionManagementService {
     @Autowired
     private PollingStationRepository pollingStationRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Transactional
     public void createRows() {
         LocalDateTime pocetak = LocalDateTime.of(2023,5,10,0,0);
@@ -52,9 +49,5 @@ public class ElectionManagementService {
         election3.setDescription("Ovo je opis za izbore za kantonalnu skupstinu. Na tim izborima mogu glasati svi kandidati koji zive u Kantonu Sarajevo.");
         election3.setStartTime(pocetak);
         election3.setEndTime(kraj);
-
-
-
-
     }
 }

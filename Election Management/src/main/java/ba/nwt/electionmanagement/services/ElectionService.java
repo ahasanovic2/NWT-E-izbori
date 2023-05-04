@@ -167,9 +167,6 @@ public class ElectionService {
     public ResponseEntity<String> getPollingStations(Long electionId) {
         ResponseEntity<String> responseEntity = checkElectionExists(electionId);
         if (responseEntity != null) return responseEntity;
-
-
-
         return null;
     }
 

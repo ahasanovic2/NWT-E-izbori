@@ -33,6 +33,17 @@ public class PollingStation {
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String address;
 
+    @NotBlank(message = "Entitet cannot be blank")
+    @Pattern(regexp = "^(RepublikaSrpska|FederacijaBiH)$")
+    private String entitet;
+
+    @Pattern(regexp = "^((Unsko Sanski)|(Posavski)|(Tuzlanski)|(Zenicko Dobojski)|(Bosansko Podrinjski)|(Srednjobosanski)|(Hercegovacko neretvanski)|(Zapadnohercegovacki)|(Sarajevo)|(Kanton 10))$", message = "Kanton must be one of predefined values")
+    private String kanton;
+
+    @NotNull(message = "Opcina cannot be null")
+    @NotBlank(message = "Opcina cannot be blank")
+    private String opcina;
+
     @OneToMany(mappedBy = "pollingStation")
     private List<User> users = new ArrayList<>();
 
@@ -61,11 +72,11 @@ public class PollingStation {
         this.address = address;
     }
 
-    public List<User> getUsers() {
+    public List<User> getUser() {
         return users;
     }
 
-    public void setUsers(ArrayList<User> voters) {
+    public void setUser(ArrayList<User> voters) {
         this.users = voters;
     }
 
@@ -80,5 +91,29 @@ public class PollingStation {
                 "\", \"name\":\"" + name + '\"' +
                 "\", \"address\":\"" + address + '\"' +
                 '}';
+    }
+
+    public String getEntitet() {
+        return entitet;
+    }
+
+    public void setEntitet(String entitet) {
+        this.entitet = entitet;
+    }
+
+    public String getKanton() {
+        return kanton;
+    }
+
+    public void setKanton(String kanton) {
+        this.kanton = kanton;
+    }
+
+    public String getOpcina() {
+        return opcina;
+    }
+
+    public void setOpcina(String opcina) {
+        this.opcina = opcina;
     }
 }

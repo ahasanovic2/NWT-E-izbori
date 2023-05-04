@@ -37,8 +37,6 @@ public class PollingStation {
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String address;
 
-    @OneToMany(mappedBy = "pollingStation")
-    private List<User> voters = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "polling_station_election",
@@ -68,18 +66,6 @@ public class PollingStation {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public List<User> getVoters() {
-        return voters;
-    }
-
-    public void setVoters(ArrayList<User> voters) {
-        this.voters = voters;
-    }
-
-    public void addVoter(User voter) {
-        this.voters.add(voter);
     }
 
     public Set<Election> getElections() {
