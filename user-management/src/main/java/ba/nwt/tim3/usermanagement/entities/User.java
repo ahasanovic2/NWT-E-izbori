@@ -20,10 +20,14 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "First name cannot be null")
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
+    @NotNull(message = "Last name cannot be null")
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @Email
+    @Email(message = "This field must be an email")
     private String email;
     private String password;
 
@@ -69,5 +73,24 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public PollingStation getPollingStation() {
+        return pollingStation;
+    }
+
+    public void setPollingStation(PollingStation pollingStation) {
+        this.pollingStation = pollingStation;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":\"" + id +
+                "\", \"first_name\":\"" + firstName + '\"' +
+                "\", \"last_name\":\"" + lastName + '\"' +
+                "\", \"email\":\"" + email + '\"' +
+                "\", \"polling_station\":\"" + pollingStation.getId() + '\"' +
+                '}';
     }
 }

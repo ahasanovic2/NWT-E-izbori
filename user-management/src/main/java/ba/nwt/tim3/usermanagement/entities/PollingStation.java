@@ -73,4 +73,12 @@ public class PollingStation {
         this.users.add(voter);
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":\"" + id +
+                "\", \"name\":\"" + name + '\"' +
+                "\", \"address\":\"" + address + '\"' +
+                '}';
+    }
 }

@@ -38,9 +38,6 @@ public class ElectionController {
         return electionService.getPollingStations(electionId);
     }
 
-    /*@PostMapping("/{electionId}/set-polling-stations")
-    public ResponseEntity<String> setPollingStations()*/
-
     @PostMapping("/{electionId}/add-lists")
     public ResponseEntity<String> addLists(@PathVariable Long electionId, @Valid @RequestBody List<Lista> liste) {
         return electionService.addLists(electionId,liste);
