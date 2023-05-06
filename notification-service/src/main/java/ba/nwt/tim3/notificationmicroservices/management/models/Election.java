@@ -3,6 +3,7 @@ package ba.nwt.tim3.notificationmicroservices.management.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 public class Election {
@@ -15,7 +16,7 @@ public class Election {
     private LocalDateTime end_time;
 
     @OneToMany(mappedBy = "election")
-    private List<Result> resultList;
+    private List<Result> resultList = new ArrayList<>();
 
     public List<Result> getResultList() {
         return resultList;
