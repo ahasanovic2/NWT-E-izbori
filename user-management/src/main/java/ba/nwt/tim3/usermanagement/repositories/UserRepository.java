@@ -1,6 +1,6 @@
-package ba.nwt.electionmanagement.repositories;
+package ba.nwt.tim3.usermanagement.repositories;
 
-import ba.nwt.electionmanagement.entities.User;
+import ba.nwt.tim3.usermanagement.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

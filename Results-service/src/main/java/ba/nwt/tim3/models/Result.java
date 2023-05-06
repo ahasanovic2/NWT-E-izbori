@@ -1,6 +1,5 @@
 package ba.nwt.tim3.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
@@ -25,7 +24,7 @@ public class Result {
 
     @Min(value = 0, message = "Vote count cannot be less than zero")
     @Digits(integer = 15, fraction = 0, message = "Vote count must be a number")
-    private int vote_count;
+    private int voteCount;
 
 
     @ManyToOne
@@ -52,12 +51,12 @@ public class Result {
         this.id = id;
     }
 
-    public int getVote_count() {
-        return vote_count;
+    public int getVoteCount() {
+        return voteCount;
     }
 
-    public void setVote_count(int vote_count) {
-        this.vote_count = vote_count;
+    public void setVoteCount(int vote_count) {
+        this.voteCount = vote_count;
     }
 
     public Election getElection() {
@@ -96,7 +95,7 @@ public class Result {
     public String toString() {
         return "{" +
                 "\"id\":\"" + id +
-                "\", \"vote_count\":\"" + vote_count + '\"' +
+                "\", \"vote_count\":\"" + voteCount + '\"' +
                 ", \"candidate\":\"" + candidate +
                 "\", \"pollingStation\":\"" + pollingStation +
                 "\", \"list\":\"" + list + '\"' +

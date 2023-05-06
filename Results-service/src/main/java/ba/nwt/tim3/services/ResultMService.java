@@ -2,7 +2,6 @@ package ba.nwt.tim3.services;
 
 
 import ba.nwt.tim3.exception.ErrorDetails;
-import ba.nwt.tim3.exception.ResourceNotFoundException;
 import ba.nwt.tim3.interfaces.*;
 import ba.nwt.tim3.models.Candidate;
 import ba.nwt.tim3.models.Election;
@@ -10,14 +9,10 @@ import ba.nwt.tim3.models.PollingStation;
 import ba.nwt.tim3.models.Result;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -68,8 +63,8 @@ public class ResultMService {
             Result result = optionalResult.get();
             Map<String, Object> transformed = new LinkedHashMap<>();
             transformed.put("candidateId:", result.getCandidate().getId());
-            transformed.put("Candidate name:", result.getCandidate().getName());
-            transformed.put("Result:", result.getVote_count());
+            transformed.put("Candidate name:", result.getCandidate().getFirstName());
+            transformed.put("Result:", result.getVoteCount());
 
             ObjectMapper objectMapper = new ObjectMapper();
             String json = null;
@@ -92,8 +87,8 @@ public class ResultMService {
             Result result = optionalResult.get();
             Map<String, Object> transformed = new LinkedHashMap<>();
             transformed.put("candidateId:", result.getCandidate().getId());
-            transformed.put("Candidate name:", result.getCandidate().getName());
-            transformed.put("Result:", result.getVote_count());
+            transformed.put("Candidate name:", result.getCandidate().getFirstName());
+            transformed.put("Result:", result.getVoteCount());
 
             ObjectMapper objectMapper = new ObjectMapper();
             String json = null;
@@ -117,7 +112,7 @@ public class ResultMService {
             Map<String, Object> transformed = new LinkedHashMap<>();
             transformed.put("ListId:", result.getList().getId());
             transformed.put("List name:", result.getList().getName());
-            transformed.put("Result:", result.getVote_count());
+            transformed.put("Result:", result.getVoteCount());
 
             ObjectMapper objectMapper = new ObjectMapper();
             String json = null;
@@ -142,7 +137,7 @@ public class ResultMService {
             transformed.put("ListId:", result.getList().getId());
             transformed.put("Election id:", result.getElection().getId());
             transformed.put("List name:", result.getList().getName());
-            transformed.put("Result:", result.getVote_count());
+            transformed.put("Result:", result.getVoteCount());
 
             ObjectMapper objectMapper = new ObjectMapper();
             String json = null;
@@ -160,7 +155,7 @@ public class ResultMService {
 
     public ResponseEntity<String> createCandidateResults(Long election_id, Long pollingStationId, Long candidateId, Result result) {
         Result result1 = new Result();
-        result1.setVote_count(result.getVote_count());
+        result1.setVoteCount(result.getVoteCount());
 
         Optional<Election> election = electionRepository.findById(election_id);
         if (election.isEmpty()) {
@@ -190,7 +185,7 @@ public class ResultMService {
 
     public ResponseEntity<String> createListResults(Long election_id, Long pollingStationId, Long listId, Result result) {
         Result result1 = new Result();
-        result1.setVote_count(result.getVote_count());
+        result1.setVoteCount(result.getVoteCount());
 
         Optional<Election> election = electionRepository.findById(election_id);
         if (election.isEmpty()) {

@@ -2,10 +2,7 @@ package ba.nwt.tim3.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
@@ -33,11 +30,19 @@ public class Election {
     private String name;
 
     @NotNull(message = "This field cannot be null")
-    private LocalDateTime start_time;
+    private LocalDateTime startTime;
 
     @NotNull(message = "This field cannot be null")
     @Future(message = "End time must be after start time")
-    private LocalDateTime end_time;
+    private LocalDateTime endTime;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 20, message = "This field must contain at least 20 characters.")
+    private String description;
+
+    @NotBlank(message = "This field cannot be empty")
+    @Pattern(regexp = "^(Active|Finished|NotStarted)$", message = "This field can only be Active, Finished and NotStarted")
+    private String status;
 
     @JsonIgnore
     @OneToMany(mappedBy = "election")
@@ -59,20 +64,20 @@ public class Election {
         this.name = name;
     }
 
-    public LocalDateTime getStart_time() {
-        return start_time;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(LocalDateTime start_time) {
-        this.start_time = start_time;
+    public void setStartTime(LocalDateTime start_time) {
+        this.startTime = start_time;
     }
 
-    public LocalDateTime getEnd_time() {
-        return end_time;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(LocalDateTime end_time) {
-        this.end_time = end_time;
+    public void setEndTime(LocalDateTime end_time) {
+        this.endTime = end_time;
     }
 
     public void addResult(Result result) {
@@ -85,5 +90,21 @@ public class Election {
 
     public void setResults(List<Result> results) {
         this.results = results;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

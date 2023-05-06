@@ -1,6 +1,7 @@
 package ba.nwt.electionmanagement.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.GenericGenerator;
@@ -37,8 +38,18 @@ public class PollingStation {
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String address;
 
-    @OneToMany(mappedBy = "pollingStation")
-    private List<User> voters = new ArrayList<>();
+    @NotBlank(message = "Entitet cannot be blank")
+    @Pattern(regexp = "^(RepublikaSrpska|FederacijaBiH)$")
+    private String entitet;
+
+    @Pattern(regexp = "^((Unsko Sanski)|(Posavski)|(Tuzlanski)|(Zenicko Dobojski)|(Bosansko Podrinjski)|(Srednjobosanski)|(Hercegovacko neretvanski)|(Zapadnohercegovacki)|(Sarajevo)|(Kanton 10))$", message = "Kanton must be one of predefined values")
+    private String kanton;
+
+    @NotNull(message = "Opcina cannot be null")
+    @NotBlank(message = "Opcina cannot be blank")
+    private String opcina;
+
+
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "polling_station_election",
@@ -70,18 +81,6 @@ public class PollingStation {
         this.address = address;
     }
 
-    public List<User> getVoters() {
-        return voters;
-    }
-
-    public void setVoters(ArrayList<User> voters) {
-        this.voters = voters;
-    }
-
-    public void addVoter(User voter) {
-        this.voters.add(voter);
-    }
-
     public Set<Election> getElections() {
         return elections;
     }
@@ -91,5 +90,29 @@ public class PollingStation {
     }
     public void addElections(Election election) {
         this.elections.add(election);
+    }
+
+    public String getEntitet() {
+        return entitet;
+    }
+
+    public void setEntitet(String entitet) {
+        this.entitet = entitet;
+    }
+
+    public String getKanton() {
+        return kanton;
+    }
+
+    public void setKanton(String kanton) {
+        this.kanton = kanton;
+    }
+
+    public String getOpcina() {
+        return opcina;
+    }
+
+    public void setOpcina(String opcina) {
+        this.opcina = opcina;
     }
 }

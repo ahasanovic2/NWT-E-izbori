@@ -1,11 +1,7 @@
-package ba.nwt.tim3.models;
+package ba.nwt.tim3.usermanagement.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
@@ -13,26 +9,27 @@ import java.util.List;
 
 @Entity
 public class PollingStation {
+
     @Id
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(
             name = "sequence-generator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "pollingStation_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ps_sequence"),
                     @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
+    @Column(name = "id")
     private Long id;
 
     @NotNull(message = "This field cannot be null")
-    @Size(min = 2, message = "This field must be at least 2 characters")
+    @Column(unique = true)
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
 
     @NotNull(message = "This field cannot be null")
-    @Size(min = 2, message = "This field must be at least 2 characters")
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String address;
 
@@ -47,9 +44,9 @@ public class PollingStation {
     @NotBlank(message = "Opcina cannot be blank")
     private String opcina;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "pollingStation")
-    private List<Result> results = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -71,16 +68,29 @@ public class PollingStation {
         return address;
     }
 
-    public void setAddress(String adress) {
-        this.address = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public List<Result> getResults() {
-        return results;
+    public List<User> getUser() {
+        return users;
     }
 
-    public void setResults(List<Result> results) {
-        this.results = results;
+    public void setUser(ArrayList<User> voters) {
+        this.users = voters;
+    }
+
+    public void addUser(User voter) {
+        this.users.add(voter);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":\"" + id +
+                "\", \"name\":\"" + name + '\"' +
+                "\", \"address\":\"" + address + '\"' +
+                '}';
     }
 
     public String getEntitet() {

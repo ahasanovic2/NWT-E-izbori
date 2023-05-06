@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/elections")
@@ -37,9 +36,6 @@ public class ElectionController {
     public ResponseEntity<String> getPollingStations(@PathVariable Long electionId) {
         return electionService.getPollingStations(electionId);
     }
-
-    /*@PostMapping("/{electionId}/set-polling-stations")
-    public ResponseEntity<String> setPollingStations()*/
 
     @PostMapping("/{electionId}/add-lists")
     public ResponseEntity<String> addLists(@PathVariable Long electionId, @Valid @RequestBody List<Lista> liste) {

@@ -72,7 +72,7 @@ public class Election {
 
 
 
-    public Election(Long id, String name, String description, LocalDateTime start_time, LocalDateTime end_time, String status, List<Lista> list, List<User> voters, List<PollingStation> pollingStations) {
+    public Election(Long id, String name, String description, LocalDateTime start_time, LocalDateTime end_time, String status, List<Lista> list, List<PollingStation> pollingStations) {
         this.id = id;
         this.name = name;
         this.description = description;

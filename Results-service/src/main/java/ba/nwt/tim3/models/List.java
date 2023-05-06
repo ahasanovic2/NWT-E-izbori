@@ -25,7 +25,7 @@ public class List {
 
     private int id;
 
-    private int vote_count;
+    private int voteCount;
 
     private Boolean nezavisna;
 
@@ -70,11 +70,11 @@ public class List {
         this.results = results;
     }
 
-    public int getVote_count() {
-        return vote_count;
+    public int getVoteCount() {
+        return voteCount;
     }
 
-    public void setVote_count(int vote_count) {
-        this.vote_count = vote_count;
+    public void setVoteCount(int vote_count) {
+        this.voteCount = vote_count;
     }
 }
