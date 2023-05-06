@@ -16,11 +16,15 @@ public class Candidate {
     @NotNull(message = "This field cannot be null")
     @Size(min = 1, message = "This field must contain at least 1 character")
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "You can only enter alphabet characters.")
-    private String first_name;
+    private String firstName;
     @NotNull(message = "This field cannot be null")
     @Size(min = 1, message = "This field must contain at least 1 character")
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "You can only enter alphabet characters.")
-    private String last_name;
+    private String lastName;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 20, message = "This field must contain at least 20 characters.")
+    private String description;
 
     @OneToMany(mappedBy = "candidate")
     private List<Vote> votes = new ArrayList<>();
@@ -58,19 +62,27 @@ public class Candidate {
 
 
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String first_name) {
+        this.firstName = first_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String last_name) {
+        this.lastName = last_name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -3,6 +3,7 @@ package ba.nwt.votermicroservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -18,15 +19,26 @@ public class PollingStation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotNull(message = "This field cannot be null")
-    @Size(min = 3, message = "This field must contain at least 3 character")
+    @Column(unique = true)
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
 
-
     @NotNull(message = "This field cannot be null")
-    @Size(min = 5, message = "This field must contain at least 5 character")
-    private String adress;
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
+    private String address;
+
+    @NotBlank(message = "Entitet cannot be blank")
+    @Pattern(regexp = "^(RepublikaSrpska|FederacijaBiH)$")
+    private String entitet;
+
+    @Pattern(regexp = "^((Unsko Sanski)|(Posavski)|(Tuzlanski)|(Zenicko Dobojski)|(Bosansko Podrinjski)|(Srednjobosanski)|(Hercegovacko neretvanski)|(Zapadnohercegovacki)|(Sarajevo)|(Kanton 10))$", message = "Kanton must be one of predefined values")
+    private String kanton;
+
+    @NotNull(message = "Opcina cannot be null")
+    @NotBlank(message = "Opcina cannot be blank")
+    private String opcina;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "pollingStation")
@@ -44,12 +56,12 @@ public class PollingStation {
         this.name = name;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 
 
@@ -85,5 +97,28 @@ public class PollingStation {
 
     public Long getId() {
         return id;
+    }
+    public String getEntitet() {
+        return entitet;
+    }
+
+    public void setEntitet(String entitet) {
+        this.entitet = entitet;
+    }
+
+    public String getKanton() {
+        return kanton;
+    }
+
+    public void setKanton(String kanton) {
+        this.kanton = kanton;
+    }
+
+    public String getOpcina() {
+        return opcina;
+    }
+
+    public void setOpcina(String opcina) {
+        this.opcina = opcina;
     }
 }

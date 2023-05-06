@@ -28,9 +28,18 @@ public class Candidate {
     private Long id;
 
     @NotNull(message = "This field cannot be null")
-    @Size(min = 2, message = "This field must be at least 2 characters")
+    @Size(min = 1, message = "This field must contain at least 1 character")
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
-    private String name;
+    private String firstName;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 1, message = "This field must contain at least 1 character")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
+    private String lastName;
+
+    @NotNull(message = "This field cannot be null")
+    @Size(min = 20, message = "This field must contain at least 20 characters.")
+    private String description;
 
     @JsonIgnore
     @OneToMany(mappedBy = "candidate")
@@ -44,12 +53,12 @@ public class Candidate {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
     public List<Result> getResults() {
@@ -58,5 +67,21 @@ public class Candidate {
 
     public void setResults(List<Result> results) {
         this.results = results;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

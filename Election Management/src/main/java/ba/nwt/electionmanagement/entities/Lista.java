@@ -25,8 +25,8 @@ public class Lista {
     private Long id;
 
     @NotNull(message = "This field cannot be null")
-    @NotBlank(message = "This field cannot be empty")
-    @Pattern(regexp = "^[a-zA-Z0-9\\-]+(\\s+[a-zA-Z0-9\\-]+)*$", message = "You can only enter alphabet characters, numbers, and hyphens.")
+    @Size(min = 2, message = "This field must be at least 2 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
 
 

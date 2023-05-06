@@ -3,9 +3,12 @@ package ba.nwt.votermicroservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,12 +18,16 @@ public class Lista {
     private Long id;
 
     @NotNull(message = "This field cannot be null")
-    @Size(min = 5, message = "This field must contain at least 5 character")
+    @NotBlank(message = "This field cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-]+(\\s+[a-zA-Z0-9\\-]+)*$", message = "You can only enter alphabet characters, numbers, and hyphens.")
     private String name;
+
+    @NotNull(message = "This field cannot be null")
+    private Boolean nezavisna;
 
     @JsonIgnore
     @OneToMany(mappedBy = "lista")
-    private List<Candidate> candidates;
+    private List<Candidate> candidates = new ArrayList<>();
     @JsonIgnore
     @OneToMany(mappedBy = "lista")
     private List<Vote> votes;
@@ -33,6 +40,8 @@ public class Lista {
     public List<Candidate> getCandidates() {
         return candidates;
     }
+
+
 
     public String getName() {
         return name;
@@ -68,5 +77,17 @@ public class Lista {
 
     public Long getId() {
         return id;
+    }
+
+    public Boolean getNezavisna() {
+        return nezavisna;
+    }
+
+    public void setNezavisna(Boolean nezavisna) {
+        this.nezavisna = nezavisna;
+    }
+
+    public void addCandidates(Candidate candidate1) {
+        this.candidates.add(candidate1);
     }
 }
