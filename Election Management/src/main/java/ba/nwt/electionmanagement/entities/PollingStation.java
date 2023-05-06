@@ -115,4 +115,6 @@ public class PollingStation {
     public void setOpcina(String opcina) {
         this.opcina = opcina;
     }
+
+
 }

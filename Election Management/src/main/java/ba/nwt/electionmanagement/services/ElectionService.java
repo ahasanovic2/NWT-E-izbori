@@ -10,11 +10,13 @@ import ba.nwt.electionmanagement.repositories.ElectionRepository;
 import ba.nwt.electionmanagement.repositories.ListaRepository;
 import ba.nwt.electionmanagement.repositories.PollingStationRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
@@ -42,6 +44,18 @@ public class ElectionService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         return null;
+    }
+
+    private List<PollingStation> deserializePollingStations(String pollingStationsJson) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<PollingStation> pollingStations = null;
+        try {
+            pollingStations = objectMapper.readValue(pollingStationsJson, new TypeReference<List<PollingStation>>() {});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            System.out.println("Ne moze se prebaciti iz json u PollingStation");
+        }
+        return pollingStations;
     }
 
 
@@ -167,6 +181,13 @@ public class ElectionService {
     public ResponseEntity<String> getPollingStations(Long electionId) {
         ResponseEntity<String> responseEntity = checkElectionExists(electionId);
         if (responseEntity != null) return responseEntity;
+        RestTemplate restTemplate = new RestTemplate();
+        String userManagementUrl = "http:///pollingstations";
+        ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
+        List<PollingStation> pollingStations = deserializePollingStations(response.getBody());
+        for (PollingStation pollingStation: pollingStations) {
+            System.out.println(pollingStation.toString());
+        }
         return null;
     }
 
@@ -177,6 +198,11 @@ public class ElectionService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         Election election = optionalElection.get();
+
+        RestTemplate restTemplate = new RestTemplate();
+        String userManagementUrl = "http://user-management/pollingstations";
+        ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
+        /*
         List<PollingStation> pollingStations = pollingStationRepository.findAllById(pollingStationIds);
         if (pollingStations.size() != pollingStationIds.size()) {
             Set<Long> notFoundIds = new HashSet<>(pollingStationIds);
@@ -190,7 +216,8 @@ public class ElectionService {
         for (PollingStation pollingStation : pollingStations) {
             pollingStation.getElections().add(election);
         }
-        electionRepository.save(election);
+        electionRepository.save(election);*/
         return ResponseEntity.ok("Election added to polling stations successfully.");
     }
+
 }

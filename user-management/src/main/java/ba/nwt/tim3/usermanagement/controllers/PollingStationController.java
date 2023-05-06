@@ -23,5 +23,4 @@ public class PollingStationController {
     public ResponseEntity<String> addPollingStation(@Valid @RequestBody PollingStation pollingStation) {
         return ResponseEntity.ok(pollingStationService.addPollingStation(pollingStation));
     }
-
 }

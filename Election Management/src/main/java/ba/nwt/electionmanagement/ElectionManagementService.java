@@ -26,7 +26,7 @@ public class ElectionManagementService {
 
     @Transactional
     public void createRows() {
-        LocalDateTime pocetak = LocalDateTime.of(2025,5,10,0,0);
+        /*LocalDateTime pocetak = LocalDateTime.of(2025,5,10,0,0);
         LocalDateTime kraj = LocalDateTime.of(2025,5,15,0,0);
 
         Election election1 = new Election();
@@ -150,7 +150,7 @@ public class ElectionManagementService {
         candidateRepository.save(candidate5);
         candidateRepository.save(candidate6);
         pollingStationRepository.save(pollingStation1);
-        pollingStationRepository.save(pollingStation2);
+        pollingStationRepository.save(pollingStation2);*/
 
 
     }
