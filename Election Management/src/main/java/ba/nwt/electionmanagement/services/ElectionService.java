@@ -9,6 +9,7 @@ import ba.nwt.electionmanagement.repositories.CandidateRepository;
 import ba.nwt.electionmanagement.repositories.ElectionRepository;
 import ba.nwt.electionmanagement.repositories.ListaRepository;
 import ba.nwt.electionmanagement.repositories.PollingStationRepository;
+import ba.nwt.electionmanagement.resttemplate.MyConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,9 @@ public class ElectionService {
 
     @Autowired
     private PollingStationRepository pollingStationRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     private ResponseEntity<String> checkElectionExists(Long electionId) {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
@@ -181,14 +185,10 @@ public class ElectionService {
     public ResponseEntity<String> getPollingStations(Long electionId) {
         ResponseEntity<String> responseEntity = checkElectionExists(electionId);
         if (responseEntity != null) return responseEntity;
-        RestTemplate restTemplate = new RestTemplate();
-        String userManagementUrl = "http:///pollingstations";
+        String userManagementUrl = "http://user-management/pollingStations";
         ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
-        List<PollingStation> pollingStations = deserializePollingStations(response.getBody());
-        for (PollingStation pollingStation: pollingStations) {
-            System.out.println(pollingStation.toString());
-        }
-        return null;
+        System.out.println(response.getBody());
+        return response;
     }
 
     public ResponseEntity<String> addElectionToPollingStations(Long electionId, List<Long> pollingStationIds) {
