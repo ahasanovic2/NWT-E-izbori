@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class PollingStation {
     @Pattern(regexp = "^(RepublikaSrpska|FederacijaBiH)$")
     private String entitet;
 
+    @Nullable
     @Pattern(regexp = "^((Unsko Sanski)|(Posavski)|(Tuzlanski)|(Zenicko Dobojski)|(Bosansko Podrinjski)|(Srednjobosanski)|(Hercegovacko neretvanski)|(Zapadnohercegovacki)|(Sarajevo)|(Kanton 10))$", message = "Kanton must be one of predefined values")
     private String kanton;
 
@@ -87,10 +89,13 @@ public class PollingStation {
     @Override
     public String toString() {
         return "{" +
-                "\"id\":\"" + id +
-                "\", \"name\":\"" + name +
-                "\", \"address\":\"" + address + '\"' +
-                '}';
+                "\"id\":" + id + "," +
+                "\"name\":\"" + name + "\"," +
+                "\"address\":\"" + address + "\"," +
+                "\"entitet\":\"" + entitet + "\"," +
+                "\"kanton\":\"" + kanton + "\"," +
+                "\"opcina\":\"" + opcina + "\"" +
+                "}";
     }
 
     public String getEntitet() {

@@ -41,8 +41,7 @@ public class PollingStation {
     @NotBlank(message = "Entitet cannot be blank")
     @Pattern(regexp = "^(RepublikaSrpska|FederacijaBiH)$")
     private String entitet;
-
-    @Pattern(regexp = "^((Unsko Sanski)|(Posavski)|(Tuzlanski)|(Zenicko Dobojski)|(Bosansko Podrinjski)|(Srednjobosanski)|(Hercegovacko neretvanski)|(Zapadnohercegovacki)|(Sarajevo)|(Kanton 10))$", message = "Kanton must be one of predefined values")
+    @NotBlank(message = "Kanton cannot be blank")
     private String kanton;
 
     @NotNull(message = "Opcina cannot be null")
@@ -116,5 +115,16 @@ public class PollingStation {
         this.opcina = opcina;
     }
 
-
+    @Override
+    public String toString() {
+        return "PollingStation{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", entitet='" + entitet + '\'' +
+                ", kanton='" + kanton + '\'' +
+                ", opcina='" + opcina + '\'' +
+                ", elections=" + elections +
+                '}';
+    }
 }
