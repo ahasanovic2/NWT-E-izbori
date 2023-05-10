@@ -1,6 +1,7 @@
 package ba.nwt.electionmanagement.controllers;
 
 import ba.nwt.electionmanagement.entities.*;
+import ba.nwt.electionmanagement.grpc.GrpcClient;
 import ba.nwt.electionmanagement.services.ElectionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class ElectionController {
 
     @GetMapping("")
     public ResponseEntity<String> getElections() {
+        GrpcClient.log("Elections", "Get all", "Success");
         return ResponseEntity.ok(electionService.getElections());
     }
 
