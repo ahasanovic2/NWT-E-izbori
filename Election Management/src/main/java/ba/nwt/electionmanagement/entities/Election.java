@@ -56,6 +56,8 @@ public class Election {
     @OneToMany(mappedBy = "election")
     private List<Lista> list = new ArrayList<>();
 
+
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "elections")
     private List<PollingStation> pollingStations = new ArrayList<>();
 

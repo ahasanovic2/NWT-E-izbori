@@ -37,12 +37,12 @@ public class VoterManagementService {
         return voter;
     }
     @Transactional
-    public void createRows(){
+    public void createRows(){/*
         LocalDateTime pocetak = LocalDateTime.of(2025,5,10,0,0);
         LocalDateTime kraj = LocalDateTime.of(2025,5,15,0,0);
 
         Election election1 = new Election();
-        election1.setName("Izbori za bosnjackog predsjednika");
+        election1.setName("Izbori za bosnjackog predsjednikaa");
         election1.setStatus("Active");
         election1.setDescription("Ovo je opis za izbore za bosnjackog clana predsjednistva. Na tim izborima mogu glasati svi kandidati koji zive u federaciji.");
         election1.setStartTime(pocetak);
@@ -185,7 +185,7 @@ public class VoterManagementService {
         pollingStationRepository.save(pollingStation2);
         pollingStationRepository.save(pollingStation3);
 
-
+        */
     }
     public Vote createVote(Voter voter, Election election, Candidate candidate, LocalDateTime timestamp, Lista lista) {
         Vote vote = new Vote();

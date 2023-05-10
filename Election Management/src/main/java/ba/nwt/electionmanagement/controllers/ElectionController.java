@@ -58,4 +58,9 @@ public class ElectionController {
     public ResponseEntity<String> getCandidates(@PathVariable Long electionId, @PathVariable Long listId) {
         return electionService.getCandidates(electionId,listId);
     }
+
+    @GetMapping("/getElectionsByPollingStationId/{pollingStationId}")
+    public ResponseEntity<String> getElectionsByPollingStationsId(@PathVariable Long polling_station_id){
+        return ResponseEntity.ok(electionService.getElectionsByPollingStationId(polling_station_id));
+    }
 }

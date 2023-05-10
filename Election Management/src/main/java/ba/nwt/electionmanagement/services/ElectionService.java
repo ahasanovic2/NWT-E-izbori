@@ -52,6 +52,8 @@ public class ElectionService {
     }
 
 
+
+
     public List<PollingStation> deserializePollingStations(String pollingStationsJson) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<PollingStation> pollingStations = null;
@@ -224,4 +226,18 @@ public class ElectionService {
         return ResponseEntity.ok("Election added to polling stations successfully.");
     }
 
-}
+    public String getElectionsByPollingStationId(Long polling_station_id) {
+        List<Election> elections = electionRepository.findByPollingStations_id(polling_station_id);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(elections);
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return (ResponseEntity.ok(json)).toString();
+        }
+    }
+
+

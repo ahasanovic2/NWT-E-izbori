@@ -1,11 +1,8 @@
 package ba.nwt.votermicroservice.services;
 
-
+import org.springframework.web.client.RestTemplate;
 import ba.nwt.votermicroservice.exception.ErrorDetails;
-import ba.nwt.votermicroservice.models.Candidate;
-import ba.nwt.votermicroservice.models.Lista;
-import ba.nwt.votermicroservice.models.Vote;
-import ba.nwt.votermicroservice.models.Voter;
+import ba.nwt.votermicroservice.models.*;
 import ba.nwt.votermicroservice.repositories.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +36,10 @@ public class VoteService {
 
     @Autowired
     private CandidateRepository candidateRepository;
+
+
+    @Autowired
+    private RestTemplate restTemplate1;
 
     public ResponseEntity<String> getListsByElectionId(Long electionId) {
 
@@ -119,4 +121,16 @@ public class VoteService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
     }
+
+    public ResponseEntity<String> getElectionsByPollingStationId(Long pollingStationId) {
+        String electionManagementUrl = "http://election-management/elections/getElectionsByPollingStationId" + pollingStationId;
+        ResponseEntity<String> response = restTemplate1.getForEntity(electionManagementUrl, String.class);
+        System.out.println(response.getBody());
+        return response;
+    }
+
+
+
+
+
 }

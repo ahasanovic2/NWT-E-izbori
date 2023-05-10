@@ -2,6 +2,7 @@ package ba.nwt.electionmanagement.entities;
 
 import jakarta.persistence.*;
 
+@Entity
 public class PollingStationElection {
 
     @Id
