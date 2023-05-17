@@ -2,21 +2,21 @@ package ba.nwt.votermicroservice.exception;
 import java.time.LocalDateTime;
 
 public class ErrorDetails {
-    private LocalDateTime timestamp;
+    private String timestamp;
     private String message;
     private String field;
 
-    public ErrorDetails(LocalDateTime timestamp, String field, String message) {
+    public ErrorDetails(String timestamp, String field, String message) {
         super();
         this.timestamp = timestamp;
         this.field = field;
         this.message = message;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
     public String getField() {
@@ -36,7 +36,7 @@ public class ErrorDetails {
     @Override
     public String toString() {
         return "{" +
-                "\"timestamp\":\"" + timestamp.toString() +
+                "\"timestamp\":\"" + timestamp +
                 "\", \"field\":\"" + field + '\"' +
                 ", \"message\":\"" + message +
                 "\"}";

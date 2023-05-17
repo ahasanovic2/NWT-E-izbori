@@ -39,5 +39,4 @@ public class VoterManagementService {
     @Transactional
     public void createRows() {
     }
-
 }

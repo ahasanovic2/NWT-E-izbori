@@ -61,7 +61,7 @@ public class PollingStationService {
             }
             return ResponseEntity.ok(json);
         }
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"pollingStationId","Pollingstation ID not found");
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"pollingStationId","Pollingstation ID not found");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
 
     }
