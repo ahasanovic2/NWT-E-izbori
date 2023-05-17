@@ -37,7 +37,7 @@ public class VoterManagementService {
         return voter;
     }
     @Transactional
-    public void createRows(){
+    public void createRows(){/*
         LocalDateTime pocetak = LocalDateTime.of(2025,5,10,0,0);
         LocalDateTime kraj = LocalDateTime.of(2025,5,15,0,0);
 
@@ -196,5 +196,5 @@ public class VoterManagementService {
         vote.setLista(lista);
         return vote;
     }
-
-}
+*/
+}}

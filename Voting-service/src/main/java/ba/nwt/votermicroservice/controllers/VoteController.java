@@ -2,6 +2,7 @@ package ba.nwt.votermicroservice.controllers;
 
 
 import ba.nwt.votermicroservice.exception.ErrorDetails;
+import ba.nwt.votermicroservice.grpc.GrpcClient;
 import ba.nwt.votermicroservice.repositories.*;
 import ba.nwt.votermicroservice.models.Candidate;
 import ba.nwt.votermicroservice.models.Lista;
@@ -30,6 +31,7 @@ public class VoteController {
 
     @GetMapping("/{electionId}/lists")
     public ResponseEntity<String> getListsByElectionId(@PathVariable Long electionId){
+        GrpcClient.log("lists", "Get all", "Success");
         return voteService.getListsByElectionId(electionId);
 
     }
