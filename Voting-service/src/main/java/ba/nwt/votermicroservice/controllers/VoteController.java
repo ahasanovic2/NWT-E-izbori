@@ -1,12 +1,8 @@
 package ba.nwt.votermicroservice.controllers;
 
 
-import ba.nwt.votermicroservice.exception.ErrorDetails;
-import ba.nwt.votermicroservice.repositories.*;
-import ba.nwt.votermicroservice.models.Candidate;
-import ba.nwt.votermicroservice.models.Lista;
-import ba.nwt.votermicroservice.models.Vote;
-import ba.nwt.votermicroservice.models.*;
+
+import ba.nwt.votermicroservice.grpc.GrpcClient;
 import ba.nwt.votermicroservice.services.VoteService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,8 +26,8 @@ public class VoteController {
 
     @GetMapping("/{electionId}/lists")
     public ResponseEntity<String> getListsByElectionId(@PathVariable Long electionId){
+        GrpcClient.log("lists", "Get all", "Success");
         return voteService.getListsByElectionId(electionId);
-
     }
     @GetMapping("/{electionId}/lists/{listaId}/candidates")
     public ResponseEntity<String> getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId) {

@@ -30,7 +30,13 @@ public class VoterManagementService {
     private ElectionPollingStationRepository electionPollingStationRepository;
 
     @Transactional
+<<<<<<< Updated upstream
     public void createRows(){
+=======
+    public void createRows(){/*
+        LocalDateTime pocetak = LocalDateTime.of(2025,5,10,0,0);
+        LocalDateTime kraj = LocalDateTime.of(2025,5,15,0,0);
+>>>>>>> Stashed changes
 
         Vote vote = new Vote();
         Voter voter = new Voter();
@@ -82,5 +88,5 @@ public class VoterManagementService {
 
 
     }
-
-}
+*/
+}}
