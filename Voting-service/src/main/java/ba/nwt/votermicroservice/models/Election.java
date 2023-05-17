@@ -26,11 +26,11 @@ public class Election {
     private String description;
 
     @NotNull(message = "Start time must not be null")
-    private LocalDateTime startTime;
+    private String startTime;
 
     @NotNull(message = "This field cannot be null")
     @Future(message = "End time must be after start time")
-    private LocalDateTime endTime;
+    private String endTime;
 
     @NotBlank(message = "This field cannot be empty")
     @Pattern(regexp = "^(Active|Finished|NotStarted)$", message = "This field can only be Active, Finished and NotStarted")
@@ -39,6 +39,22 @@ public class Election {
     @JsonIgnore
     @OneToMany(mappedBy = "election")
     private List<Vote> votes = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Election{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status='" + status + '\'' +
+                ", votes=" + votes +
+                ", electionPollingStations=" + electionPollingStations +
+                ", lists=" + lists +
+                '}';
+    }
+
     @JsonIgnore
     @OneToMany(mappedBy = "election")
     private List<ElectionPollingStation> electionPollingStations;
@@ -98,19 +114,19 @@ public class Election {
         this.name = name;
     }
 
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

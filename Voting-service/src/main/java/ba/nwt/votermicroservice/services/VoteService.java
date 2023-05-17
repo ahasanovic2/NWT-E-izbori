@@ -55,7 +55,7 @@ public class VoteService {
             }
             return ResponseEntity.ok(json);
         }
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","Election ID not found");
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"electionId","Election ID not found");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -78,7 +78,7 @@ public class VoteService {
                 return ResponseEntity.ok(json);
             }
         }
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"listaId","Lista ID not found");
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"listaId","Lista ID not found");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -103,19 +103,19 @@ public class VoteService {
                         voteRepository.save(vote); // save the updated Vote object to the database
                         return ResponseEntity.ok("Glas uspjesno dodan!");
                     } else {
-                        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"voterId","Voter ID not found");
+                        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"voterId","Voter ID not found");
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
                     }
                 } else {
-                    ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"candidateId","Candidate ID not found");
+                    ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"candidateId","Candidate ID not found");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
                 }
             } else {
-                ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"listaId","Lista ID not found");
+                ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"listaId","Lista ID not found");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
             }
         } else {
-            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","Election ID not found");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"electionId","Election ID not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
     }
