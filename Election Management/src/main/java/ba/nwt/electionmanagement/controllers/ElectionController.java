@@ -20,7 +20,11 @@ public class ElectionController {
 
     @GetMapping("")
     public ResponseEntity<String> getElections() {
-        GrpcClient.log("Elections", "Get all", "Success");
+        String povrat = electionService.getElections();
+        if (povrat != null)
+            GrpcClient.log("Elections", "Get all", "Success");
+        else
+            GrpcClient.log("Elections", "Get all", "Fail");
         return ResponseEntity.ok(electionService.getElections());
     }
 
