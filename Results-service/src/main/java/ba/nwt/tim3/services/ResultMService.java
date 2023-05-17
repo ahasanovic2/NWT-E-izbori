@@ -1,6 +1,7 @@
 package ba.nwt.tim3.services;
 
 
+import ba.nwt.results.grpc.GrpcClient;
 import ba.nwt.tim3.exception.ErrorDetails;
 import ba.nwt.tim3.interfaces.*;
 import ba.nwt.tim3.models.Candidate;
@@ -52,6 +53,7 @@ public class ResultMService {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error serializing elections to JSON: " + e.getMessage());
+            return null;
         }
 
         return ResponseEntity.ok(json);
@@ -73,6 +75,8 @@ public class ResultMService {
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
+                GrpcClient.log("Result", "getCandidateResultsByPollingStation", "Fail");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
             }
             return ResponseEntity.ok(json);
         }
@@ -97,6 +101,8 @@ public class ResultMService {
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
+                GrpcClient.log("Result", "getCandidateResultsByElection", "Fail");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
             }
             return ResponseEntity.ok(json);
         }
@@ -121,6 +127,8 @@ public class ResultMService {
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
+                GrpcClient.log("Result", "getListResultsByPollingStation", "Fail");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
             }
             return ResponseEntity.ok(json);
         }
@@ -146,6 +154,8 @@ public class ResultMService {
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
+                GrpcClient.log("Result", "getListResultsByElection", "Fail");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
             }
             return ResponseEntity.ok(json);
         }
@@ -160,6 +170,7 @@ public class ResultMService {
         Optional<Election> election = electionRepository.findById(election_id);
         if (election.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"election_id","ELection ID not found");
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         result1.setElection(election.get());
@@ -179,7 +190,7 @@ public class ResultMService {
         result1.setCandidate(candidate.get());
 
         resultRepository.save(result1);
-
+        GrpcClient.log("Result", "Create", "Success");
         return ResponseEntity.ok("Result created successfully");
     }
 
@@ -209,7 +220,7 @@ public class ResultMService {
         result1.setList(list.get());
 
         resultRepository.save(result1);
-
+        GrpcClient.log("Result","Create","Success");
         return ResponseEntity.ok("Result created successfully");
     }
 
