@@ -1,5 +1,6 @@
 package ba.nwt.tim3.authservice.auth;
 
+import ba.nwt.tim3.authservice.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +15,5 @@ public class RegisterRequest {
     private String lastname;
     private String email;
     private String password;
+    private Role role;
 }
