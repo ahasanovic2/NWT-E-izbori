@@ -1,5 +1,6 @@
 package ba.nwt.tim3.authservice.demo;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

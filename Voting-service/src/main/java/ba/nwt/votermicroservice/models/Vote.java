@@ -81,12 +81,4 @@ public class Vote {
     }
 
     private LocalDateTime timestamp;
-
-
-
-
-
-
-
-
 }
