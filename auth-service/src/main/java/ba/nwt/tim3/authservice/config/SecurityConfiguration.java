@@ -42,6 +42,7 @@ public class SecurityConfiguration {
                 .requestMatchers(POST, "/users/{userId}/pollingStation").hasRole(ADMIN.name())
                 .requestMatchers(POST, "/users/pollingStation/{pollingStationId}").hasRole(USER.name())
                 .requestMatchers(POST, "/users/pollingStation").hasRole(USER.name())
+                .requestMatchers(GET,"/users/id").hasAnyRole(USER.name(), ADMIN.name())
                 .requestMatchers("/users/**").denyAll()
                 .anyRequest()
                 .authenticated()

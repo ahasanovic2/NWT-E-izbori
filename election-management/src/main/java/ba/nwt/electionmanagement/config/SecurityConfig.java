@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
@@ -25,7 +26,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(GET, "/elections").hasRole("USER")
+                .requestMatchers(GET, "/elections").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(POST, "/elections/create").hasRole("ADMIN")
+                .requestMatchers(POST, "/elections/{electionId}/pollingStations").hasRole("ADMIN")
+                .requestMatchers(GET, "/elections/{electionId}/pollingStations").hasAnyRole("USER","ADMIN")
+                .requestMatchers(POST, "/elections/{electionId}/add-lists").hasRole("ADMIN")
+                .requestMatchers(GET, "/elections/{electionId}/lists").hasAnyRole("USER","ADMIN")
+                .requestMatchers(GET, "/elections/{electionId}/lists/{listId}/candidates").hasAnyRole("USER","ADMIN")
+                .requestMatchers(POST, "/elections/{electionId}/lists/{listId}/add-candidates").hasRole("ADMIN")
                 .requestMatchers("/elections/**").denyAll()
                 .anyRequest()
                 .authenticated()

@@ -5,12 +5,14 @@ import ba.nwt.tim3.authservice.auth.RegisterRequest;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
 import static ba.nwt.tim3.authservice.user.Role.ADMIN;
 import static ba.nwt.tim3.authservice.user.Role.USER;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class AuthServiceApplication {
 
 	public static void main(String[] args) {

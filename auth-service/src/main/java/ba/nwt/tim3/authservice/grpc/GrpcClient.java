@@ -38,7 +38,6 @@ public class GrpcClient {
             eventStub.log(logRequest);
 
         } catch (Exception e){
-
         }
     }
 }

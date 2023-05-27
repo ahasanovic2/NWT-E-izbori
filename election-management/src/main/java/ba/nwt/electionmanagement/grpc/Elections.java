@@ -33,13 +33,13 @@ public final class Elections {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017elections.proto\"Q\n\nLogRequest\022\021\n\ttimes" +
+      "\n\017elections.proto\"a\n\nLogRequest\022\021\n\ttimes" +
       "tamp\030\001 \001(\t\022\020\n\010resource\030\002 \001(\t\022\016\n\006action\030\003" +
-      " \001(\t\022\016\n\006status\030\004 \001(\t\"4\n\013APIResponse\022\017\n\007m" +
-      "essage\030\001 \001(\t\022\024\n\014responseCode\030\002 \001(\0052)\n\005ev" +
-      "ent\022 \n\003log\022\013.LogRequest\032\014.APIResponseB\"\n" +
-      "\036ba.nwt.electionmanagement.grpcP\001b\006proto" +
-      "3"
+      " \001(\t\022\016\n\006status\030\004 \001(\t\022\016\n\006userId\030\005 \001(\003\"4\n\013" +
+      "APIResponse\022\017\n\007message\030\001 \001(\t\022\024\n\014response" +
+      "Code\030\002 \001(\0052)\n\005event\022 \n\003log\022\013.LogRequest\032" +
+      "\014.APIResponseB\"\n\036ba.nwt.electionmanageme" +
+      "nt.grpcP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -58,7 +58,7 @@ public final class Elections {
     internal_static_LogRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LogRequest_descriptor,
-        new java.lang.String[] { "Timestamp", "Resource", "Action", "Status", });
+        new java.lang.String[] { "Timestamp", "Resource", "Action", "Status", "UserId", });
     internal_static_APIResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_APIResponse_fieldAccessorTable = new

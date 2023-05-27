@@ -28,6 +28,14 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
+    @GetMapping("/id")
+    private ResponseEntity<Integer> getId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userDetails = (User) authentication.getPrincipal();
+        Integer userId = userDetails.getId();
+        return ResponseEntity.status(HttpStatus.OK).body(userId);
+    }
+
     @PostMapping("/{userId}/pollingStation/{pollingStationId}")
     public ResponseEntity<String> setPollingStation(@PathVariable Integer userId, @PathVariable Integer pollingStationId) {
         return userService.setPollingStation(userId,pollingStationId);
@@ -52,10 +60,7 @@ public class UserController {
 
     @PostMapping("/pollingStation")
     public ResponseEntity<String> setPS(@RequestParam String name) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User userDetails = (User) authentication.getPrincipal();
-        Integer userId = userDetails.getId();
-        return setPStoUser(userId, name);
+        return setPStoUser(getId().getBody(), name);
     }
 
 }
