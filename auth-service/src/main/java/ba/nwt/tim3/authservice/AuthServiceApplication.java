@@ -17,7 +17,7 @@ public class AuthServiceApplication {
 		SpringApplication.run(AuthServiceApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
@@ -41,6 +41,6 @@ public class AuthServiceApplication {
 			System.out.println("Manager token: " + service.register(manager).getAccessToken());
 
 		};
-	}
+	}*/
 
 }

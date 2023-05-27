@@ -30,7 +30,7 @@ public class EventImpl extends eventGrpc.eventImplBase{
                 .append(request.getStatus())
                 .append(";\n").toString();
         actionRepository = applicationContext.getBean(ActionRepository.class);
-        Action action = new Action(Long.valueOf(1), request.getAction(), request.getStatus(), request.getResource(), request.getTimestamp());
+        Action action = new Action(request.getUserId(), request.getAction(), request.getStatus(), request.getResource(), request.getTimestamp());
         actionRepository.save(action);
         System.out.println(message);
         APIResponse response = APIResponse.newBuilder()

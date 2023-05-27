@@ -1,6 +1,7 @@
 package ba.nwt.tim3.authservice.auth;
 
 import ba.nwt.tim3.authservice.config.JwtService;
+import ba.nwt.tim3.authservice.grpc.GrpcClient;
 import ba.nwt.tim3.authservice.token.Token;
 import ba.nwt.tim3.authservice.token.TokenRepository;
 import ba.nwt.tim3.authservice.token.TokenType;
@@ -41,6 +42,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
+        GrpcClient.log(user.getId(),"AuthService","register","Success");
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -60,6 +62,9 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
+
+        GrpcClient.log(user.getId(),"AuthService","authenticate","Success");
+
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
