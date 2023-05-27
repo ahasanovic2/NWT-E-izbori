@@ -13,9 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import static ba.nwt.tim3.authservice.user.Permission.*;
-import static ba.nwt.tim3.authservice.user.Role.*;
-import static org.springframework.http.HttpMethod.*;
+import static ba.nwt.tim3.authservice.user.Role.ADMIN;
+import static ba.nwt.tim3.authservice.user.Role.USER;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
