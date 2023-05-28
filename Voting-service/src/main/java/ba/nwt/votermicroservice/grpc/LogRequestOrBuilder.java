@@ -46,4 +46,9 @@ public interface LogRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getStatusBytes();
+
+  /**
+   * <code>int64 userId = 5;</code>
+   */
+  long getUserId();
 }

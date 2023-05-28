@@ -11,6 +11,7 @@ import ba.nwt.votermicroservice.models.*;
 import ba.nwt.votermicroservice.services.VoteService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.executable.ValidateOnExecution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,15 +31,13 @@ public class VoteController {
     VoteService voteService = new VoteService();
 
     @GetMapping("/{electionId}/lists")
-    public ResponseEntity<String> getListsByElectionId(@PathVariable Long electionId){
-        GrpcClient.log("lists", "Get all", "Success");
-        return voteService.getListsByElectionId(electionId);
-
+    public ResponseEntity<String> getListsByElectionId(@PathVariable Long electionId, HttpServletRequest request){
+        return voteService.getListsByElectionId(electionId, request);
     }
     @GetMapping("/{electionId}/lists/{listaId}/candidates")
-    public ResponseEntity<String> getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId) {
+    public ResponseEntity<String> getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId, HttpServletRequest request) {
 
-        return voteService.getCandidatesByListaId(electionId,listaId);
+        return voteService.getCandidatesByListaId(electionId,listaId, request);
 
     }
 
@@ -47,10 +46,11 @@ public class VoteController {
     public ResponseEntity<String> addVoteForCandidateId(@PathVariable Long voterId,
                                                         @PathVariable Long electionId,
                                                         @PathVariable Long listaId,
-                                                        @PathVariable Long candidateId) {
+                                                        @PathVariable Long candidateId,
+                                                        HttpServletRequest request) {
 
 
-        return voteService.addVoteForCandidateId(voterId,electionId,listaId,candidateId);
+        return voteService.addVoteForCandidateId(voterId,electionId,listaId,candidateId,request);
 
     }
 

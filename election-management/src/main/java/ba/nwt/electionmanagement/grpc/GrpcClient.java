@@ -9,7 +9,7 @@ public class GrpcClient {
 
     private static ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8800)
             .usePlaintext()
-            .build();;
+            .build();
     private static GrpcClient grpcClient = null;
 
     private GrpcClient(){

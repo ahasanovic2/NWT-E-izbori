@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     resource_ = "";
     action_ = "";
     status_ = "";
+    userId_ = 0L;
   }
 
   @java.lang.Override
@@ -68,6 +69,11 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             status_ = s;
+            break;
+          }
+          case 40: {
+
+            userId_ = input.readInt64();
             break;
           }
           default: {
@@ -238,6 +244,15 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int USERID_FIELD_NUMBER = 5;
+  private long userId_;
+  /**
+   * <code>int64 userId = 5;</code>
+   */
+  public long getUserId() {
+    return userId_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -264,6 +279,9 @@ private static final long serialVersionUID = 0L;
     if (!getStatusBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, status_);
     }
+    if (userId_ != 0L) {
+      output.writeInt64(5, userId_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -284,6 +302,10 @@ private static final long serialVersionUID = 0L;
     }
     if (!getStatusBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, status_);
+    }
+    if (userId_ != 0L) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(5, userId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -309,6 +331,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getAction());
     result = result && getStatus()
         .equals(other.getStatus());
+    result = result && (getUserId()
+        == other.getUserId());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -328,6 +352,9 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getAction().hashCode();
     hash = (37 * hash) + STATUS_FIELD_NUMBER;
     hash = (53 * hash) + getStatus().hashCode();
+    hash = (37 * hash) + USERID_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        getUserId());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -469,6 +496,8 @@ private static final long serialVersionUID = 0L;
 
       status_ = "";
 
+      userId_ = 0L;
+
       return this;
     }
 
@@ -499,6 +528,7 @@ private static final long serialVersionUID = 0L;
       result.resource_ = resource_;
       result.action_ = action_;
       result.status_ = status_;
+      result.userId_ = userId_;
       onBuilt();
       return result;
     }
@@ -562,6 +592,9 @@ private static final long serialVersionUID = 0L;
       if (!other.getStatus().isEmpty()) {
         status_ = other.status_;
         onChanged();
+      }
+      if (other.getUserId() != 0L) {
+        setUserId(other.getUserId());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -864,6 +897,32 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       status_ = value;
+      onChanged();
+      return this;
+    }
+
+    private long userId_ ;
+    /**
+     * <code>int64 userId = 5;</code>
+     */
+    public long getUserId() {
+      return userId_;
+    }
+    /**
+     * <code>int64 userId = 5;</code>
+     */
+    public Builder setUserId(long value) {
+      
+      userId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int64 userId = 5;</code>
+     */
+    public Builder clearUserId() {
+      
+      userId_ = 0L;
       onChanged();
       return this;
     }
