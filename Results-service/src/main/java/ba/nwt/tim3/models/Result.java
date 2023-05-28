@@ -97,9 +97,9 @@ public class Result {
                 "\"id\":\"" + id +
                 "\", \"vote_count\":\"" + voteCount + '\"' +
                 ", \"candidate\":\"" + candidate +
-                "\", \"pollingStation\":\"" + pollingStation +
+                "\", \"pollingStation\":\"" + pollingStation.getName() +
                 "\", \"list\":\"" + list + '\"' +
-                ", \"election\":\"" + election + '\"' +
+                ", \"election\":\"" + election.getName() + '\"' +
                 '}';
     }
 }

@@ -1,4 +1,4 @@
-package ba.nwt.electionmanagement.config;
+package ba.nwt.tim3.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

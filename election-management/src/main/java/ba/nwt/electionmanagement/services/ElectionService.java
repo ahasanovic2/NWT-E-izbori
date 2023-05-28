@@ -57,7 +57,8 @@ public class ElectionService {
         ObjectMapper objectMapper = new ObjectMapper();
         List<PollingStation> pollingStations = null;
         try {
-            pollingStations = objectMapper.readValue(pollingStationsJson, new TypeReference<List<PollingStation>>() {});
+            pollingStations = objectMapper.readValue(pollingStationsJson, new TypeReference<>() {
+            });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -67,7 +68,7 @@ public class ElectionService {
 
     public String getElections() {
         List<Election> elections = electionRepository.findAll();
-        String json = null;
+        String json;
         try {
             StringBuilder sb = new StringBuilder("[");
             for (Election election : elections) {
@@ -139,7 +140,7 @@ public class ElectionService {
         }
         List<Lista> lists = listaRepository.findAllByElectionId(electionId);
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = null;
+        String json;
         try {
             json = objectMapper.writeValueAsString(lists);
         }
@@ -192,7 +193,7 @@ public class ElectionService {
 
         List<Candidate> candidates = candidateRepository.findAllByListaId(listId);
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = null;
+        String json;
         try {
             json = objectMapper.writeValueAsString(candidates);
         }
@@ -246,9 +247,7 @@ public class ElectionService {
             }
 
             electionRepository.save(election);
-            for (PollingStation pollingStation: filteredPollingStations) {
-                pollingStationRepository.save(pollingStation);
-            }
+            pollingStationRepository.saveAll(filteredPollingStations);
         }
         GrpcClient.log(userId.getBody(), "Election","addElectionsToPollingStations","Success");
         return ResponseEntity.ok("Election added to polling stations successfully.");
@@ -263,11 +262,11 @@ public class ElectionService {
         }
 
         HttpHeaders headers = new HttpHeaders();
+        assert token != null;
         headers.setBearerAuth(token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
-        ResponseEntity<Integer> korisnikId = restTemplate.exchange("http://auth-service/users/id", HttpMethod.GET, entity, Integer.class);
-        return korisnikId;
+        return restTemplate.exchange("http://auth-service/users/id", HttpMethod.GET, entity, Integer.class);
     }
 
 }
