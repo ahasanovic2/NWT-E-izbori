@@ -20,7 +20,7 @@ public class ResultApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		resultService.createRows();
+		//resultService.createRows();
 	}
 }
 

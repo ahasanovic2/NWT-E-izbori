@@ -1,0 +1,21 @@
+version: '3'
+services:
+  config-server:
+    image: configserver-dockerfile
+    ports:
+      - 8888:8888
+
+  eureka-server:
+    image: eurekaserver-dockerfile
+    ports:
+      - 8761:8761
+    depends_on:
+      - config-server
+
+  api-gateway:
+    image: apigateway-dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - eureka-server
+      - config-server

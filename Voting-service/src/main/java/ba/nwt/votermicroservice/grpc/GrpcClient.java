@@ -9,11 +9,11 @@ public class GrpcClient {
 
     private static ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8800)
             .usePlaintext()
-            .build();;
+            .build();
     private static GrpcClient grpcClient = null;
 
     private GrpcClient(){
-        channel = channel = ManagedChannelBuilder.forAddress("localhost", 8800)
+        channel = ManagedChannelBuilder.forAddress("localhost", 8800)
                 .usePlaintext()
                 .build();
     }
@@ -25,24 +25,20 @@ public class GrpcClient {
         return grpcClient;
     }
 
-    public static void log(String resource, String action, String status){
+    public static void log(Integer userId, String resource, String action, String status){
         eventGrpc.eventBlockingStub eventStub = eventGrpc.newBlockingStub(channel);
         LogRequest logRequest = LogRequest.newBuilder()
                 .setTimestamp(String.valueOf(LocalDateTime.now()))
                 .setResource(resource)
                 .setAction(action)
                 .setStatus(status)
+                .setUserId(userId)
                 .build();
         try {
             eventStub.log(logRequest);
 
         } catch (Exception e){
-
+            e.printStackTrace();
         }
-        /*
-        APIResponse response =
-        System.out.println(response.getMessage());
-        System.out.println(response.getResponseCode());
-         */
     }
 }
