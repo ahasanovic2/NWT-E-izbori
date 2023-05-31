@@ -1,11 +1,15 @@
 package ba.nwt.tim3.apigateway.util;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Date;
 
 @Component
 public class JwtUtil {
@@ -13,9 +17,14 @@ public class JwtUtil {
 
 
     public void validateToken(final String token) {
-        Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
+        // Get the expiration date from the token
+        Date expiration = claimsJws.getBody().getExpiration();
+        // Check if the token is expired
+        if (expiration.before(new Date())) {
+            throw new JwtException("Token is expired");
+        }
     }
-
 
 
     private Key getSignKey() {

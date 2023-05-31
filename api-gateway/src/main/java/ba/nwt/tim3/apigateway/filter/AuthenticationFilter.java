@@ -31,20 +31,18 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                     throw new RuntimeException("Missing authorization header");
                 }
-
                 String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-                System.out.println("AuthHeader: " + authHeader);
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 }
                 try {
                     jwtUtil.validateToken(authHeader);
                 } catch (Exception e) {
-                    System.out.println("invalid access...!");
+                    System.out.println("Error in validating token: " + e.getMessage());
                     throw new RuntimeException("Unauthorized access to application!");
                 }
-                System.out.println("AuthHeader: SUCCESS");
             }
+            System.out.println("Check of token is SUCCESS");
             return chain.filter(exchange);
         });
     }

@@ -213,9 +213,10 @@ public class ElectionService {
             GrpcClient.log(userId.getBody(), "Election","getPollingStations","Fail");
             return responseEntity;
         }
-        String userManagementUrl = "http://user-management/pollingStations";
-        ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
-        System.out.println(response.getBody());
+        String userManagementUrl = "http://auth-service/pollingStations";
+        ResponseEntity<String> response = communicate(request,userManagementUrl);
+        /*ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
+        System.out.println(response.getBody());*/
         GrpcClient.log(userId.getBody(), "Election","getPollingStations","Success");
         return response;
     }
@@ -229,9 +230,10 @@ public class ElectionService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         Election election = optionalElection.get();
-        String userManagementUrl = "http://user-management/pollingStations";
-        ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
-        System.out.println(response.getBody());
+        String userManagementUrl = "http://auth-service/pollingStations";
+        /*ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
+        System.out.println(response.getBody());*/
+        ResponseEntity<String> response = communicate(request,userManagementUrl);
         List<PollingStation> pollingStations = deserializePollingStations(response.getBody());
         List<PollingStation> filteredPollingStations = new ArrayList<>();
         for (PollingStation pollingStation : pollingStations) {
@@ -267,6 +269,24 @@ public class ElectionService {
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
         return restTemplate.exchange("http://auth-service/users/id", HttpMethod.GET, entity, Integer.class);
+    }
+
+    public ResponseEntity communicate(HttpServletRequest request, String userManagementUrl) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            token = authorizationHeader.substring(7); // Skip past "Bearer "
+        }
+        assert token != null;
+
+        // Prepare HTTP headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        // Prepare HTTP entity
+        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+
+        return restTemplate.exchange(userManagementUrl, HttpMethod.GET, entity, String.class);
     }
 
 }
