@@ -1,3 +1,3 @@
-FROM openjdk:20 as builder
-COPY target/*.jar app.
+FROM openjdk:20
+COPY target/*.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]

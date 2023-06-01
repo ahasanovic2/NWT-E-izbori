@@ -1,21 +1,112 @@
 version: '3'
+
 services:
+
   config-server:
-    image: configserver-dockerfile
+    container_name: config-server
+    hostname: config-service
+    build:
+      context: ./config-server/
+      dockerfile: Dockerfile
+    image: config-server:latest
+    restart: on-failure
+    expose:
+      - 8888
     ports:
       - 8888:8888
 
   eureka-server:
-    image: eurekaserver-dockerfile
+    container_name: eureka-server
+    hostname: eureka-server
+    build:
+      context: ./eureka-service/
+      dockerfile: Dockerfile
+    image: eureka-server:latest
+    restart: on-failure
+    expose:
+      - 8761
     ports:
       - 8761:8761
     depends_on:
       - config-server
 
   api-gateway:
-    image: apigateway-dockerfile
+    container_name: api-gateway
+    build:
+      context: ./api-gateway/
+      dockerfile: Dockerfile
+    image: api-gateway:latest
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+    expose:
+      - 8080
     ports:
       - 8080:8080
     depends_on:
       - eureka-server
       - config-server
+
+  system-events:
+    container_name: system-events
+    build:
+      context: ./system-events/
+      dockerfile: Dockerfile
+    image: system-events:latest
+    restart: on-failure
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=events
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 9190
+    ports:
+      - 9190:9190
+    depends_on:
+      - eureka-server
+      - mysql
+      - config-server
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=events
+      - MYSQL_USER=nwttim3
+      - MYSQL_PASSWORD=password
+    ports:
+      - 33061:3306
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ./auth-service/
+      dockerfile: Dockerfile
+    image: auth-service:latest
+    restart: on-failure
+    environment:
+      - DB_HOST=mysql-auth
+      - DB_PORT=3306
+      - DB_NAME=jwt_service
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8090  # Expose the port that your authentication service is running on
+    ports:
+      - 8090:8090  # Map the port to a port on your host
+    depends_on:
+      - eureka-server
+      - mysql-auth
+      - config-server
+
+  mysql-auth:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=jwt_service
+      - MYSQL_USER=nwttim3  # Your MySQL user for the authentication service
+      - MYSQL_PASSWORD=password  # Your MySQL password for the authentication service
+    ports:
+      - 33062:3306
