@@ -39,6 +39,7 @@ services:
     restart: on-failure
     environment:
       - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
     expose:
       - 8080
     ports:
@@ -110,3 +111,101 @@ services:
       - MYSQL_PASSWORD=password  # Your MySQL password for the authentication service
     ports:
       - 33062:3306
+
+  election-service:
+    container_name: election-service
+    build:
+      context: ./election-management/
+      dockerfile: Dockerfile
+    image: election-service:latest
+    restart: on-failure
+    environment:
+      - DB_HOST=mysql-election
+      - DB_PORT=3306
+      - DB_NAME=election
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8089  # Expose the port that your authentication service is running on
+    ports:
+      - 8089:8089  # Map the port to a port on your host
+    depends_on:
+      - eureka-server
+      - mysql-election
+      - config-server
+
+  mysql-election:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=election
+      - MYSQL_USER=nwttim3  
+      - MYSQL_PASSWORD=password
+    ports:
+      - 33063:3306
+
+
+  voting-service:
+    container_name: voting-service
+    image: voting-service:latest
+    build:
+      context: ./voting-service/
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      - DB_HOST=mysql-voting
+      - DB_PORT=3306
+      - DB_NAME=voterdb
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8082  # Expose the port that your authentication service is running on
+    ports:
+      - 8082:8082  # Map the port to a port on your host
+    depends_on:
+      - eureka-server
+      - mysql-voting
+      - config-server
+
+  mysql-voting:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=voterdb
+      - MYSQL_USER=nwttim3  
+      - MYSQL_PASSWORD=password
+    ports:
+      - 33064:3306
+
+  result-service:
+    container_name: result-service
+    image: result-service:latest
+    build:
+      context: ./result-service/
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      - DB_HOST=mysql-result
+      - DB_PORT=3306
+      - DB_NAME=resultdb
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8081  # Expose the port that your authentication service is running on
+    ports:
+      - 8081:8081  # Map the port to a port on your host
+    depends_on:
+      - eureka-server
+      - mysql-result
+      - config-server
+
+  mysql-result:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=resultdb
+      - MYSQL_USER=nwttim3  
+      - MYSQL_PASSWORD=password
+    ports:
+      - 33065:3306    
+    
