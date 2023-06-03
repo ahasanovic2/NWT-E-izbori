@@ -29,10 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/id")
-    private ResponseEntity<Integer> getId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User userDetails = (User) authentication.getPrincipal();
-        Integer userId = userDetails.getId();
+    public ResponseEntity<Integer> getId() {
+        Integer userId = userService.getUserIdFromAuthentication();
         return ResponseEntity.status(HttpStatus.OK).body(userId);
     }
 

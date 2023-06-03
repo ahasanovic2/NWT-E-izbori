@@ -21,9 +21,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ElectionService {
@@ -88,12 +87,12 @@ public class ElectionService {
         return json;
     }
 
-    public ResponseEntity<String> createElection(Election election, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public ResponseEntity createElection(Election election, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         ResponseEntity<Integer> userId = getUserId(request);
         redirectAttributes.addAttribute("electionId", election.getId());
         List<PollingStation> pollingStations = new ArrayList<>();
         for (PollingStation pollingStation: election.getPollingStations()) {
-            Long id = pollingStation.getId();
+            Integer id = pollingStation.getId();
             Optional<PollingStation> optionalPollingStation = pollingStationRepository.findById(id);
             if (optionalPollingStation.isPresent()) {
                 pollingStations.add(optionalPollingStation.get());
@@ -110,7 +109,10 @@ public class ElectionService {
         }
         electionRepository.save(election);
         GrpcClient.log(userId.getBody(), "Election","Create","Success");
-        return ResponseEntity.ok("Successfully created elections " + election.getId());
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", election.getId());
+        response.put("name", election.getName());
+        return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<String> addLists(Long electionId, List<Lista> liste, HttpServletRequest request) {
@@ -214,14 +216,12 @@ public class ElectionService {
             return responseEntity;
         }
         String userManagementUrl = "http://auth-service/pollingStations";
-        ResponseEntity<String> response = communicate(request,userManagementUrl);
-        /*ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
-        System.out.println(response.getBody());*/
+        ResponseEntity response = communicate(request,userManagementUrl);
         GrpcClient.log(userId.getBody(), "Election","getPollingStations","Success");
         return response;
     }
 
-    public ResponseEntity<String> addElectionToPollingStations(Long electionId, List<Long> pollingStationIds, HttpServletRequest request) {
+    public ResponseEntity addElectionToPollingStations(Long electionId, List<Long> pollingStationIds, HttpServletRequest request) {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         ResponseEntity<Integer> userId = getUserId(request);
         if (optionalElection.isEmpty()) {
@@ -231,8 +231,6 @@ public class ElectionService {
         }
         Election election = optionalElection.get();
         String userManagementUrl = "http://auth-service/pollingStations";
-        /*ResponseEntity<String> response = restTemplate.getForEntity(userManagementUrl, String.class);
-        System.out.println(response.getBody());*/
         ResponseEntity<String> response = communicate(request,userManagementUrl);
         List<PollingStation> pollingStations = deserializePollingStations(response.getBody());
         List<PollingStation> filteredPollingStations = new ArrayList<>();
@@ -247,12 +245,14 @@ public class ElectionService {
                 election.addPollingStation(pollingStation);
                 pollingStation.addElections(election);
             }
-
             electionRepository.save(election);
             pollingStationRepository.saveAll(filteredPollingStations);
         }
         GrpcClient.log(userId.getBody(), "Election","addElectionsToPollingStations","Success");
-        return ResponseEntity.ok("Election added to polling stations successfully.");
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("id", election.getId());
+        responseData.put("name", election.getName());
+        return ResponseEntity.ok(responseData);
     }
 
     public ResponseEntity<Integer> getUserId(HttpServletRequest request) {
@@ -289,4 +289,31 @@ public class ElectionService {
         return restTemplate.exchange(userManagementUrl, HttpMethod.GET, entity, String.class);
     }
 
+    public PollingStation getPollingStationForUser(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        String token = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            token = authorizationHeader.substring(7); // Skip past "Bearer "
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        assert token != null;
+        headers.setBearerAuth(token);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        return restTemplate.exchange("http://auth-service/pollingStations/user", HttpMethod.GET, entity, PollingStation.class).getBody();
+    }
+
+
+
+    public ResponseEntity getElectionsForUser(HttpServletRequest request) {
+        PollingStation pollingStation = getPollingStationForUser(request);
+        System.out.println("ps name:" + pollingStation.getName());
+        List<Election> elections = electionRepository.findElectionsByPollingStationName(pollingStation.getName());
+        List<String> electionStrings = elections.stream().map(Election::toString).collect(Collectors.toList());
+        String jsonArray = String.join(", ", electionStrings);
+        jsonArray = "[" + jsonArray + "]";
+
+        return ResponseEntity.ok(jsonArray);
+    }
 }

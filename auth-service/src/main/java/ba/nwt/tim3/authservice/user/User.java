@@ -3,6 +3,7 @@ package ba.nwt.tim3.authservice.user;
 import ba.nwt.tim3.authservice.pollingstation.PollingStation;
 import ba.nwt.tim3.authservice.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,8 @@ public class User implements UserDetails {
     private Integer id;
     private String firstname;
     private String lastname;
+
+    
     private String email;
     private String password;
 
@@ -49,6 +52,7 @@ public class User implements UserDetails {
     private List<Token> tokens;
 
     @Nullable
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "polling_station_id")
     private PollingStation pollingStation;

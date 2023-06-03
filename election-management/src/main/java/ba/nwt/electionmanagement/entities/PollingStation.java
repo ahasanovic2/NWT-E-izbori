@@ -27,7 +27,7 @@ public class PollingStation {
             }
     )
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @NotNull(message = "This field cannot be null")
     @Column(unique = true)
@@ -56,11 +56,11 @@ public class PollingStation {
             inverseJoinColumns = @JoinColumn(name = "election_id"))
     private Set<Election> elections = new HashSet<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

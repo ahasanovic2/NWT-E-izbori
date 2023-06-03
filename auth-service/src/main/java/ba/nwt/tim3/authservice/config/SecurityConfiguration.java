@@ -31,11 +31,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/v1/admin/**").hasRole(ADMIN.name())
-                .requestMatchers("/api/v1/admin/**").denyAll()
+                .requestMatchers("/authentication/**").permitAll()
                 .requestMatchers(POST, "/pollingStations/create").hasRole(ADMIN.name())
                 .requestMatchers(GET, "/pollingStations").hasAnyRole(ADMIN.name(), USER.name())
+                .requestMatchers(GET, "/pollingStations/user").hasAnyRole(ADMIN.name(), USER.name())
                 .requestMatchers("/pollingStations/**").denyAll()
                 .requestMatchers(GET, "/users").hasRole(ADMIN.name())
                 .requestMatchers(POST, "/users/{userId}/pollingStation/{pollingStationId}").hasRole(USER.name())

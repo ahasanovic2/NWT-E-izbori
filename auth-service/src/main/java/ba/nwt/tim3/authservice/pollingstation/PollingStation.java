@@ -1,6 +1,8 @@
 package ba.nwt.tim3.authservice.pollingstation;
 
 import ba.nwt.tim3.authservice.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -50,6 +52,7 @@ public class PollingStation {
     @NotBlank(message = "Opcina cannot be blank")
     private String opcina;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pollingStation")
     private List<User> users = new ArrayList<>();
 

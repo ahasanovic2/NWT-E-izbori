@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/authentication")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register( @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.register(request));
+    public ResponseEntity register( @RequestBody RegisterRequest request) {
+        return authenticationService.register(request);
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register( @RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+    @PostMapping("/login")
+    public ResponseEntity register( @RequestBody AuthenticationRequest request) {
+        return authenticationService.authenticate(request);
     }
 
     @PostMapping("/refresh-token")

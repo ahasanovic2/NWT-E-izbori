@@ -4,8 +4,9 @@ import ba.nwt.tim3.authservice.grpc.GrpcClient;
 import ba.nwt.tim3.authservice.pollingstation.PollingStation;
 import ba.nwt.tim3.authservice.service.PollingStationService;
 import ba.nwt.tim3.authservice.user.User;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pollingStations")
+@RequiredArgsConstructor
 public class PollingStationController {
 
-    @Autowired
-    private PollingStationService pollingStationService;
+    private final PollingStationService pollingStationService;
 
     @GetMapping("")
     public ResponseEntity<String> getPollingStations() {
@@ -41,5 +42,10 @@ public class PollingStationController {
         User userDetails = (User) authentication.getPrincipal();
         Integer userId = userDetails.getId();
         return ResponseEntity.ok(pollingStationService.addPollingStation(userId, pollingStation));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity getPollingStationForUser() {
+        return pollingStationService.getPollingStationForUser();
     }
 }
