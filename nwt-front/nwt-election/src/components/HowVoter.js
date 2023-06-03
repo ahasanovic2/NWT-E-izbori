@@ -1,7 +1,7 @@
 import React from 'react';
-import './LandingPage.css';
+import './HowVoter.css'
 
-const LandingPage = (props) => {
+const HowVoter = (props) => {
     return (
         <div className="landing-page">
             <div className="header">
@@ -24,8 +24,12 @@ const LandingPage = (props) => {
                     <button onClick={props.onLogout}>Odjava</button>
                 </div>
             </div>
+            <section>
+                <h2>Kako glasati?</h2>
+                <p>Datum, vrijeme i mjesto održavanja izbora</p>
+            </section>
         </div>
     );
 };
 
-export default LandingPage;
+export default HowVoter;
