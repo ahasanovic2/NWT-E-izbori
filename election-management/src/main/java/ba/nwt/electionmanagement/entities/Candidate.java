@@ -80,4 +80,15 @@ public class Candidate {
     public void setLista(Lista lista) {
         this.lista = lista;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":" + id + "," +
+                "\"firstName\":\"" + firstName + "\"," +
+                "\"lastName\":\"" + lastName + "\"," +
+                "\"description\":\"" + description.replace("\"", "\\\"") + "\"" +
+                "}";
+    }
+
 }

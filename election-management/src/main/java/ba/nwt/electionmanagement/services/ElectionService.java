@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -306,14 +308,50 @@ public class ElectionService {
 
 
 
-    public ResponseEntity getElectionsForUser(HttpServletRequest request) {
+    public String getElectionsForUser(HttpServletRequest request) {
         PollingStation pollingStation = getPollingStationForUser(request);
-        System.out.println("ps name:" + pollingStation.getName());
         List<Election> elections = electionRepository.findElectionsByPollingStationName(pollingStation.getName());
         List<String> electionStrings = elections.stream().map(Election::toString).collect(Collectors.toList());
         String jsonArray = String.join(", ", electionStrings);
         jsonArray = "[" + jsonArray + "]";
 
-        return ResponseEntity.ok(jsonArray);
+        return jsonArray;
+    }
+
+    public ResponseEntity getListsForElectionByName(String name, HttpServletRequest request) {
+        ResponseEntity<Integer> userId = getUserId(request);
+        System.out.println("Name of election is " + name);
+        name = URLDecoder.decode(name, StandardCharsets.UTF_8);
+        Optional<Election> optionalElection = electionRepository.getElectionByName(name);
+        if (optionalElection.isEmpty()) {
+            GrpcClient.log(userId.getBody(), "Election","Get lists for election by name","Fail");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(LocalDateTime.now(),"name","No election found by that name"));
+        }
+        Election election = optionalElection.get();
+        List<Lista> lists = election.getList();
+        List<String> listStrings = lists.stream().map(Lista::toString).collect(Collectors.toList());
+        String jsonArray = String.join(", ", listStrings);
+        jsonArray = "[" + jsonArray + "]";
+
+        GrpcClient.log(userId.getBody(), "Election","Get lists for election by name","Success");
+        return ResponseEntity.status(HttpStatus.OK).body(jsonArray);
+    }
+
+    public ResponseEntity getCandidatesForList(String name, HttpServletRequest request) {
+        ResponseEntity<Integer> userId = getUserId(request);
+        name = URLDecoder.decode(name, StandardCharsets.UTF_8);
+        Optional<Lista> optionalLista = listaRepository.getListaByName(name);
+        if (optionalLista.isEmpty()) {
+            GrpcClient.log(userId.getBody(), "Election","Get candidates by lista name","Fail");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(LocalDateTime.now(),"name","No lista found by that name"));
+        }
+        Lista lista = optionalLista.get();
+        List<Candidate> candidates = lista.getCandidates();
+        List<String> listStrings = candidates.stream().map(Candidate::toString).collect(Collectors.toList());
+        String jsonArray = String.join(", ", listStrings);
+        jsonArray = "[" + jsonArray + "]";
+
+        GrpcClient.log(userId.getBody(), "Election","Get candidates by lista name","Success");
+        return ResponseEntity.status(HttpStatus.OK).body(jsonArray);
     }
 }

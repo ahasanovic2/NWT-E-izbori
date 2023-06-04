@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .requestMatchers(GET, "/elections/{electionId}/lists/{listId}/candidates").hasAnyRole("USER","ADMIN")
                 .requestMatchers(POST, "/elections/{electionId}/lists/{listId}/add-candidates").hasRole("ADMIN")
                 .requestMatchers(GET,"/elections/get-elections-for-user").hasAnyRole("USER","ADMIN")
+                .requestMatchers(GET,"/elections/election/get-lists").hasAnyRole("USER","ADMIN")
+                .requestMatchers(GET,"/elections/election/list/get-candidates").hasAnyRole("USER","ADMIN")
                 .requestMatchers("/elections/**").denyAll()
                 .anyRequest()
                 .authenticated()

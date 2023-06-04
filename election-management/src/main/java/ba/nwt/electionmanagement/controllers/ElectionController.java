@@ -48,7 +48,7 @@ public class ElectionController {
     }
 
     @GetMapping("/get-elections-for-user")
-    public ResponseEntity getElectionsForUser(HttpServletRequest request) {
+    public String getElectionsForUser(HttpServletRequest request) {
         return electionService.getElectionsForUser(request);
     }
 
@@ -63,6 +63,11 @@ public class ElectionController {
         return electionService.getListsForElections(electionId, request);
     }
 
+    @GetMapping("/election/get-lists")
+    public ResponseEntity getListsForElectionByName(@RequestParam String name, HttpServletRequest request) {
+        return electionService.getListsForElectionByName(name, request);
+    }
+
 
     @PostMapping("/{electionId}/lists/{listId}/add-candidates")
     public ResponseEntity<String> addCandidates(@PathVariable Long electionId, @PathVariable Long listId, @Valid @RequestBody List<Candidate> candidates, HttpServletRequest request) {
@@ -72,5 +77,10 @@ public class ElectionController {
     @GetMapping("/{electionId}/lists/{listId}/candidates")
     public ResponseEntity<String> getCandidates(@PathVariable Long electionId, @PathVariable Long listId, HttpServletRequest request) {
         return electionService.getCandidates(electionId,listId, request);
+    }
+
+    @GetMapping("/election/list/get-candidates")
+    public ResponseEntity getCandidatesForList(@RequestParam String name, HttpServletRequest request) {
+        return electionService.getCandidatesForList(name,request);
     }
 }

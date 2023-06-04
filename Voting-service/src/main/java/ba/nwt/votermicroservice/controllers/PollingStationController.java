@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/polling-stations")
+@RequestMapping("/pollingStations")
 public class PollingStationController {
     @Autowired
     private PollingStationService pollingStationService = new PollingStationService();
@@ -17,15 +17,10 @@ public class PollingStationController {
     @GetMapping("")
     public ResponseEntity<String> getPollingStations(HttpServletRequest request){
         return ResponseEntity.ok(pollingStationService.getPollingStations(request));
-
     }
-
-
     @GetMapping("/{pollingStationId}/voters")
     public ResponseEntity<String> getVotersByPollingStation(@PathVariable Long pollingStationId, HttpServletRequest request) {
         return pollingStationService.getVotersByPollingStation(pollingStationId, request);
-
-
     }
 
 

@@ -86,4 +86,14 @@ public class Lista {
     public void setNezavisna(Boolean nezavisna) {
         this.nezavisna = nezavisna;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":" + id + "," +
+                "\"name\":\"" + name + "\"," +
+                "\"nezavisna\":" + nezavisna +
+                "}";
+    }
+
 }
