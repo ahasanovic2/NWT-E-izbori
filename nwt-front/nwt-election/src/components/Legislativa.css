@@ -60,10 +60,11 @@ body {
     left: 0;
     width: 100%;
     z-index: 999;
+    border-bottom: 3px solid lightblue;
 }
 
 .header h1 {
-    font-size: 24px;
+    font-size: 25px;
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -94,34 +95,32 @@ body {
     font-size: 12px;
 }
 
-
-.left-sidebar {
-    width: 200px;
-    padding: 20px;
-    margin-top: 250px;
-    margin-left: -800px;
+.text {
+    align-items: center;
+    flex-direction: column;
 }
 
-.sidebar-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
+.contentLegislativa {
+    text-align: center;
+    margin-top: 300px;
+    font-size: 24px;
+}
+
+.content h2 {
+    font-size: 24px;
     margin-bottom: 10px;
-    text-align: left;
-    background-color: #e0e0e0;
-    border: none;
+}
+
+.content p {
+    font-size: 16px;
     color: #333;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
 }
 
-.sidebar-button:hover {
-    background-color: #ccc;
+.contentLegislativa {
+    margin-bottom: 10px;
+    display: block;
+    flex-direction: column;
+    margin-left: 15px;
 }
 
-.sidebar-button.active {
-    background-color: #003399;
-    color: #fff;
-}
 

@@ -94,5 +94,24 @@ body {
     font-size: 12px;
 }
 
+.text {
+    align-items: center;
+    flex-direction: column;
+}
+
+.content {
+    text-align: center;
+    margin-top: 220px;
+}
+
+.content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.content p {
+    font-size: 16px;
+    color: #333;
+}
 
 

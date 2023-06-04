@@ -7,6 +7,10 @@ const HowVoter = (props) => {
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
+                    <button>Početna
+                        <br/>
+                        <span className="small-text">Početna stranica aplikacije</span>
+                    </button>
                     <button>Glasači
                         <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
@@ -24,10 +28,14 @@ const HowVoter = (props) => {
                     <button onClick={props.onLogout}>Odjava</button>
                 </div>
             </div>
+            <div className="centrirano">
             <section>
                 <h2>Kako glasati?</h2>
-                <p>Datum, vrijeme i mjesto održavanja izbora</p>
+                <p>Da biste glasali na dan izbora:</p>
+                <p>-morate biti registrovani na našoj aplikaciji,</p>
+                <p>-prilikom registracije morate unijeti svoj JMBG i jedinstvenu email adresu.</p>
             </section>
+            </div>
         </div>
     );
 };

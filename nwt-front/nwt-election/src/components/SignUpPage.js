@@ -15,9 +15,11 @@ function SignUpPage(props) {
             if (value.length !== 13 || isNaN(value)) {
                 errorText.style.display = 'block';
                 inputNumber.current.classList.add('error-field');
+                return false;
             } else {
                 errorText.style.display = 'none';
                 inputNumber.current.classList.remove('error-field');
+                return true;
             }
         } else if (id === 'email') {
             const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -25,22 +27,26 @@ function SignUpPage(props) {
             if (!value.match(emailRegex)) {
                 errorText.style.display = 'block';
                 inputEmail.current.classList.add('error-field');
+                return false;
             } else {
                 errorText.style.display = 'none';
                 inputEmail.current.classList.remove('error-field');
+                return true;
             }
         }
     }
 
     const handleSignUp = () => {
-        validateInput(inputNumber.current);
-        validateInput(inputEmail.current);
+        const isNumberValid = validateInput(inputNumber.current);
+        const isEmailValid = validateInput(inputEmail.current);
 
-        if (!inputNumber.current.classList.contains('error-field') && !inputEmail.current.classList.contains('error-field')) {
+        if (isNumberValid && isEmailValid) {
             const number = inputNumber.current.value;
             const email = inputEmail.current.value;
 
             // Ostatak koda za obradu registracije
+
+            props.onFormSwitch('landing');
         }
     };
 

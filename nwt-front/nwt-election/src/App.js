@@ -1,20 +1,24 @@
 import LoginPage from './components/LoginPage.js';
 
 import './App.css';
-import './components/SignUpPage.css'
+import './components/SignUpPage.css';
 import SignUpPage from "./components/SignUpPage";
-import {useState} from "react";
+import React, {useState} from "react";
 import LandingPage from "./components/LandingPage";
-import './components/LandingPage.css'
+import './components/LandingPage.css';
 import HomePage from "./components/HomePage";
 import {Login} from "@mui/icons-material";
 import VotersPage from "./components/VotersPage";
+import './components/VotersPage.css';
+import Legislativa from "./components/Legislativa";
+import './components/Legislativa.css';
+import WhoVoter from "./components/WhoVoter";
 
 
 /*function App() {
     return(
     <div>
-        <VotersPage/>
+        <Legislativa/>
     </div>
     );
 }*/
@@ -28,6 +32,14 @@ function App() {
 
     const handleLogout = () => {
         setCurrentForm('home');
+    };
+
+    const handleSwitchToVoters = () => {
+        setCurrentForm('voters');
+    };
+
+    const handleSwitchToLegislativa = () => {
+        setCurrentForm('legislativa');
     };
 
     return (
@@ -53,6 +65,22 @@ function App() {
             )}
             {currentForm === 'landing' && (
                 <LandingPage onLogout={handleLogout} />
+            )}
+            {currentForm === 'voters' && (
+                <VotersPage
+                    onFormSwitch={(formName) => toggleForm(formName)}
+                />
+            )}
+
+            {currentForm === 'landing' && (
+                <LandingPage onLogout={handleLogout} onFormSwitch={toggleForm} />
+            )}
+
+            {currentForm === 'legislativa' && (
+                <Legislativa
+                    onFormSwitch={(formName) => toggleForm(formName)}
+                    onLogout={handleLogout}
+                />
             )}
         </div>
     );

@@ -11,11 +11,23 @@ const VotersPage = (props) => {
         setSelectedComponent(componentName);
     };
 
+    const handleSwitchToLanding = () => {
+        props.onFormSwitch('landing');
+    };
+
+    const handleSwitchToLegislativa = () => {
+        props.onFormSwitch('legislativa');
+    };
+
     return (
         <div className="landing-page">
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
+                    <button onClick={handleSwitchToLanding}>Početna
+                        <br/>
+                        <span className="small-text">Početna stranica aplikacije</span>
+                    </button>
                     <button>Glasači
                         <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
@@ -26,9 +38,13 @@ const VotersPage = (props) => {
                         <br/>
                         <span className="small-text">Rezultati 2022</span>
                     </button>
-                    <button>Legislativa
+                    <button onClick={handleSwitchToLegislativa}>Legislativa
                         <br/>
                         <span className="small-text">Zakon o provođenju izbora</span>
+                    </button>
+                    <button>Kontakt
+                        <br/>
+                        <span className="small-text">Kontaktirajte korisničku podršku ukoliko imate bilo kakvih pitanja</span>
                     </button>
                     <button onClick={props.onLogout}>Odjava</button>
                 </div>

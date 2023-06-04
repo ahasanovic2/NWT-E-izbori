@@ -59,6 +59,7 @@ h1 {
 
 section {
     text-align: center;
+    width: 200px;
 }
 
 h2 {
@@ -75,5 +76,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    margin-left: 800px;
+    margin-top: -150px;
+    padding: 20px;
 }
