@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Action {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     //@NotBlank(message = "User ID cannot be blank")

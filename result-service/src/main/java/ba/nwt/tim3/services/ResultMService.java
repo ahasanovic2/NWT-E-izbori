@@ -41,6 +41,12 @@ public class ResultMService {
     @Autowired
     private RestTemplate restTemplate;
 
+    private GrpcClient grpcClient;
+
+    public ResultMService() {
+        grpcClient = GrpcClient.get();
+    }
+
     public ResponseEntity<String> getResults(HttpServletRequest request) {
         ResponseEntity<Integer> userId = getUserId(request);
 
@@ -57,12 +63,12 @@ public class ResultMService {
             }
             sb.append("]");
             json = sb.toString();
-            GrpcClient.log(userId.getBody(),"Result Service", "get results", "Success");
+            grpcClient.log(userId.getBody(),"Result Service", "get results", "Success");
             return ResponseEntity.ok(json);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error serializing elections to JSON: " + e.getMessage());
-            GrpcClient.log(userId.getBody(),"Result Service", "get results", "Fail");
+            grpcClient.log(userId.getBody(),"Result Service", "get results", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
         }
 
@@ -82,17 +88,17 @@ public class ResultMService {
             String json = null;
             try {
                 json = objectMapper.writeValueAsString(transformed);
-                GrpcClient.log(userId.getBody(),"Result Service", "get candidate result by polling station", "Success");
+                grpcClient.log(userId.getBody(),"Result Service", "get candidate result by polling station", "Success");
                 return ResponseEntity.ok(json);
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
-                GrpcClient.log(userId.getBody(),"Result Service", "get candidate result by polling station", "Fail");
+                grpcClient.log(userId.getBody(),"Result Service", "get candidate result by polling station", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "election_id, pollingStationId, candidateId", "Election id, polling station id or candidate id not found");
-        GrpcClient.log(userId.getBody(),"Result Service", "get candidate result by polling station", "Fail");
+        grpcClient.log(userId.getBody(),"Result Service", "get candidate result by polling station", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -111,17 +117,17 @@ public class ResultMService {
             String json = null;
             try {
                 json = objectMapper.writeValueAsString(transformed);
-                GrpcClient.log(userId.getBody(),"Result Service", "get candidate result by election", "Success");
+                grpcClient.log(userId.getBody(),"Result Service", "get candidate result by election", "Success");
                 return ResponseEntity.ok(json);
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
-                GrpcClient.log(userId.getBody(),"Result Service", "get candidate result by election", "Fail");
+                grpcClient.log(userId.getBody(),"Result Service", "get candidate result by election", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "election_id, candidateId", "Election id or candidate id not found");
-        GrpcClient.log(userId.getBody(),"Result Service", "get candidate result by election", "Fail");
+        grpcClient.log(userId.getBody(),"Result Service", "get candidate result by election", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -140,17 +146,17 @@ public class ResultMService {
             String json = null;
             try {
                 json = objectMapper.writeValueAsString(transformed);
-                GrpcClient.log(userId.getBody(),"Result Service", "get list results by polling station", "Success");
+                grpcClient.log(userId.getBody(),"Result Service", "get list results by polling station", "Success");
                 return ResponseEntity.ok(json);
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
-                GrpcClient.log(userId.getBody(),"Result Service", "get list results by polling station", "Fail");
+                grpcClient.log(userId.getBody(),"Result Service", "get list results by polling station", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "election_id, pollingStationId, listId", "Election id, polling station id or list id not found");
-        GrpcClient.log(userId.getBody(),"Result Service", "get list results by polling station", "Fail");
+        grpcClient.log(userId.getBody(),"Result Service", "get list results by polling station", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -170,17 +176,17 @@ public class ResultMService {
             String json = null;
             try {
                 json = objectMapper.writeValueAsString(transformed);
-                GrpcClient.log(userId.getBody(),"Result Service", "get list result by election", "Success");
+                grpcClient.log(userId.getBody(),"Result Service", "get list result by election", "Success");
                 return ResponseEntity.ok(json);
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
-                GrpcClient.log(userId.getBody(),"Result Service", "get list result by election", "Fail");
+                grpcClient.log(userId.getBody(),"Result Service", "get list result by election", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "election_id, listId", "Election id or list id not found");
-        GrpcClient.log(userId.getBody(),"Result Service", "get list result by election", "Fail");
+        grpcClient.log(userId.getBody(),"Result Service", "get list result by election", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -192,7 +198,7 @@ public class ResultMService {
         Optional<Election> election = electionRepository.findById(election_id);
         if (election.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"election_id","ELection ID not found");
-            GrpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Fail");
+            grpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         result1.setElection(election.get());
@@ -200,7 +206,7 @@ public class ResultMService {
         Optional<PollingStation> pollingStation = pollingStationRepository.findById(pollingStationId);
         if (pollingStation.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"pollingStationId","Polling station ID not found");
-            GrpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Fail");
+            grpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         result1.setPollingStation(pollingStation.get());
@@ -208,14 +214,14 @@ public class ResultMService {
         Optional<Candidate> candidate = candidateRepository.findById(candidateId);
         if (candidate.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"candidateId","Candidate ID not found");
-            GrpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Fail");
+            grpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         result1.setCandidate(candidate.get());
 
         resultRepository.save(result1);
 
-        GrpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Success");
+        grpcClient.log(userId.getBody(),"Result Service", "create candidate results", "Success");
         return ResponseEntity.ok("Result created successfully");
     }
 
@@ -227,7 +233,7 @@ public class ResultMService {
         Optional<Election> election = electionRepository.findById(election_id);
         if (election.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"election_id","ELection ID not found");
-            GrpcClient.log(userId.getBody(),"Result Service", "create list results", "Fail");
+            grpcClient.log(userId.getBody(),"Result Service", "create list results", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         result1.setElection(election.get());
@@ -235,7 +241,7 @@ public class ResultMService {
         Optional<PollingStation> pollingStation = pollingStationRepository.findById(pollingStationId);
         if (pollingStation.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"pollingStationId","Polling station ID not found");
-            GrpcClient.log(userId.getBody(),"Result Service", "create list results", "Fail");
+            grpcClient.log(userId.getBody(),"Result Service", "create list results", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         result1.setPollingStation(pollingStation.get());
@@ -243,14 +249,14 @@ public class ResultMService {
         Optional<ba.nwt.tim3.models.List> list = listRepository.findById(listId);
         if (list.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"listId","List ID not found");
-            GrpcClient.log(userId.getBody(),"Result Service", "create list results", "Fail");
+            grpcClient.log(userId.getBody(),"Result Service", "create list results", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         result1.setList(list.get());
 
         resultRepository.save(result1);
 
-        GrpcClient.log(userId.getBody(),"Result Service", "create list results", "Success");
+        grpcClient.log(userId.getBody(),"Result Service", "create list results", "Success");
         return ResponseEntity.ok("Result created successfully");
     }
 

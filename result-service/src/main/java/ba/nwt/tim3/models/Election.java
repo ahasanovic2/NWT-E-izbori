@@ -3,6 +3,8 @@ package ba.nwt.tim3.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
@@ -10,18 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Election {
     @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "election_sequence"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull(message = "This field cannot be null")
@@ -47,64 +42,4 @@ public class Election {
     @JsonIgnore
     @OneToMany(mappedBy = "election")
     private List<Result> results = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime start_time) {
-        this.startTime = start_time;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime end_time) {
-        this.endTime = end_time;
-    }
-
-    public void addResult(Result result) {
-        this.results.add(result);
-    }
-
-    public List<Result> getResults() {
-        return results;
-    }
-
-    public void setResults(List<Result> results) {
-        this.results = results;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

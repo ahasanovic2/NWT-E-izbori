@@ -34,10 +34,12 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
+    private GrpcClient grpcClient;
 
     public ResponseEntity register(RegisterRequest request) {
+        grpcClient = GrpcClient.get();
         if (userRepository.existsByEmail(request.getEmail())) {
-            GrpcClient.log(0,"AuthService","register","Fail");
+            grpcClient.log(0,"AuthService","register","Fail");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(),"email","Email already present in database"));
         }
         var user = User.builder()
@@ -51,7 +53,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        GrpcClient.log(user.getId(),"AuthService","register","Success");
+        grpcClient.log(user.getId(),"AuthService","register","Success");
         return ResponseEntity.ok(AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -60,8 +62,9 @@ public class AuthenticationService {
 
 
     public ResponseEntity authenticate(AuthenticationRequest request) {
+        grpcClient = GrpcClient.get();
         if (!userRepository.existsByEmail(request.getEmail())) {
-            GrpcClient.log(0,"AuthService","register","Fail");
+            grpcClient.log(0,"AuthService","register","Fail");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(),"email","Email not present in database"));
         }
         authenticationManager.authenticate(
@@ -76,7 +79,7 @@ public class AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
 
-        GrpcClient.log(user.getId(),"AuthService","authenticate","Success");
+        grpcClient.log(user.getId(),"AuthService","authenticate","Success");
 
         return ResponseEntity.ok(AuthenticationResponse.builder()
                 .accessToken(jwtToken)

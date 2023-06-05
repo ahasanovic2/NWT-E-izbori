@@ -24,7 +24,10 @@ public class UserService {
 
     private final PollingStationRepository pollingStationRepository;
 
+    private GrpcClient grpcClient;
+
     public ResponseEntity<String> setPollingStation(Integer userId, Integer pollingStationId) {
+        grpcClient = GrpcClient.get();
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<PollingStation> optionalPollingStation = pollingStationRepository.findById(pollingStationId);
 
@@ -46,6 +49,7 @@ public class UserService {
     }
 
     public String getUsers() {
+        grpcClient = GrpcClient.get();
         List<User> users = userRepository.findAll();
         String json = null;
         try {
@@ -67,6 +71,7 @@ public class UserService {
     }
 
     public Integer getUserIdFromAuthentication() {
+        grpcClient = GrpcClient.get();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userDetails = (User) authentication.getPrincipal();
         return userDetails.getId();

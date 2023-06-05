@@ -38,6 +38,11 @@ public class PollingStationService {
     @Autowired
     private RestTemplate restTemplate;
 
+    private GrpcClient grpcClient;
+
+    public PollingStationService() {
+        grpcClient = GrpcClient.get();
+    }
 
     public String getPollingStations(HttpServletRequest request) {
         ResponseEntity<Integer> userId = getUserId(request);
@@ -46,10 +51,10 @@ public class PollingStationService {
         String json = null;
         try {
             json = objectMapper.writeValueAsString(pollingStations);
-            GrpcClient.log(userId.getBody(), "Voting service","Get Polling stations", "Success");
+            grpcClient.log(userId.getBody(), "Voting service","Get Polling stations", "Success");
             return json;
         } catch (JsonProcessingException e) {
-            GrpcClient.log(userId.getBody(), "Voting service","Get Polling stations", "Fail");
+            grpcClient.log(userId.getBody(), "Voting service","Get Polling stations", "Fail");
             e.printStackTrace();
             return null;
         }
@@ -65,17 +70,17 @@ public class PollingStationService {
             String json = null;
             try {
                 json = objectMapper.writeValueAsString(lists);
-                GrpcClient.log(userId.getBody(), "Voting service","Get voters by polling station", "Success");
+                grpcClient.log(userId.getBody(), "Voting service","Get voters by polling station", "Success");
                 return ResponseEntity.ok(json);
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();
-                GrpcClient.log(userId.getBody(), "Voting service","Get voters by polling station", "Fail");
+                grpcClient.log(userId.getBody(), "Voting service","Get voters by polling station", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"pollingStationId","Pollingstation ID not found");
-        GrpcClient.log(userId.getBody(), "Voting service","Get voters by polling station", "Fail");
+        grpcClient.log(userId.getBody(), "Voting service","Get voters by polling station", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
 
     }

@@ -19,19 +19,21 @@ import org.springframework.web.bind.annotation.*;
 public class PollingStationController {
 
     private final PollingStationService pollingStationService;
+    private GrpcClient grpcClient;
 
     @GetMapping("")
     public ResponseEntity<String> getPollingStations() {
+        grpcClient = GrpcClient.get();
         String povrat = pollingStationService.getPollingStations();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userDetails = (User) authentication.getPrincipal();
         Integer userId = userDetails.getId();
         if (povrat == null) {
-            GrpcClient.log(userId,"AuthService","getPS","Fail");
+            grpcClient.log(userId,"AuthService","getPS","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error serializing to JSON");
         }
         else {
-            GrpcClient.log(userId,"AuthService","getPS","Success");
+            grpcClient.log(userId,"AuthService","getPS","Success");
             return ResponseEntity.status(HttpStatus.OK).body(povrat);
         }
     }

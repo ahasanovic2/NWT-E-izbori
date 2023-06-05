@@ -6,24 +6,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class PollingStation {
     @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "pollingStation_sequence"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull(message = "This field cannot be null")
@@ -51,59 +46,4 @@ public class PollingStation {
     @OneToMany(mappedBy = "pollingStation")
     private List<Result> results = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String adress) {
-        this.address = adress;
-    }
-
-    public List<Result> getResults() {
-        return results;
-    }
-
-    public void setResults(List<Result> results) {
-        this.results = results;
-    }
-
-    public String getEntitet() {
-        return entitet;
-    }
-
-    public void setEntitet(String entitet) {
-        this.entitet = entitet;
-    }
-
-    public String getKanton() {
-        return kanton;
-    }
-
-    public void setKanton(String kanton) {
-        this.kanton = kanton;
-    }
-
-    public String getOpcina() {
-        return opcina;
-    }
-
-    public void setOpcina(String opcina) {
-        this.opcina = opcina;
-    }
 }

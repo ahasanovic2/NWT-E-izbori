@@ -44,6 +44,12 @@ public class ElectionService {
     @Autowired
     private RestTemplate restTemplate;
 
+    private GrpcClient grpcClient;
+
+    public ElectionService() {
+        grpcClient = GrpcClient.get();
+    }
+
     private ResponseEntity<String> checkElectionExists(Long electionId) {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (optionalElection.isEmpty()) {
@@ -101,7 +107,7 @@ public class ElectionService {
             }
             else {
                 ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"pollingStationId","Polling Station ID not found");
-                GrpcClient.log(userId.getBody(), "Election","Create","Fail");
+                grpcClient.log(userId.getBody(), "Election","Create","Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
             }
         }
@@ -110,7 +116,7 @@ public class ElectionService {
             pollingStationRepository.save(pollingStation);
         }
         electionRepository.save(election);
-        GrpcClient.log(userId.getBody(), "Election","Create","Success");
+        grpcClient.log(userId.getBody(), "Election","Create","Success");
         Map<String, Object> response = new HashMap<>();
         response.put("id", election.getId());
         response.put("name", election.getName());
@@ -122,7 +128,7 @@ public class ElectionService {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (optionalElection.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            GrpcClient.log(userId.getBody(), "Election","AddLists","Fail");
+            grpcClient.log(userId.getBody(), "Election","AddLists","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         Election election = optionalElection.get();
@@ -130,7 +136,7 @@ public class ElectionService {
             lista.setElection(election);
             listaRepository.save(lista);
         }
-        GrpcClient.log(userId.getBody(), "Election","AddLists","Success");
+        grpcClient.log(userId.getBody(), "Election","AddLists","Success");
         return ResponseEntity.ok("Lists added successfully to election " + election.getId());
     }
 
@@ -139,7 +145,7 @@ public class ElectionService {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (optionalElection.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            GrpcClient.log(userId.getBody(), "Election","getListsforElections", "Fail");
+            grpcClient.log(userId.getBody(), "Election","getListsforElections", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         List<Lista> lists = listaRepository.findAllByElectionId(electionId);
@@ -150,7 +156,7 @@ public class ElectionService {
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
-            GrpcClient.log(userId.getBody(), "Election","getListsForElections","Fail");
+            grpcClient.log(userId.getBody(), "Election","getListsForElections","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error while parsing to string");
         }
         return ResponseEntity.ok(json);
@@ -161,13 +167,13 @@ public class ElectionService {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (optionalElection.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            GrpcClient.log(userId.getBody(), "Election","addCandidates","Fail");
+            grpcClient.log(userId.getBody(), "Election","addCandidates","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         Optional<Lista> optionalLista = listaRepository.findById(listId);
         if (optionalLista.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"listId","List ID not found");
-            GrpcClient.log(userId.getBody(), "Election","addCandidates","Fail");
+            grpcClient.log(userId.getBody(), "Election","addCandidates","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         Lista list = optionalLista.get();
@@ -175,7 +181,7 @@ public class ElectionService {
             candidate.setLista(list);
             candidateRepository.save(candidate);
         }
-        GrpcClient.log(userId.getBody(), "Election","addCandidates","Success");
+        grpcClient.log(userId.getBody(), "Election","addCandidates","Success");
         return ResponseEntity.ok("Candidates added successfully to list " + list.getId());
     }
 
@@ -184,14 +190,14 @@ public class ElectionService {
         Optional<Election> optionalElection = electionRepository.findById(electionId);
         if (optionalElection.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","ELection ID not found");
-            GrpcClient.log(userId.getBody(), "Election","getCandidates","Fail");
+            grpcClient.log(userId.getBody(), "Election","getCandidates","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
 
         Optional<Lista> optionalLista = listaRepository.findById(listId);
         if (optionalLista.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"listId","List ID not found");
-            GrpcClient.log(userId.getBody(), "Election","getCandidates","Fail");
+            grpcClient.log(userId.getBody(), "Election","getCandidates","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
 
@@ -203,10 +209,10 @@ public class ElectionService {
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
-            GrpcClient.log(userId.getBody(), "Election","getCandidates","Fail");
+            grpcClient.log(userId.getBody(), "Election","getCandidates","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error while parsing to string");
         }
-        GrpcClient.log(userId.getBody(), "Election","getCandidates","Success");
+        grpcClient.log(userId.getBody(), "Election","getCandidates","Success");
         return ResponseEntity.ok(json);
     }
 
@@ -214,12 +220,12 @@ public class ElectionService {
         ResponseEntity<String> responseEntity = checkElectionExists(electionId);
         ResponseEntity<Integer> userId = getUserId(request);
         if (responseEntity != null) {
-            GrpcClient.log(userId.getBody(), "Election","getPollingStations","Fail");
+            grpcClient.log(userId.getBody(), "Election","getPollingStations","Fail");
             return responseEntity;
         }
         String userManagementUrl = "http://auth-service/pollingStations";
         ResponseEntity response = communicate(request,userManagementUrl);
-        GrpcClient.log(userId.getBody(), "Election","getPollingStations","Success");
+        grpcClient.log(userId.getBody(), "Election","getPollingStations","Success");
         return response;
     }
 
@@ -228,7 +234,7 @@ public class ElectionService {
         ResponseEntity<Integer> userId = getUserId(request);
         if (optionalElection.isEmpty()) {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"electionId","Election ID not found");
-            GrpcClient.log(userId.getBody(), "Election","addElectionsToPollingStations","Fail");
+            grpcClient.log(userId.getBody(), "Election","addElectionsToPollingStations","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
         Election election = optionalElection.get();
@@ -250,7 +256,7 @@ public class ElectionService {
             electionRepository.save(election);
             pollingStationRepository.saveAll(filteredPollingStations);
         }
-        GrpcClient.log(userId.getBody(), "Election","addElectionsToPollingStations","Success");
+        grpcClient.log(userId.getBody(), "Election","addElectionsToPollingStations","Success");
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("id", election.getId());
         responseData.put("name", election.getName());
@@ -324,7 +330,7 @@ public class ElectionService {
         name = URLDecoder.decode(name, StandardCharsets.UTF_8);
         Optional<Election> optionalElection = electionRepository.getElectionByName(name);
         if (optionalElection.isEmpty()) {
-            GrpcClient.log(userId.getBody(), "Election","Get lists for election by name","Fail");
+            grpcClient.log(userId.getBody(), "Election","Get lists for election by name","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(LocalDateTime.now(),"name","No election found by that name"));
         }
         Election election = optionalElection.get();
@@ -333,7 +339,7 @@ public class ElectionService {
         String jsonArray = String.join(", ", listStrings);
         jsonArray = "[" + jsonArray + "]";
 
-        GrpcClient.log(userId.getBody(), "Election","Get lists for election by name","Success");
+        grpcClient.log(userId.getBody(), "Election","Get lists for election by name","Success");
         return ResponseEntity.status(HttpStatus.OK).body(jsonArray);
     }
 
@@ -342,7 +348,7 @@ public class ElectionService {
         name = URLDecoder.decode(name, StandardCharsets.UTF_8);
         Optional<Lista> optionalLista = listaRepository.getListaByName(name);
         if (optionalLista.isEmpty()) {
-            GrpcClient.log(userId.getBody(), "Election","Get candidates by lista name","Fail");
+            grpcClient.log(userId.getBody(), "Election","Get candidates by lista name","Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(LocalDateTime.now(),"name","No lista found by that name"));
         }
         Lista lista = optionalLista.get();
@@ -351,7 +357,7 @@ public class ElectionService {
         String jsonArray = String.join(", ", listStrings);
         jsonArray = "[" + jsonArray + "]";
 
-        GrpcClient.log(userId.getBody(), "Election","Get candidates by lista name","Success");
+        grpcClient.log(userId.getBody(), "Election","Get candidates by lista name","Success");
         return ResponseEntity.status(HttpStatus.OK).body(jsonArray);
     }
 }

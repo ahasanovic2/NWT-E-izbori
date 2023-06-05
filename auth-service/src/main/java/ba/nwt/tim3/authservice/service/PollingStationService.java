@@ -25,6 +25,8 @@ public class PollingStationService {
 
     private final UserService userService;
 
+    private GrpcClient grpcClient;
+
     public String getPollingStations() {
         List<PollingStation> pollingStations = pollingStationRepository.findAll();
         String json;
@@ -49,8 +51,9 @@ public class PollingStationService {
 
 
     public String addPollingStation(Integer userId, PollingStation pollingStation) {
+        grpcClient = GrpcClient.get();
         pollingStationRepository.save(pollingStation);
-        GrpcClient.log(userId,"AuthService","createPS","Success");
+        grpcClient.log(userId,"AuthService","createPS","Success");
         return "Successfully created polling station " + pollingStation.getId();
     }
 

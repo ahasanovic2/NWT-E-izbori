@@ -5,24 +5,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
 
 @Entity
+@Getter
+@Setter
 public class List {
     @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "list_sequence"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private int voteCount;
@@ -37,44 +31,4 @@ public class List {
     @JsonIgnore
     @OneToMany(mappedBy = "list")
     private java.util.List<Result> results = new ArrayList<>();
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getNezavisna() {
-        return nezavisna;
-    }
-
-    public void setNezavisna(Boolean nezavisna) {
-        this.nezavisna = nezavisna;
-    }
-
-    public java.util.List<Result> getResults() {
-        return results;
-    }
-
-    public void setResults(java.util.List<Result> results) {
-        this.results = results;
-    }
-
-    public int getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(int vote_count) {
-        this.voteCount = vote_count;
-    }
 }

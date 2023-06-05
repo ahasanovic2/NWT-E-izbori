@@ -47,6 +47,12 @@ public class VoteService {
     @Autowired
     private RestTemplate restTemplate;
 
+    private GrpcClient grpcClient;
+
+    public VoteService() {
+        grpcClient = GrpcClient.get();
+    }
+
     public ResponseEntity<String> getListsByElectionId(Long electionId, HttpServletRequest request) {
         ResponseEntity<Integer> userId = getUserId(request);
         Optional<Vote> optionalVote = voteRepository.findById(electionId);
@@ -57,16 +63,16 @@ public class VoteService {
             String json = null;
             try{
                 json = objectMapper.writeValueAsString(lists);
-                GrpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Success");
+                grpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Success");
                 return ResponseEntity.ok(json);
             }
             catch (JsonProcessingException e){
-                GrpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
+                grpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"electionId","Election ID not found");
-        GrpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
+        grpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -84,17 +90,17 @@ public class VoteService {
                 String json = null;
                 try {
                     json = objectMapper.writeValueAsString(candidates);
-                    GrpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Success");
+                    grpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Success");
                     return ResponseEntity.ok(json);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
-                    GrpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
+                    grpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
                 }
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"listaId","Lista ID not found");
-        GrpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
+        grpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -116,27 +122,27 @@ public class VoteService {
 
                         vote.setVoter(voter);
                         vote.setCandidate(candidate);
-                        GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Success");
+                        grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Success");
                         voteRepository.save(vote); // save the updated Vote object to the database
                         return ResponseEntity.ok("Glas uspjesno dodan!");
                     } else {
                         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"voterId","Voter ID not found");
-                        GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+                        grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
                     }
                 } else {
                     ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"candidateId","Candidate ID not found");
-                    GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+                    grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
                 }
             } else {
                 ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"listaId","Lista ID not found");
-                GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+                grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
             }
         } else {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"electionId","Election ID not found");
-            GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+            grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
     }
