@@ -16,18 +16,9 @@ import java.util.Set;
 public class PollingStation {
 
     @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ps_sequence"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @NotNull(message = "This field cannot be null")
     @Column(unique = true)
@@ -56,11 +47,11 @@ public class PollingStation {
             inverseJoinColumns = @JoinColumn(name = "election_id"))
     private Set<Election> elections = new HashSet<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

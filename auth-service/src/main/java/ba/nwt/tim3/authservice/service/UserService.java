@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +24,10 @@ public class UserService {
 
     private final PollingStationRepository pollingStationRepository;
 
+    private GrpcClient grpcClient;
+
     public ResponseEntity<String> setPollingStation(Integer userId, Integer pollingStationId) {
+        grpcClient = GrpcClient.get();
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<PollingStation> optionalPollingStation = pollingStationRepository.findById(pollingStationId);
 
@@ -44,6 +49,7 @@ public class UserService {
     }
 
     public String getUsers() {
+        grpcClient = GrpcClient.get();
         List<User> users = userRepository.findAll();
         String json = null;
         try {
@@ -62,5 +68,12 @@ public class UserService {
         }
         System.out.println("Serialized JSON: " + json);
         return json;
+    }
+
+    public Integer getUserIdFromAuthentication() {
+        grpcClient = GrpcClient.get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userDetails = (User) authentication.getPrincipal();
+        return userDetails.getId();
     }
 }

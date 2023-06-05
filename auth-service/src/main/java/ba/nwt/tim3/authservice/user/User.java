@@ -3,6 +3,7 @@ package ba.nwt.tim3.authservice.user;
 import ba.nwt.tim3.authservice.pollingstation.PollingStation;
 import ba.nwt.tim3.authservice.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,20 +25,13 @@ import java.util.List;
 @Table(name = "_user")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "user_sequence"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
     private String firstname;
     private String lastname;
+
+    
     private String email;
     private String password;
 
@@ -49,6 +43,7 @@ public class User implements UserDetails {
     private List<Token> tokens;
 
     @Nullable
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "polling_station_id")
     private PollingStation pollingStation;

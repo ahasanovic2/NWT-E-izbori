@@ -1,34 +1,24 @@
 package ba.nwt.votermicroservice.controllers;
 
 
-import ba.nwt.votermicroservice.exception.ErrorDetails;
-import ba.nwt.votermicroservice.grpc.GrpcClient;
-import ba.nwt.votermicroservice.repositories.*;
-import ba.nwt.votermicroservice.models.Candidate;
-import ba.nwt.votermicroservice.models.Lista;
-import ba.nwt.votermicroservice.models.Vote;
-import ba.nwt.votermicroservice.models.*;
 import ba.nwt.votermicroservice.services.VoteService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.Http;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.executable.ValidateOnExecution;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/voting")
+@RequiredArgsConstructor
 public class VoteController {
 
-    @Autowired
-    VoteService voteService = new VoteService();
+    private final VoteService voteService;
+
+    @GetMapping("/elections")
+    public ResponseEntity getElectionsForUser(HttpServletRequest request) {
+        return voteService.getElectionsForUser(request);
+    }
 
     @GetMapping("/{electionId}/lists")
     public ResponseEntity<String> getListsByElectionId(@PathVariable Long electionId, HttpServletRequest request){
@@ -36,27 +26,26 @@ public class VoteController {
     }
     @GetMapping("/{electionId}/lists/{listaId}/candidates")
     public ResponseEntity<String> getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId, HttpServletRequest request) {
-
         return voteService.getCandidatesByListaId(electionId,listaId, request);
-
     }
-
-
     @PostMapping("/voter/{voterId}/election/{electionId}/lists/{listaId}/candidates/{candidateId}")
     public ResponseEntity<String> addVoteForCandidateId(@PathVariable Long voterId,
                                                         @PathVariable Long electionId,
                                                         @PathVariable Long listaId,
                                                         @PathVariable Long candidateId,
                                                         HttpServletRequest request) {
-
-
         return voteService.addVoteForCandidateId(voterId,electionId,listaId,candidateId,request);
-
     }
 
+    @GetMapping("/election/get-lists")
+    public ResponseEntity<String> getListsForElection(@RequestParam String name, HttpServletRequest request) {
+        return voteService.getListsForElection(name,request);
+    }
 
-
-
-
+    @GetMapping("/election/list/get-candidates")
+    public ResponseEntity<String> getCandidatesForList(@RequestParam String name, HttpServletRequest request) {
+        System.out.println("Usao je u voting servis kontroler");
+        return voteService.getCandidatesForList(name,request);
+    }
 
 }

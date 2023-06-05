@@ -1,21 +1,183 @@
 version: '3'
+
 services:
+
   config-server:
-    image: configserver-dockerfile
+    container_name: config-server
+    hostname: config-service
+    build:
+      context: ./config-server/
+      dockerfile: Dockerfile
+    image: config-server:latest
+    restart: on-failure
+    expose:
+      - 8888
     ports:
       - 8888:8888
 
   eureka-server:
-    image: eurekaserver-dockerfile
+    container_name: eureka-server
+    hostname: eureka-server
+    build:
+      context: ./eureka-service/
+      dockerfile: Dockerfile
+    image: eureka-server:latest
+    restart: on-failure
+    expose:
+      - 8761
     ports:
       - 8761:8761
     depends_on:
       - config-server
 
   api-gateway:
-    image: apigateway-dockerfile
+    container_name: api-gateway
+    build:
+      context: ./api-gateway/
+      dockerfile: Dockerfile
+    image: api-gateway:latest
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8080
     ports:
       - 8080:8080
     depends_on:
       - eureka-server
+      - config-server
+
+  system-events:
+    container_name: system-events
+    build:
+      context: ./system-events/
+      dockerfile: Dockerfile
+    image: system-events:latest
+    restart: on-failure
+    environment:
+      - DOCKER_ENV=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=events
+      - DB_USER=nwttim3
+      - DB_PASSWORD=password
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8800
+    ports:
+      - 8800:8800
+    depends_on:
+      - eureka-server
+      - mysql
+      - config-server
+
+  mysql:
+    image: mysql:latest
+    volumes:
+      - ./db_scripts:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 33061:3306
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ./auth-service/
+      dockerfile: Dockerfile
+    image: auth-service:latest
+    restart: on-failure
+    environment:
+      - DOCKER_ENV=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=jwt_security
+      - DB_USER=nwttim3
+      - DB_PASSWORD=password
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8090
+    ports:
+      - 8090:8090
+    depends_on:
+      - eureka-server
+      - mysql
+      - config-server
+
+  election-service:
+    container_name: election-service
+    build:
+      context: ./election-management/
+      dockerfile: Dockerfile
+    image: election-service:latest
+    restart: on-failure
+    environment:
+      - DOCKER_ENV=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=electionmanagement
+      - DB_USER=nwttim3
+      - DB_PASSWORD=password
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8089
+    ports:
+      - 8089:8089
+    depends_on:
+      - eureka-server
+      - mysql
+      - config-server
+
+  voting-service:
+    container_name: voting-service
+    image: voting-service:latest
+    build:
+      context: ./voting-service/
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      - DOCKER_ENV=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=voterdb
+      - DB_USER=nwttim3
+      - DB_PASSWORD=password
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8082
+    ports:
+      - 8082:8082
+    depends_on:
+      - eureka-server
+      - mysql
+      - config-server
+
+  result-service:
+    container_name: result-service
+    image: result-service:latest
+    build:
+      context: ./result-service/
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      - DOCKER_ENV=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=resultdb
+      - DB_USER=nwttim3
+      - DB_PASSWORD=password
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - CONFIG_SERVER=http://config-server:8888
+    expose:
+      - 8081
+    ports:
+      - 8081:8081
+    depends_on:
+      - eureka-server
+      - mysql
       - config-server

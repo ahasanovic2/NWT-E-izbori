@@ -1,5 +1,6 @@
 package ba.nwt.electionmanagement;
 
+import ba.nwt.electionmanagement.grpc.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +18,7 @@ public class ElectionManagementApplication implements CommandLineRunner {
     private ElectionManagementService electionManagementService;
 
     public static void main(String[] args) {
+        GrpcClient grpcClient = GrpcClient.get();
         SpringApplication.run(ElectionManagementApplication.class, args);
     }
 

@@ -9,12 +9,15 @@ import ba.nwt.votermicroservice.models.Vote;
 import ba.nwt.votermicroservice.models.Voter;
 import ba.nwt.votermicroservice.repositories.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.Http;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,6 +47,12 @@ public class VoteService {
     @Autowired
     private RestTemplate restTemplate;
 
+    private GrpcClient grpcClient;
+
+    public VoteService() {
+        grpcClient = GrpcClient.get();
+    }
+
     public ResponseEntity<String> getListsByElectionId(Long electionId, HttpServletRequest request) {
         ResponseEntity<Integer> userId = getUserId(request);
         Optional<Vote> optionalVote = voteRepository.findById(electionId);
@@ -54,16 +63,16 @@ public class VoteService {
             String json = null;
             try{
                 json = objectMapper.writeValueAsString(lists);
-                GrpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Success");
+                grpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Success");
                 return ResponseEntity.ok(json);
             }
             catch (JsonProcessingException e){
-                GrpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
+                grpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"electionId","Election ID not found");
-        GrpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
+        grpcClient.log(userId.getBody(),"Voting service","get lists by election ID", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -81,17 +90,17 @@ public class VoteService {
                 String json = null;
                 try {
                     json = objectMapper.writeValueAsString(candidates);
-                    GrpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Success");
+                    grpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Success");
                     return ResponseEntity.ok(json);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
-                    GrpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
+                    grpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
                 }
             }
         }
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"listaId","Lista ID not found");
-        GrpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
+        grpcClient.log(userId.getBody(),"Voting service","get candidates by lista ID", "Fail");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
     }
 
@@ -113,32 +122,47 @@ public class VoteService {
 
                         vote.setVoter(voter);
                         vote.setCandidate(candidate);
-                        GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Success");
+                        grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Success");
                         voteRepository.save(vote); // save the updated Vote object to the database
                         return ResponseEntity.ok("Glas uspjesno dodan!");
                     } else {
                         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"voterId","Voter ID not found");
-                        GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+                        grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
                     }
                 } else {
                     ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"candidateId","Candidate ID not found");
-                    GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+                    grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
                 }
             } else {
                 ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"listaId","Lista ID not found");
-                GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+                grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
             }
         } else {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now().toString(),"electionId","Election ID not found");
-            GrpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
+            grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Fail");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
     }
 
     public ResponseEntity<Integer> getUserId(HttpServletRequest request) {
+        HttpEntity<String> entity = extractEntity(request);
+
+        ResponseEntity<Integer> korisnikId = restTemplate.exchange("http://auth-service/users/id", HttpMethod.GET, entity, Integer.class);
+        return korisnikId;
+    }
+
+    public ResponseEntity getElectionsForUser(HttpServletRequest request) {
+        HttpEntity<String> entity = extractEntity(request);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String povrat = restTemplate.exchange("http://election-microservice/elections/get-elections-for-user",HttpMethod.GET,entity,String.class).getBody();
+
+        return ResponseEntity.status(HttpStatus.OK).body(povrat);
+    }
+
+    private static HttpEntity<String> extractEntity(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         String token = null;
@@ -149,8 +173,26 @@ public class VoteService {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
-
-        ResponseEntity<Integer> korisnikId = restTemplate.exchange("http://auth-service/users/id", HttpMethod.GET, entity, Integer.class);
-        return korisnikId;
+        return entity;
     }
+
+    public ResponseEntity<String> getListsForElection(String name, HttpServletRequest request) {
+        HttpEntity<String> entity = extractEntity(request);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/election/get-lists")
+                .queryParam("name", name);
+        ResponseEntity<String> lists = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(lists.getBody());
+    }
+
+    public ResponseEntity<String> getCandidatesForList(String name, HttpServletRequest request) {
+        HttpEntity<String> entity = extractEntity(request);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/election/list/get-candidates")
+                .queryParam("name", name);
+        ResponseEntity<String> candidates = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(candidates.getBody());
+    }
+
+
 }

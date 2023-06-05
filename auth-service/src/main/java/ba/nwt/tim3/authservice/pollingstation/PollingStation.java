@@ -1,6 +1,8 @@
 package ba.nwt.tim3.authservice.pollingstation;
 
 import ba.nwt.tim3.authservice.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -16,16 +18,7 @@ import java.util.List;
 public class PollingStation {
 
     @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ps_sequence"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
 
@@ -50,6 +43,7 @@ public class PollingStation {
     @NotBlank(message = "Opcina cannot be blank")
     private String opcina;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pollingStation")
     private List<User> users = new ArrayList<>();
 

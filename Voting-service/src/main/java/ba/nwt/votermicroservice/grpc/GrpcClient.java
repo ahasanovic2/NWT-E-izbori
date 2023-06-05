@@ -7,13 +7,12 @@ import java.time.LocalDateTime;
 
 public class GrpcClient {
 
-    private static ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8800)
-            .usePlaintext()
-            .build();
+    private static ManagedChannel channel;
     private static GrpcClient grpcClient = null;
 
     private GrpcClient(){
-        channel = ManagedChannelBuilder.forAddress("localhost", 8800)
+        String serverAddress = isRunningInDocker() ? "system-events" : "localhost";
+        channel = ManagedChannelBuilder.forAddress(serverAddress, 8800)
                 .usePlaintext()
                 .build();
     }
@@ -40,5 +39,9 @@ public class GrpcClient {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+    private static boolean isRunningInDocker() {
+        String dockerEnv = System.getenv("DOCKER_ENV");
+        return dockerEnv != null && dockerEnv.equalsIgnoreCase("true");
     }
 }

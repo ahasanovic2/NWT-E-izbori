@@ -1,6 +1,7 @@
 package ba.nwt.tim3.authservice.auth;
 
 import ba.nwt.tim3.authservice.config.JwtService;
+import ba.nwt.tim3.authservice.exception.ErrorDetails;
 import ba.nwt.tim3.authservice.grpc.GrpcClient;
 import ba.nwt.tim3.authservice.token.Token;
 import ba.nwt.tim3.authservice.token.TokenRepository;
@@ -9,16 +10,20 @@ import ba.nwt.tim3.authservice.user.Role;
 import ba.nwt.tim3.authservice.user.User;
 import ba.nwt.tim3.authservice.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.grpc.netty.shaded.io.netty.handler.codec.http.HttpResponseStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +34,14 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
+    private GrpcClient grpcClient;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public ResponseEntity register(RegisterRequest request) {
+        grpcClient = GrpcClient.get();
+        if (userRepository.existsByEmail(request.getEmail())) {
+            grpcClient.log(0,"AuthService","register","Fail");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(),"email","Email already present in database"));
+        }
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -42,15 +53,20 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        GrpcClient.log(user.getId(),"AuthService","register","Success");
-        return AuthenticationResponse.builder()
+        grpcClient.log(user.getId(),"AuthService","register","Success");
+        return ResponseEntity.ok(AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .build();
+                .build());
     }
 
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public ResponseEntity authenticate(AuthenticationRequest request) {
+        grpcClient = GrpcClient.get();
+        if (!userRepository.existsByEmail(request.getEmail())) {
+            grpcClient.log(0,"AuthService","register","Fail");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(),"email","Email not present in database"));
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(), request.getPassword()
@@ -63,12 +79,12 @@ public class AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
 
-        GrpcClient.log(user.getId(),"AuthService","authenticate","Success");
+        grpcClient.log(user.getId(),"AuthService","authenticate","Success");
 
-        return AuthenticationResponse.builder()
+        return ResponseEntity.ok(AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .build();
+                .build());
     }
 
     private void revokeAllUserTokens(User user) {

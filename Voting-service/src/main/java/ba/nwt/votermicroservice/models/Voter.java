@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Voter {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull(message = "This field cannot be null")
     @Size(min = 1, message = "This field must contain at least 1 character")
