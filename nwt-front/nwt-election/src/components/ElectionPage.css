@@ -1,0 +1,120 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 200px;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.election-list {
+    display: inline-flex;
+    justify-content: space-between; /* Dodano: prostor između elemenata */
+    column-gap: 10px;
+}
+
+
+.election-card {
+    border: 3px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    flex-basis: 90%;
+}
+
+.election-card .election-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.election-card .election-details {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.election-card p {
+    margin-bottom: 10px;
+}
+
+.election-card button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #003399;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.election-card button:hover {
+    background-color: #001a66;
+}
+.title{
+    font-size: 20px;
+    color: #001a66;
+    font-weight: bold;
+}
+
+
+.header {
+    background-color: #0058B8;
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 0;
+}
+
+.nav-buttons a {
+    margin: 0 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.nav-buttons a:hover {
+    text-decoration: underline;
+}
+
+.main-content {
+    margin-top: 60px; /* Adjust this value as needed */
+}
+
+.small-text {
+    font-size: 12px;
+}
+
+.rezultati {
+    text-align: center;
+    justify-content: center;
+}
+
+.rezultati p {
+    text-align: center;
+}
