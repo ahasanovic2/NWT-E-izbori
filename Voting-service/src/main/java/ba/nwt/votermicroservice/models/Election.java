@@ -29,7 +29,6 @@ public class Election {
     private String startTime;
 
     @NotNull(message = "This field cannot be null")
-    @Future(message = "End time must be after start time")
     private String endTime;
 
     @NotBlank(message = "This field cannot be empty")

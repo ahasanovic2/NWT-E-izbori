@@ -16,4 +16,6 @@ public interface ElectionRepository extends JpaRepository<Election, Long> {
     List<Election> findElectionsByPollingStationName(@Param("name") String name);
 
     Optional<Election> getElectionByName(String name);
+
+    void deleteByName(String votingMessage);
 }

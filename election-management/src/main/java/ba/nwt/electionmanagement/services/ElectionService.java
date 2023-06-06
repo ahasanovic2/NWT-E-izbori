@@ -6,6 +6,8 @@ import ba.nwt.electionmanagement.entities.Lista;
 import ba.nwt.electionmanagement.entities.PollingStation;
 import ba.nwt.electionmanagement.exception.ErrorDetails;
 import ba.nwt.electionmanagement.grpc.GrpcClient;
+import ba.nwt.electionmanagement.messaging.ElectionMessage;
+import ba.nwt.electionmanagement.messaging.RabbitConfig;
 import ba.nwt.electionmanagement.repositories.CandidateRepository;
 import ba.nwt.electionmanagement.repositories.ElectionRepository;
 import ba.nwt.electionmanagement.repositories.ListaRepository;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -45,6 +48,8 @@ public class ElectionService {
     private RestTemplate restTemplate;
 
     private GrpcClient grpcClient;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     public ElectionService() {
         grpcClient = GrpcClient.get();
@@ -96,6 +101,14 @@ public class ElectionService {
     }
 
     public ResponseEntity createElection(Election election, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        ElectionMessage votingMessage = new ElectionMessage();
+        votingMessage.setElection_id(election.getId());
+        votingMessage.setElection_name(election.getName());
+        votingMessage.setElection_description(election.getDescription());
+        votingMessage.setElection_startTime(election.getStartTime().toString());
+        votingMessage.setElection_endTime(election.getEndTime().toString());
+        votingMessage.setElection_status(election.getStatus());
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, votingMessage);
         ResponseEntity<Integer> userId = getUserId(request);
         redirectAttributes.addAttribute("electionId", election.getId());
         List<PollingStation> pollingStations = new ArrayList<>();
