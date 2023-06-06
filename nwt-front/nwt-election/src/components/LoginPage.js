@@ -3,7 +3,7 @@ import loginImage from '../images/login5.png';
 
 import {FiEye, FiEyeOff} from 'react-icons/fi';
 
-import './LoginPage.css'
+import '../css/LoginPage.css'
 
 function LoginPage(props) {
 
@@ -12,6 +12,7 @@ function LoginPage(props) {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
 
     return (
         <div className="login-page">
@@ -25,7 +26,7 @@ function LoginPage(props) {
                 </div>
                 <div className="input-containerLogin">
                     <input className="input-fieldLogin" type={showPassword ? 'text' : 'password'} id="password" placeholder="Lozinka" />
-                    <span style={{ marginTop: '4px', marginBottom: '-15px', fontSize: '1.5em'  }}>
+                    <span className="span-style">
                     {showPassword ? (
                         <FiEyeOff onClick={togglePasswordVisibility} />
                     ) : (
@@ -38,7 +39,6 @@ function LoginPage(props) {
                     <a className="link" href="#">Izgubljena lozinka?</a>
                     <button className="buttonLink" onClick={()=>props.onFormSwitch('signUp')}>Nemaš nalog? <b>Registruj se.</b></button>
                 </div>
-
             </div>
         </div>
     );

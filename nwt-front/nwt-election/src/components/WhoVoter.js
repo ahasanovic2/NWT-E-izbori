@@ -1,5 +1,5 @@
 import React from 'react';
-import './WhoVoter.css';
+import '../css/WhoVoter.css';
 
 const WhoVoter = (props) => {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import './LandingPage.css';
+import '../css/LandingPage.css';
 import './WhoVoter';
 
 const LandingPage = (props) => {

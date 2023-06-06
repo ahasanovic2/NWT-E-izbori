@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './VotersPage.css';
+import '../css/VotersPage.css';
 import HowVoter from './HowVoter';
 import WhoVoter from './WhoVoter';
 

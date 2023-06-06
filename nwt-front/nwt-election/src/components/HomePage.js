@@ -1,5 +1,5 @@
 import React from 'react';
-import './HomePage.css';
+import '../css/HomePage.css';
 
 import backgroundImage from '../images/election-pic9-bl.jpg';
 import imageSrc from '../images/grb-bh.png'

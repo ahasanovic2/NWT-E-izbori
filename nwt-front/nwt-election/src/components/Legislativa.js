@@ -1,5 +1,5 @@
 import React from 'react';
-import './Legislativa.css';
+import '../css/Legislativa.css';
 
 const Legislativa = (props) => {
     const handleSwitchToLanding = () => {

@@ -7,25 +7,58 @@
 h1 {
     font-size: 24px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
-h2 {
-    font-size: 20px;
+.election-list {
+    display: inline-flex;
+    justify-content: space-between; /* Dodano: prostor između elemenata */
+    column-gap: 10px;
+}
+
+
+.election-card {
+    border: 3px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    flex-basis: 90%;
+}
+
+.election-card .election-title {
+    font-size: 28px;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
-p {
-    margin-bottom: 5px;
+.election-card .election-details {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-button {
+.election-card p {
+    margin-bottom: 10px;
+}
+
+.election-card button {
+    margin-top: 20px;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+    font-size: 16px;
+    background-color: #003399;
+    color: white;
     border: none;
+    border-radius: 10px;
     cursor: pointer;
+    text-transform: uppercase;
 }
 
-button:hover {
-    background-color: #0056b3;
+.election-card button:hover {
+    background-color: #001a66;
+}
+.title{
+    font-size: 20px;
+    color: #001a66;
+    font-weight: bold;
 }

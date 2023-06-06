@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import './SignUpPage.css';
+import '../css/SignUpPage.css';
 
 function SignUpPage(props) {
     const [selectedOption, setSelectedOption] = useState('');
