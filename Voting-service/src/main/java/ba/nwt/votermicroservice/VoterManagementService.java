@@ -12,30 +12,6 @@ import java.time.LocalDateTime;
 @Service
 public class VoterManagementService {
 
-    @Autowired
-    private ElectionRepository electionRepository;
-
-    @Autowired
-    private CandidateRepository candidateRepository;
-
-    @Autowired
-    private VoterRepository voterRepository;
-    @Autowired
-    private PollingStationRepository pollingStationRepository;
-    @Autowired
-    private VoteRepository voteRepository;
-    @Autowired
-    private ListaRepository listaRepository;
-    @Autowired
-    private ElectionPollingStationRepository electionPollingStationRepository;
-
-    private Voter createVoter(String firstName, String lastName, PollingStation pollingStation) {
-        Voter voter = new Voter();
-        voter.setFirstName(firstName);
-        voter.setLastName(lastName);
-        voter.setPollingStation(pollingStation);
-        return voter;
-    }
     @Transactional
     public void createRows() {
     }

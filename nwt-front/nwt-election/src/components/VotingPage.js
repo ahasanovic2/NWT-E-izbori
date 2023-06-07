@@ -127,16 +127,24 @@ function VotingPageFinal() {
     }, [selectedElection]);
 
     const handleSwitchToLanding = () => {
+        localStorage.removeItem('electionName');
         history.push('/landing');
     };
 
     const handleSwitchToVoters = () => {
+        localStorage.removeItem('electionName');
         history.push('/voters');
     };
 
     const handleSwitchToLegislativa = () => {
+        localStorage.removeItem('electionName');
         history.push('/legislativa');
     };
+
+    const handleSwitchToIzbori = () => {
+        localStorage.removeItem('electionName');
+        history.push('/election');
+    }
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
@@ -157,7 +165,7 @@ function VotingPageFinal() {
                         <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
                     </button>
-                    <button>Izbori
+                    <button onClick={handleSwitchToIzbori}>Izbori
                         <br/>
                         <span className="small-text">Izbori 2024</span>
                         <br/>

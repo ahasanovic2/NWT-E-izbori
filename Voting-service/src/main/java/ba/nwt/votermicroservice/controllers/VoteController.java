@@ -20,29 +20,19 @@ public class VoteController {
         return voteService.getElectionsForUser(request);
     }
 
-    @GetMapping("/{electionId}/lists")
-    public ResponseEntity<String> getListsByElectionId(@PathVariable Long electionId, HttpServletRequest request){
-        return voteService.getListsByElectionId(electionId, request);
-    }
-    @GetMapping("/{electionId}/lists/{listaId}/candidates")
-    public ResponseEntity<String> getCandidatesByListaId(@PathVariable Long electionId, @PathVariable Long listaId, HttpServletRequest request) {
-        return voteService.getCandidatesByListaId(electionId,listaId, request);
-    }
-    @PostMapping("/voter/{voterId}/election/{electionId}/lists/{listaId}/candidates/{candidateId}")
-    public ResponseEntity<String> addVoteForCandidateId(@PathVariable Long voterId,
-                                                        @PathVariable Long electionId,
-                                                        @PathVariable Long listaId,
-                                                        @PathVariable Long candidateId,
-                                                        HttpServletRequest request) {
-        return voteService.addVoteForCandidateId(voterId,electionId,listaId,candidateId,request);
-    }
-
     @PostMapping("/vote-for-candidate")
     public ResponseEntity<String> addVoteForCandidate(@RequestParam String electionName,
                                                       @RequestParam String firstName,
                                                       @RequestParam String lastName,
                                                       HttpServletRequest request) {
-        return voteService.addVoteForCandidate(electionName,firstName, lastName, request);
+        return voteService.addVoteForCandidate(electionName, firstName, lastName, request);
+    }
+
+    @PostMapping("/vote-for-list")
+    public ResponseEntity<String> addVoteForList(@RequestParam String electionName,
+                                                 @RequestParam String name,
+                                                 HttpServletRequest request) {
+        return voteService.addVoteForList(electionName, name, request);
     }
 
     @GetMapping("/election/get-lists")
@@ -52,7 +42,6 @@ public class VoteController {
 
     @GetMapping("/election/list/get-candidates")
     public ResponseEntity<String> getCandidatesForList(@RequestParam String name, HttpServletRequest request) {
-        System.out.println("Usao je u voting servis kontroler");
         return voteService.getCandidatesForList(name,request);
     }
 

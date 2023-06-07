@@ -2,10 +2,18 @@ package ba.nwt.electionmanagement.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import org.hibernate.annotations.GenericGenerator;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"firstName", "lastName"})
+)
+@Getter
+@Setter
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,46 +38,6 @@ public class Candidate {
     @ManyToOne
     @JoinColumn(name="electionId")
     private Election election;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String last_name) {
-        this.lastName = last_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Election getElection() {
-        return election;
-    }
-
-    public void setElection(Election election) {
-        this.election = election;
-    }
 
     @Override
     public String toString() {

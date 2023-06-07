@@ -5,6 +5,7 @@ import ba.nwt.electionmanagement.entities.Election;
 import ba.nwt.electionmanagement.entities.Lista;
 import ba.nwt.electionmanagement.grpc.GrpcClient;
 import ba.nwt.electionmanagement.services.ElectionService;
+import com.google.api.Http;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -82,5 +83,10 @@ public class ElectionController {
     @GetMapping("/candidate/get-id")
     public ResponseEntity getCandidateIdByName(@RequestParam String firstName, @RequestParam String lastName, HttpServletRequest request) {
         return electionService.getCandidateIdByName(firstName, lastName,request);
+    }
+
+    @GetMapping("/list/get-id")
+    public ResponseEntity getListIdByName(@RequestParam String name, HttpServletRequest request) {
+        return electionService.getListIdByName(name,request);
     }
 }

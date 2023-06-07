@@ -4,15 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.UniqueElements;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 public class PollingStation {
 
     @Id
@@ -47,66 +47,6 @@ public class PollingStation {
             inverseJoinColumns = @JoinColumn(name = "election_id"))
     private Set<Election> elections = new HashSet<>();
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Set<Election> getElections() {
-        return elections;
-    }
-
-    public void setElections(Set<Election> elections) {
-        this.elections = elections;
-    }
-
-    public void addElections(Election election) {
-        this.elections.add(election);
-    }
-
-    public String getEntitet() {
-        return entitet;
-    }
-
-    public void setEntitet(String entitet) {
-        this.entitet = entitet;
-    }
-
-    public String getKanton() {
-        return kanton;
-    }
-
-    public void setKanton(String kanton) {
-        this.kanton = kanton;
-    }
-
-    public String getOpcina() {
-        return opcina;
-    }
-
-    public void setOpcina(String opcina) {
-        this.opcina = opcina;
-    }
-
     @Override
     public String toString() {
         return "PollingStation{" +
@@ -118,5 +58,9 @@ public class PollingStation {
                 ", opcina='" + opcina + '\'' +
                 ", elections=" + elections +
                 '}';
+    }
+
+    public void addElections(Election election) {
+        this.elections.add(election);
     }
 }
