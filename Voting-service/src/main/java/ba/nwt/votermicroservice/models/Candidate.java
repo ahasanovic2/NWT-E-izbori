@@ -26,20 +26,9 @@ public class Candidate {
     @Size(min = 20, message = "This field must contain at least 20 characters.")
     private String description;
 
-    @OneToMany(mappedBy = "candidate")
-    private List<Vote> votes = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "lista_id")
     private Lista lista;
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
-    }
 
     public Lista getLista() {
         return lista;

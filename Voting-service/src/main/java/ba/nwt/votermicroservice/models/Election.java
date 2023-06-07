@@ -36,24 +36,6 @@ public class Election {
     @Pattern(regexp = "^(Active|Finished|NotStarted)$", message = "This field can only be Active, Finished and NotStarted")
     private String status;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "election")
-    private List<Vote> votes = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "Election{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", status='" + status + '\'' +
-                ", votes=" + votes +
-                ", electionPollingStations=" + electionPollingStations +
-                ", lists=" + lists +
-                '}';
-    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "election")
@@ -80,14 +62,6 @@ public class Election {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
     }
 
     public List<ElectionPollingStation> getElectionPollingStations() {

@@ -14,4 +14,6 @@ public interface ListaRepository extends JpaRepository<Lista, Long> {
     List<Lista> findAllByElectionId(Long electionId);
 
     Optional<Lista> getListaByName(String name);
+
+    List<Lista> getListasByElectionName(String name);
 }

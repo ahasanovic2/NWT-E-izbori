@@ -1,27 +1,24 @@
 package ba.nwt.votermicroservice.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class Vote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="voter_id", nullable=false)
-    private Voter voter;
+    private Integer voterId;
+    private Integer electionId;
+    private Integer candidateId;
 
-    @ManyToOne
-    @JoinColumn(name = "candidate_id")
-    private Candidate candidate;
-
-    @ManyToOne
-    @JoinColumn(name = "election_id")
-    private Election election;
 
 
     @ManyToOne
@@ -44,32 +41,8 @@ public class Vote {
         this.timestamp = timestamp;
     }
 
-    public Voter getVoter() {
-        return voter;
-    }
-
     public void setLista(Lista lista) {
         this.lista = lista;
-    }
-
-    public void setVoter(Voter voter) {
-        this.voter = voter;
-    }
-
-    public Candidate getCandidate() {
-        return candidate;
-    }
-
-    public void setCandidate(Candidate candidate) {
-        this.candidate = candidate;
-    }
-
-    public Election getElection() {
-        return election;
-    }
-
-    public void setElection(Election election) {
-        this.election = election;
     }
 
     public Lista getLista() {

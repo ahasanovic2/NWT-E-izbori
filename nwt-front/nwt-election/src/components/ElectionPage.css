@@ -1,8 +1,9 @@
 .container {
-    max-width: 600px;
+    max-width: 1000px;
     margin: 0 auto;
     margin-top: 200px;
     padding: 20px;
+    height: auto;
 }
 
 h1 {
@@ -12,9 +13,10 @@ h1 {
 }
 
 .election-list {
-    display: inline-flex;
-    justify-content: space-between; /* Dodano: prostor između elemenata */
-    column-gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 15px; /* add left and right padding */
 }
 
 
@@ -24,8 +26,17 @@ h1 {
     padding: 20px;
     margin-bottom: 20px;
     text-align: center;
-    flex-basis: 90%;
+    flex-basis: calc(33.33% - 30px); /* change to roughly one third, minus margins */
+    margin: 0 15px 20px; /* add left and right margins */
+    background: rgba(0,1,5,0.41);
 }
+
+
+.election-card:nth-child(3n) {
+    margin-right: 0;
+}
+
+
 
 .election-card .election-title {
     font-size: 28px;
@@ -117,4 +128,5 @@ h1 {
 
 .rezultati p {
     text-align: center;
+    color: #003399;
 }

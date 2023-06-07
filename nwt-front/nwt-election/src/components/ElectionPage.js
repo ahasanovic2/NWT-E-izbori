@@ -1,36 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import "./ElectionPage.css"
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { ElectionContext } from './ElectionContext';
 
 const ElectionPage = () => {
-    // Hardkodirane vrijednosti izbora
-    const elections = [
-        {
-            id: 1,
-            name: 'Izbori 2023',
-            description: 'Opis izbora 2023',
-            startTime: '01.01.2023',
-            endTime: '31.12.2023',
-            status: 'active',
-        },
-        {
-            id: 2,
-            name: 'Izbori 2024',
-            description: 'Opis izbora 2024',
-            startTime: '01.01.2024',
-            endTime: '31.12.2024',
-            status: 'not started',
-        },
-        {
-            id:3,
-            name: 'Izbori 2024',
-            description: 'Opis izbora 2025',
-            startTime: '01.01.2025',
-            endTime: '31.12.2025',
-            status: 'not started',
-        },
+    const [elections, setElections] = useState([]);
 
-    ];
+    const [selectedElection, setSelectedElection] = useState(null);
+
+
+    useEffect(() => {
+        const fetchElections = async () => {
+            const token = localStorage.getItem('access_token');
+            try {
+                const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
+                const response = await axios.get(`${BASE_URL}/voting-microservice/voting/elections`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setElections(response.data);
+            } catch (error) {
+                console.error('Failed to fetch elections:', error);
+            }
+        };
+
+        fetchElections();
+    }, []);
 
     //ovu logiku mozemo koristiti kad budemo mogli stvarne podatke imati
     // const ElectionPage = () => {
@@ -69,6 +64,12 @@ const ElectionPage = () => {
         history.push('/legislativa');
     };
 
+    const handleSwitchToVotingPage = (election) => {
+        localStorage.setItem('electionName',election.name);
+        console.log("Election name is ", localStorage.getItem('electionName'));
+        history.push('/voting-page');
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
@@ -76,6 +77,7 @@ const ElectionPage = () => {
     };
 
     return (
+        <ElectionContext.Provider value={selectedElection}>
         <div>
             <div className="header">
                 <h1>E-izbori</h1>
@@ -123,14 +125,20 @@ const ElectionPage = () => {
                             <p>Start Time: {election.startTime}</p>
                             <p>End Time: {election.endTime}</p>
                         <p>Status: {election.status}</p>
-                        {election.status === 'active' && (
-                            <button>Glasaj</button>
+                        {election.status === 'Active' && (
+                            <button onClick={(event) => {
+                                event.stopPropagation();
+                                handleSwitchToVotingPage(election);
+                            }}>
+                            Glasaj
+                            </button>
                         )}
                     </div>
                 ))}
                 </div>
             </div>
         </div>
+        </ElectionContext.Provider>
     );
 };
 

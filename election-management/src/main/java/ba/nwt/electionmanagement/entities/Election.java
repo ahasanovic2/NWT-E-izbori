@@ -47,6 +47,10 @@ public class Election {
     @OneToMany(mappedBy = "election")
     private List<Lista> list = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "election")
+    private List<Candidate> candidates = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "elections")
     private List<PollingStation> pollingStations = new ArrayList<>();
 
@@ -152,6 +156,18 @@ public class Election {
 
     public void setEndTime(String endTime) {
         this.endTime = LocalDateTime.parse(endTime,DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    public List<Candidate> getCandidates() {
+        return candidates;
+    }
+
+    public void setCandidates(List<Candidate> candidates) {
+        this.candidates = candidates;
+    }
+
+    public void addCandidate(Candidate candidate) {
+        this.candidates.add(candidate);
     }
 
     @Override

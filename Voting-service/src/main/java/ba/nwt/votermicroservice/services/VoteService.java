@@ -120,8 +120,8 @@ public class VoteService {
                     if (optionalVoter.isPresent()) {
                         Voter voter = optionalVoter.get();
 
-                        vote.setVoter(voter);
-                        vote.setCandidate(candidate);
+                        //vote.setVoter(voter);
+                        //vote.setCandidate(candidate);
                         grpcClient.log(userId.getBody(),"Voting service","add vote for candidate id", "Success");
                         voteRepository.save(vote); // save the updated Vote object to the database
                         return ResponseEntity.ok("Glas uspjesno dodan!");
@@ -177,8 +177,9 @@ public class VoteService {
     }
 
     public ResponseEntity<String> getListsForElection(String name, HttpServletRequest request) {
+        System.out.println("Name is " + name);
         HttpEntity<String> entity = extractEntity(request);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/election/get-lists")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/election/lists")
                 .queryParam("name", name);
         ResponseEntity<String> lists = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
@@ -195,4 +196,20 @@ public class VoteService {
     }
 
 
+    public ResponseEntity<String> addVoteForCandidate(String electionName, String firstName, String lastName, HttpServletRequest request) {
+        ResponseEntity<Integer> userId = getUserId(request);
+        HttpEntity<String> entity = extractEntity(request);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/election/get-id")
+                .queryParam("electionName", electionName);
+        ResponseEntity<Integer> electionId = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, Integer.class);
+        builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections//candidate/get-id")
+                .queryParam("firstName", firstName).queryParam("lastName", lastName);
+        ResponseEntity<Integer> candidateId = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, Integer.class);
+        Vote vote = new Vote();
+        vote.setVoterId(userId.getBody());
+        vote.setCandidateId(candidateId.getBody());
+        vote.setElectionId(electionId.getBody());
+        voteRepository.save(vote);
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully saved vote");
+    }
 }

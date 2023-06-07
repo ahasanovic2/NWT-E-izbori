@@ -37,6 +37,14 @@ public class VoteController {
         return voteService.addVoteForCandidateId(voterId,electionId,listaId,candidateId,request);
     }
 
+    @PostMapping("/vote-for-candidate")
+    public ResponseEntity<String> addVoteForCandidate(@RequestParam String electionName,
+                                                      @RequestParam String firstName,
+                                                      @RequestParam String lastName,
+                                                      HttpServletRequest request) {
+        return voteService.addVoteForCandidate(electionName,firstName, lastName, request);
+    }
+
     @GetMapping("/election/get-lists")
     public ResponseEntity<String> getListsForElection(@RequestParam String name, HttpServletRequest request) {
         return voteService.getListsForElection(name,request);

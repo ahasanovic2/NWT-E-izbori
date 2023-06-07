@@ -1,38 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './VotingPage.css'
 import loginImage from "../images/login5.png";
 import { useHistory } from 'react-router-dom';
-
-const candidates = [
-    {
-        id: 1,
-        name: 'Kandidat 1',
-        party: 'Stranka 1',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis gravida est non elit feugiat, vitae aliquam ipsum bibendum. Sed mollis euismod feugiat. Phasellus in dolor non risus finibus pretium a id nunc. In ut tellus et turpis consectetur rhoncus. Vestibulum blandit risus nec metus vestibulum, in semper mauris tristique.',
-        list: 'Lista A',
-    },
-    {
-        id: 2,
-        name: 'Kandidat 2',
-        party: 'Stranka 2',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis gravida est non elit feugiat, vitae aliquam ipsum bibendum. Sed mollis euismod feugiat. Phasellus in dolor non risus finibus pretium a id nunc. In ut tellus et turpis consectetur rhoncus. Vestibulum blandit risus nec metus vestibulum, in semper mauris tristique.',
-        list: 'Lista B',
-    },
-    {
-        id: 3,
-        name: 'Kandidat 3',
-        party: 'Stranka 3',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis gravida est non elit feugiat, vitae aliquam ipsum bibendum. Sed mollis euismod feugiat. Phasellus in dolor non risus finibus pretium a id nunc. In ut tellus et turpis consectetur rhoncus. Vestibulum blandit risus nec metus vestibulum, in semper mauris tristique.',
-        list: 'Lista A',
-    },
-    {
-        id: 4,
-        name: 'Kandidat 4',
-        party: 'Stranka 4',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis gravida est non elit feugiat, vitae aliquam ipsum bibendum. Sed mollis euismod feugiat. Phasellus in dolor non risus finibus pretium a id nunc. In ut tellus et turpis consectetur rhoncus. Vestibulum blandit risus nec metus vestibulum, in semper mauris tristique.',
-        list: 'Lista B',
-    },
-];
+import { ElectionContext } from './ElectionContext';
+import axios from 'axios';
 
 function Candidate({ candidate, selectedCandidates, setSelectedCandidates }) {
     const handleClick = () => {
@@ -54,14 +25,14 @@ function Candidate({ candidate, selectedCandidates, setSelectedCandidates }) {
             <div className="image-containerLogin">
                 <img src={loginImage} alt="Login" />
             </div>
-            <h2>{candidate.name}</h2>
-            <h3>{candidate.party}</h3>
+            <h2>{candidate.firstName}</h2>
+            <h2>{candidate.lastName}</h2>
             <p>{candidate.description}</p>
         </div>
     );
 }
 
-function VotingPage({ selectedCandidates, setSelectedCandidates, clearSelection }) {
+function VotingPage({ candidates, selectedCandidates, setSelectedCandidates, clearSelection }) {
     const handleSubmit = () => {
         // Validacija izbora
 
@@ -125,12 +96,35 @@ function VotingPage({ selectedCandidates, setSelectedCandidates, clearSelection 
 
 function VotingPageFinal() {
     const [selectedCandidates, setSelectedCandidates] = useState([]);
+    const [candidates, setCandidates] = useState([]);  // Add state for candidates
+    const selectedElection = useContext(ElectionContext); // Access the selected election from context
 
     const clearSelection = () => {
         setSelectedCandidates([]);
     };
 
     const history = useHistory();
+
+    useEffect(() => {
+        const fetchCandidates = async () => {
+            const token = localStorage.getItem('access_token');
+            const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
+            try {
+                const response = await axios.get(`${BASE_URL}/election-microservice/elections/election/candidates?name=${localStorage.getItem('electionName')}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                console.log("Kandidati koji su dohvaceni su: ");
+                console.log(response.data);
+                setCandidates(response.data);
+            } catch (error) {
+                console.error('Failed to fetch candidates:', error);
+            }
+        };
+
+        if (localStorage.getItem('electionName')) {
+            fetchCandidates();
+        }
+    }, [selectedElection]);
 
     const handleSwitchToLanding = () => {
         history.push('/landing');
@@ -183,6 +177,7 @@ function VotingPageFinal() {
             <div className="App">
                 <h1>Informacije o kandidatima</h1>
                 <VotingPage
+                    candidates={candidates} // Pass fetched candidates to the VotingPage
                     selectedCandidates={selectedCandidates}
                     setSelectedCandidates={setSelectedCandidates}
                     clearSelection={clearSelection}

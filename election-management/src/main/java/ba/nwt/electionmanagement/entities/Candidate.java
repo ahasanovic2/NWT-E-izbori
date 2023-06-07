@@ -1,5 +1,6 @@
 package ba.nwt.electionmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,8 +11,6 @@ public class Candidate {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
-
 
     @NotNull(message = "This field cannot be null")
     @Size(min = 1, message = "This field must contain at least 1 character")
@@ -27,10 +26,10 @@ public class Candidate {
     @Size(min = 20, message = "This field must contain at least 20 characters.")
     private String description;
 
-
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="listId")
-    private Lista lista;
+    @JoinColumn(name="electionId")
+    private Election election;
 
     public Long getId() {
         return id;
@@ -64,12 +63,12 @@ public class Candidate {
         this.description = description;
     }
 
-    public Lista getLista() {
-        return lista;
+    public Election getElection() {
+        return election;
     }
 
-    public void setLista(Lista lista) {
-        this.lista = lista;
+    public void setElection(Election election) {
+        this.election = election;
     }
 
     @Override

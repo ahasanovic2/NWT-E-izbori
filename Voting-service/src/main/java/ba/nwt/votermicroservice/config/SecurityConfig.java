@@ -10,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +29,7 @@ public class SecurityConfig {
                 .requestMatchers(GET,"/voting/elections").hasAnyRole("ADMIN","USER")
                 .requestMatchers(GET,"/voting/election/get-lists").hasAnyRole("ADMIN","USER")
                 .requestMatchers(GET,"/voting/election/list/get-candidates").hasAnyRole("ADMIN","USER")
+                .requestMatchers(POST,"/voting/vote-for-candidate").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/voting/**").denyAll()
                 .anyRequest()
                 .authenticated()

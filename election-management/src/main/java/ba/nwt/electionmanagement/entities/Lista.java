@@ -20,17 +20,8 @@ public class Lista {
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
     private String name;
 
-
-    public void setCandidates(List<Candidate> candidates) {
-        this.candidates = candidates;
-    }
-
     @NotNull(message = "This field cannot be null")
     private Boolean nezavisna;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "lista")
-    private List<Candidate> candidates = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne
@@ -53,16 +44,6 @@ public class Lista {
         this.name = name;
     }
 
-    public List<Candidate> getCandidates() {
-        return candidates;
-    }
-
-    public void setCandidates(ArrayList<Candidate> candidates) {
-        this.candidates = candidates;
-    }
-
-    public void addCandidates(Candidate kandidat) { this.candidates.add(kandidat); }
-
     public Election getElection() {
         return election;
     }
@@ -70,6 +51,7 @@ public class Lista {
     public void setElection(Election election) {
         this.election = election;
     }
+
     public Boolean getNezavisna() {
         return nezavisna;
     }

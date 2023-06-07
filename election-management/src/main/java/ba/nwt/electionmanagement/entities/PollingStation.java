@@ -78,6 +78,7 @@ public class PollingStation {
     public void setElections(Set<Election> elections) {
         this.elections = elections;
     }
+
     public void addElections(Election election) {
         this.elections.add(election);
     }

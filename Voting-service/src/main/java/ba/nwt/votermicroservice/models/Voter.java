@@ -24,21 +24,9 @@ public class Voter {
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "You can only enter alphabet characters.")
     private String lastName;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "voter")
-    private List<Vote> votes = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name="pollingStationId")
     private PollingStation pollingStation;
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> liste) {
-        this.votes = votes;
-    }
 
     public PollingStation getPollingStation() {
         return pollingStation;
