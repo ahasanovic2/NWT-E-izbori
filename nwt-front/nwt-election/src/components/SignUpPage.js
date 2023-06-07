@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import './SignUpPage.css';
+import axios from 'axios';
 
 function SignUpPage() {
     const history = useHistory();
@@ -28,17 +29,48 @@ function SignUpPage() {
         }
     }
 
-    const handleSignUp = () => {
-        const isNumberValid = validateInput(inputNumber.current);
+    const handleSignUp = async () => {
         const isEmailValid = validateInput(inputEmail.current);
 
-        if (isNumberValid && isEmailValid) {
-            const number = inputNumber.current.value;
+        if (isEmailValid) {
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
             const email = inputEmail.current.value;
+            const password = document.getElementById("password").value;
+            const role = "USER"; // since role is always "USER"
 
-            // Rest of the registration processing code
+            const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
+            const response = await fetch(`${BASE_URL}/auth-service/authentication/register`, { // replace with your API url
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstname: firstName,
+                    lastname: lastName,
+                    email: email,
+                    password: password,
+                    role: role,
+                }),
+            });
 
-            history.push('/landing');
+            if(response.ok) { // if HTTP status is 200-299
+                // get the response data
+                const data = await response.json();
+                console.log(data);
+/*                 localStorage.setItem('access_token',data.access_token)
+                localStorage.setItem('refresh_token',data.refresh_token) */
+                // Rest of the registration processing code
+                history.push('/landing');
+            } else if(response.status === 409) { // if status is 409 Conflict
+                // handle email already existing...
+                const data = await response.json();
+                console.error('Error:', data.message);
+                alert(data.message);
+            } else {
+                console.error('Error:', response.status, response.statusText);
+                // handle other errors...
+            }
         }
     };
 
