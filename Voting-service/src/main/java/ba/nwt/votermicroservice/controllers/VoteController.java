@@ -50,4 +50,8 @@ public class VoteController {
         return voteService.getVoteByElection(electionId, voterId, request);
     }
 
+    @GetMapping("/votes")
+    public ResponseEntity getAllVotes(HttpServletRequest request) {
+        return voteService.getAllVotes(request);
+    }
 }

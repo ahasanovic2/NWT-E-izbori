@@ -4,6 +4,7 @@ package ba.nwt.votermicroservice.services;
 import ba.nwt.votermicroservice.grpc.GrpcClient;
 import ba.nwt.votermicroservice.models.Vote;
 import ba.nwt.votermicroservice.repositories.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class VoteService {
@@ -118,4 +120,20 @@ public class VoteService {
         }
         return ResponseEntity.status(HttpStatus.OK).body("{\"hasVote\":true}");
     }
+
+    public ResponseEntity<String> getAllVotes(HttpServletRequest request) {
+        Integer userId = getUserId(request).getBody();
+        List<Vote> votes = voteRepository.findAll();
+
+        ObjectMapper mapper = new ObjectMapper();
+        String votesJsonString;
+        try {
+            votesJsonString = mapper.writeValueAsString(votes);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to convert votes to JSON", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(votesJsonString, HttpStatus.OK);
+    }
+    
 }

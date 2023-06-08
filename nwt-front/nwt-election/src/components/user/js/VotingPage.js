@@ -5,20 +5,12 @@ import { useHistory } from 'react-router-dom';
 import { ElectionContext } from './ElectionContext';
 import axios from 'axios';
 
-function Candidate({ candidate, selectedCandidates, setSelectedCandidates }) {
+function Candidate({ candidate, selectedVote, setSelectedVote }) {
     const handleClick = () => {
-        const newList = [...selectedCandidates];
-        const candidateIndex = newList.findIndex(c => c.list === candidate.list);
-
-        if (candidateIndex !== -1) {
-            newList.splice(candidateIndex, 1);
-        }
-
-        newList.push(candidate);
-        setSelectedCandidates(newList);
+        setSelectedVote({ type: 'candidate', data: candidate });
     };
 
-    const isSelected = selectedCandidates.some(c => c.id === candidate.id);
+    const isSelected = selectedVote && selectedVote.type === 'candidate' && selectedVote.data.id === candidate.id;
 
     return (
         <div className={`candidate ${isSelected ? 'selected' : ''}`} onClick={handleClick}>
@@ -32,75 +24,97 @@ function Candidate({ candidate, selectedCandidates, setSelectedCandidates }) {
     );
 }
 
-function VotingPage({ candidates, selectedCandidates, setSelectedCandidates, clearSelection }) {
-    const handleSubmit = () => {
-        // Validacija izbora
+function List({ list, selectedVote, setSelectedVote }) {
+    const handleClick = () => {
+        setSelectedVote({ type: 'list', data: list });
+    };
 
-        //da li je user glasao za više od jedne liste
-        const selectedLists = selectedCandidates.map(c => c.list);
-        const uniqueLists = Array.from(new Set(selectedLists));
+    const isSelected = selectedVote && selectedVote.type === 'list' && selectedVote.data.id === list.id;
 
-        if (uniqueLists.length > 1) {
-            alert('Možete glasati samo za jednu listu.');
+    return (
+        <div className={`candidate ${isSelected ? 'selected' : ''}`} onClick={handleClick}>
+            <div className="image-containerLogin">
+                <img src={loginImage} alt="Login" />
+            </div>
+            <h2>{list.name}</h2>
+            <p>{list.description}</p>
+        </div>
+    );
+}
+
+function VotingPage({ candidates, lists, selectedVote, setSelectedVote, clearSelection }) {
+    const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
+    const token = localStorage.getItem('access_token');
+    const history = useHistory();
+
+    const handleSubmit = async () => {
+        // Validation checks
+
+        if (!selectedVote) {
+            alert('You need to select a candidate or a list before voting.');
             return;
         }
 
-        //  da li je user glasao za listu A i bilo kojeg kandidata iz liste B
-        const selectedCandidatesNames = selectedCandidates.map(c => c.name);
-        const listASelected = selectedCandidates.some(c => c.list === 'Lista A');
-        const listBSelected = selectedCandidates.some(c => c.list === 'Lista B');
+        try {
+            if (selectedVote.type === 'candidate') {
+                const { firstName, lastName } = selectedVote.data;
+                const url = `${BASE_URL}/voting-microservice/voting/vote-for-candidate?electionName=${localStorage.getItem('electionName')}&firstName=${firstName}&lastName=${lastName}`;
+                await axios.post(url, {}, { headers: { Authorization: `Bearer ${token}` } });
+                alert('Your vote for candidate has been casted!');
+            } else if (selectedVote.type === 'list') {
+                const { name } = selectedVote.data;
+                const url = `${BASE_URL}/voting-microservice/voting/vote-for-list?electionName=${localStorage.getItem('electionName')}&name=${name}`;
+                await axios.post(url, {}, { headers: { Authorization: `Bearer ${token}` } });
+                alert('Your vote for list has been casted!');
+            }
 
-        if (listASelected && listBSelected) {
-            alert('Ne možete glasati za kandidate iz obje liste.');
-            return;
+            clearSelection();  // Reset selection
+            history.push(`/landing`);
+        } catch (error) {
+            console.error('Failed to cast vote:', error);
+            alert('Failed to cast vote. Please try again.');
         }
-
-        //da li je user glasao za nezavisnu listu
-        const independentListSelected = selectedCandidates.some(c => c.list === 'Nezavisna lista');
-
-        if (independentListSelected) {
-            alert('Možete glasati samo za kandidate unutar nezavisne liste.');
-            return;
-        }
-
-        //  dodatne provjere ako treba jos dodat
-
-        // spasit glas u bazu podataka
-
-        // Resetuj izbor
-        clearSelection();
-
-        // Preusmjerite korisnika na početnu stranicu (to dodati u app.js kad se prebaci na koristenje switch-a
     };
 
     return (
         <div>
             <div className="VotingPage">
-                <h1>Glasanje na izborima</h1>
+                <h1>Voting in elections</h1>
                 <div className="candidates">
                     {candidates.map(candidate => (
                         <Candidate
                             key={candidate.id}
                             candidate={candidate}
-                            selectedCandidates={selectedCandidates}
-                            setSelectedCandidates={setSelectedCandidates}
+                            selectedVote={selectedVote}
+                            setSelectedVote={setSelectedVote}
                         />
                     ))}
                 </div>
-                <button onClick={clearSelection}>Izbriši unos</button>
-                <button onClick={handleSubmit}>Potvrdi glas</button>
+                <div className="lists">
+                    {lists.map(list => (
+                        <List
+                            key={list.id}
+                            list={list}
+                            selectedVote={selectedVote}
+                            setSelectedVote={setSelectedVote}
+                        />
+                    ))}
+                </div>
+                <button onClick={clearSelection}>Clear selection</button>
+                <button onClick={handleSubmit}>Confirm vote</button>
             </div>
         </div>
     );
 }
 
 function VotingPageFinal() {
-    const [selectedCandidates, setSelectedCandidates] = useState([]);
     const [candidates, setCandidates] = useState([]);  // Add state for candidates
+    const [lists, setLists] = useState([]);
+    const [selectedVote, setSelectedVote] = useState(null);
     const selectedElection = useContext(ElectionContext); // Access the selected election from context
 
     const clearSelection = () => {
-        setSelectedCandidates([]);
+        setSelectedVote([]);
     };
 
     const history = useHistory();
@@ -121,8 +135,24 @@ function VotingPageFinal() {
             }
         };
 
+        const fetchLists = async () => {
+            const token = localStorage.getItem('access_token');
+            const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
+            try {
+                const response = await axios.get(`${BASE_URL}/election-microservice/elections/election/lists?name=${localStorage.getItem('electionName')}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                console.log("Lists fetched are: ");
+                console.log(response.data);
+                setLists(response.data);
+            } catch (error) {
+                console.error('Failed to fetch lists:', error);
+            }
+        }
+
         if (localStorage.getItem('electionName')) {
             fetchCandidates();
+            fetchLists();
         }
     }, [selectedElection]);
 
@@ -183,11 +213,12 @@ function VotingPageFinal() {
                 </div>
             </div>
             <div className="App">
-                <h1>Informacije o kandidatima</h1>
+                <h1>Information about candidates and lists</h1>
                 <VotingPage
                     candidates={candidates} // Pass fetched candidates to the VotingPage
-                    selectedCandidates={selectedCandidates}
-                    setSelectedCandidates={setSelectedCandidates}
+                    lists={lists} // Pass fetched lists to the VotingPage
+                    selectedVote={selectedVote}
+                    setSelectedVote={setSelectedVote}
                     clearSelection={clearSelection}
                 />
             </div>
