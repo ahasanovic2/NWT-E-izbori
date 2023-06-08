@@ -1,9 +1,6 @@
 package ba.nwt.electionmanagement.services;
 
-import ba.nwt.electionmanagement.entities.Candidate;
-import ba.nwt.electionmanagement.entities.Election;
-import ba.nwt.electionmanagement.entities.Lista;
-import ba.nwt.electionmanagement.entities.PollingStation;
+import ba.nwt.electionmanagement.entities.*;
 import ba.nwt.electionmanagement.exception.ErrorDetails;
 import ba.nwt.electionmanagement.grpc.GrpcClient;
 import ba.nwt.electionmanagement.repositories.CandidateRepository;
@@ -19,7 +16,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -264,6 +263,12 @@ public class ElectionService {
     }
 
     public ResponseEntity<Integer> getUserId(HttpServletRequest request) {
+        HttpEntity<String> entity = getStringHttpEntity(request, "body");
+
+        return restTemplate.exchange("http://auth-service/users/id", HttpMethod.GET, entity, Integer.class);
+    }
+
+    private static HttpEntity<String> getStringHttpEntity(HttpServletRequest request, String body) {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         String token = null;
@@ -274,9 +279,8 @@ public class ElectionService {
         HttpHeaders headers = new HttpHeaders();
         assert token != null;
         headers.setBearerAuth(token);
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-
-        return restTemplate.exchange("http://auth-service/users/id", HttpMethod.GET, entity, Integer.class);
+        HttpEntity<String> entity = new HttpEntity<>(body, headers);
+        return entity;
     }
 
     public ResponseEntity communicate(HttpServletRequest request, String userManagementUrl) {
@@ -298,17 +302,7 @@ public class ElectionService {
     }
 
     public PollingStation getPollingStationForUser(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        String token = null;
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7); // Skip past "Bearer "
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        assert token != null;
-        headers.setBearerAuth(token);
-        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        HttpEntity<String> entity = getStringHttpEntity(request, null);
         return restTemplate.exchange("http://auth-service/pollingStations/user", HttpMethod.GET, entity, PollingStation.class).getBody();
     }
 
@@ -317,12 +311,43 @@ public class ElectionService {
     public String getElectionsForUser(HttpServletRequest request) {
         PollingStation pollingStation = getPollingStationForUser(request);
         List<Election> elections = electionRepository.findElectionsByPollingStationName(pollingStation.getName());
+        HttpEntity<String> entity = getStringHttpEntity(request, "body");
+
+        List<Election> electionsToRemove = new ArrayList<>();
+
+        for (Election election: elections) {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://voting-service/voting/get-vote-by-election")
+                    .queryParam("electionId", Integer.valueOf(election.getId().intValue()))
+                    .queryParam("voterId",getUserId(request).getBody());
+
+            ResponseEntity<String> povrat = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+
+            ObjectMapper mapper = new ObjectMapper();
+            Boolean hasVote = null;
+
+            try {
+                VoteStatus voteStatus = mapper.readValue(povrat.getBody(), VoteStatus.class);
+                if (voteStatus != null) {
+                    hasVote = voteStatus.getHasVote();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (hasVote != null && hasVote.booleanValue()) {
+                electionsToRemove.add(election);
+            }
+        }
+
+        elections.removeAll(electionsToRemove);
+
         List<String> electionStrings = elections.stream().map(Election::toString).collect(Collectors.toList());
         String jsonArray = String.join(", ", electionStrings);
         jsonArray = "[" + jsonArray + "]";
 
         return jsonArray;
     }
+
 
     public ResponseEntity getElectionIdByName(String electionName, HttpServletRequest request) {
         electionName = URLDecoder.decode(electionName,StandardCharsets.UTF_8);

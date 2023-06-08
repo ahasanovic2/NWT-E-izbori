@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .requestMatchers(POST, "/elections/election/add-candidates").hasRole("ADMIN")
                 .requestMatchers(GET,"/elections/get-elections-for-user").hasAnyRole("USER","ADMIN")
                 .requestMatchers(GET,"/elections/election/get-lists").hasAnyRole("USER","ADMIN")
-                .requestMatchers(GET,"/elections/election/get-candidates").hasAnyRole("USER","ADMIN")
+                .requestMatchers(GET,"/elections/election/candidates").hasAnyRole("USER","ADMIN")
                 .requestMatchers(GET,"/elections/election/get-id").hasAnyRole("USER","ADMIN")
                 .requestMatchers(GET,"/elections/candidate/get-id").hasAnyRole("USER","ADMIN")
                 .requestMatchers(GET,"/elections/list/get-id").hasAnyRole("USER","ADMIN")

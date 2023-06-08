@@ -20,7 +20,7 @@ public class Election {
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @NotNull(message = "This field cannot be null")
     @NotBlank(message = "This field cannot be empty")
@@ -67,7 +67,7 @@ public class Election {
 
 
 
-    public Election(Long id, String name, String description, LocalDateTime start_time, LocalDateTime end_time, String status, List<Lista> list, List<PollingStation> pollingStations) {
+    public Election(Integer id, String name, String description, LocalDateTime start_time, LocalDateTime end_time, String status, List<Lista> list, List<PollingStation> pollingStations) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -78,11 +78,11 @@ public class Election {
         this.pollingStations = pollingStations;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Optional;
+
 @Service
 public class VoteService {
 
@@ -107,5 +109,13 @@ public class VoteService {
         vote.setListaId(listId.getBody());
         voteRepository.save(vote);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully added vote to list");
+    }
+
+    public ResponseEntity<String> getVoteByElection(Integer electionId, Integer userId, HttpServletRequest request) {
+        Optional<Vote> optionalVote = voteRepository.getVoteByElectionIdAndAndVoterId(electionId,userId);
+        if (optionalVote.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body("{\"hasVote\":false}");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("{\"hasVote\":true}");
     }
 }
