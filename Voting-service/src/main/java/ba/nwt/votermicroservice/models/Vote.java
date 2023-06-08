@@ -21,7 +21,7 @@ public class Vote {
     private Integer electionId;
     private Integer candidateId;
     private Integer listaId;
-    private LocalDateTime timestamp;
+    private String timestamp;
 
     @Override
     public String toString() {

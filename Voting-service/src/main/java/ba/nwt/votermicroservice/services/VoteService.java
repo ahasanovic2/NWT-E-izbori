@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
 
@@ -92,6 +93,7 @@ public class VoteService {
         vote.setVoterId(userId.getBody());
         vote.setCandidateId(candidateId.getBody());
         vote.setElectionId(electionId.getBody());
+        vote.setTimestamp(LocalDateTime.now().toString());
         voteRepository.save(vote);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully added vote to candidate");
     }
@@ -109,6 +111,7 @@ public class VoteService {
         vote.setVoterId(userId.getBody());
         vote.setElectionId(electionId.getBody());
         vote.setListaId(listId.getBody());
+        vote.setTimestamp(LocalDateTime.now().toString());
         voteRepository.save(vote);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully added vote to list");
     }
@@ -135,5 +138,5 @@ public class VoteService {
         }
         return new ResponseEntity<>(votesJsonString, HttpStatus.OK);
     }
-    
+
 }
