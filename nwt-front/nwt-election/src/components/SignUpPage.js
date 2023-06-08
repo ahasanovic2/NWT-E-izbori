@@ -58,10 +58,10 @@ function SignUpPage() {
                 // get the response data
                 const data = await response.json();
                 console.log(data);
-/*                 localStorage.setItem('access_token',data.access_token)
-                localStorage.setItem('refresh_token',data.refresh_token) */
+                localStorage.setItem('access_token',data.access_token)
+                localStorage.setItem('refresh_token',data.refresh_token)
                 // Rest of the registration processing code
-                history.push('/landing');
+                history.push('/choose-pollingstation');
             } else if(response.status === 409) { // if status is 409 Conflict
                 // handle email already existing...
                 const data = await response.json();

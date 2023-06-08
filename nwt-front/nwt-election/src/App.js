@@ -19,6 +19,7 @@ import './components/AdminLandingPage.css';
 import jwtDecode from 'jwt-decode';
 import VotingPageFinal from './components/VotingPage';
 import ElectionPage from './components/ElectionPage';
+import ChoosePSPage from './components/ChoosePollingStation';
 
 function App() {
     const handleLogout = () => {
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/login">
                     <LoginPage />
                 </Route>
+                <PrivateRoute path="/choose-pollingstation" component={ChoosePSPage} onLogout={handleLogout}/>
                 <PrivateRoute path="/election" component={ElectionPage} onLogout={handleLogout} />
                 <PrivateRoute path="/voting-page" component={VotingPageFinal} onLogout={handleLogout} />
                 <PrivateRoute path="/landing" component={LandingPage} onLogout={handleLogout} />
