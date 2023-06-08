@@ -1,35 +1,32 @@
-import React, {useState} from 'react';
-import './VotersPage.css';
-import HowVoter from './HowVoter';
-import WhoVoter from './WhoVoter';
-import { useHistory, Switch, Route, useRouteMatch, useLocation } from 'react-router-dom';
+import React from 'react';
+import '../css/LandingPage.css';
+import './WhoVoter';
+import { useHistory } from 'react-router-dom';
 
-const VotersPage = () => {
-
+const LandingPage = (props) => {
+    
     const history = useHistory();
-    const match = useRouteMatch();
-    const location = useLocation();
 
     const handleSwitchToLanding = () => {
         history.push('/landing');
+    };
+
+    const handleSwitchToVoters = () => {
+        history.push('/voters');
     };
 
     const handleSwitchToLegislativa = () => {
         history.push('/legislativa');
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        history.push('/');
-    };
-    
     const handleSwitchToIzbori = () => {
         history.push('/election')
     };
 
-    const handleButtonClick = (route) => {
-        history.push(`/voters/${route}`);
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        history.push('/');
     };
 
     return (
@@ -41,7 +38,7 @@ const VotersPage = () => {
                         <br/>
                         <span className="small-text">Početna stranica aplikacije</span>
                     </button>
-                    <button>Glasači
+                    <button onClick={handleSwitchToVoters}>Glasači
                         <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
                     </button>
@@ -62,26 +59,22 @@ const VotersPage = () => {
                     <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
-            <div className="left-sidebar">
-                <button
-                    className={`sidebar-button ${location.pathname === '/voters/whoVoter' ? 'active' : ''}`}
-                    onClick={() => handleButtonClick('whoVoter')}
-                >
-                    Ko može glasati?
-                </button>
-                <button
-                    className={`sidebar-button ${location.pathname === '/voters/howVoter' ? 'active' : ''}`}
-                    onClick={() => handleButtonClick('howVoter')}
-                >
-                    Kako glasati?
-                </button>
-                <Switch>
-                    <Route path='/voters/whoVoter' component={WhoVoter} />
-                    <Route path='/voters/howVoter' component={HowVoter} />
-                </Switch>
+            <div className="content">
+                <h2>Dobrodošli na online glasanje na izborima u BiH</h2>
+                <p>
+                    Online glasanje na izborima u Bosni i Hercegovini vam omogućava da udobno i sigurno glasate iz udobnosti svog doma.
+                    Bez obzira gdje se nalazite, možete iskoristiti svoje biračko pravo i doprinijeti demokratskom procesu.
+                </p>
+                <p>
+                    Naša platforma omogućava jednostavno registrovanje, sigurno provođenje izbora i transparentno prikazivanje rezultata.
+                    Uz pomoć naše aplikacije, možete pristupiti informacijama o kandidatima, glasati za svoje favorite i pratiti izborne rezultate u realnom vremenu.
+                </p>
+                <p>
+                    <b>Vaš glas je važan! Pridružite se online glasanju i izaberite budućnost Bosne i Hercegovine.</b>
+                </p>
             </div>
         </div>
     );
 };
 
-export default VotersPage;
+export default LandingPage;

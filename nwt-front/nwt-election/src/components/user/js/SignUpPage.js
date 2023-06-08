@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import './SignUpPage.css';
+import '../css/SignUpPage.css';
 import axios from 'axios';
 
 function SignUpPage() {

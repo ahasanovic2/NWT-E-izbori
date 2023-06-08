@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './VotingPage.css'
-import loginImage from "../images/login5.png";
+import '../css/VotingPage.css'
+import loginImage from "../../../images/login5.png";
 import { useHistory } from 'react-router-dom';
 import { ElectionContext } from './ElectionContext';
 import axios from 'axios';

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import './AdminLandingPage.css';
-import './WhoVoter';
-import './CreateElections.js';
+import '../css/AdminLandingPage.css';
+import '../../user/js/WhoVoter';
+import '../../user/js/CreateElections.js';
 
 const AdminLandingPage = (props) => {
     

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import "./ElectionPage.css"
+import "../css/ElectionPage.css"
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { ElectionContext } from './ElectionContext';

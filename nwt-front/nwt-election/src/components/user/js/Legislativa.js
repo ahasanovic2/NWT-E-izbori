@@ -1,5 +1,5 @@
 import React from 'react';
-import './Legislativa.css';
+import '../css/Legislativa.css';
 import { useHistory } from 'react-router-dom';
 
 const Legislativa = (props) => {

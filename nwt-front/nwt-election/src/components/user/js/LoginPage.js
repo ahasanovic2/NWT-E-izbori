@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import loginImage from '../images/login5.png';
+import loginImage from '../../../images/login5.png';
 
 import {FiEye, FiEyeOff} from 'react-icons/fi';
-import './LoginPage.css'
+import '../css/LoginPage.css'
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useHistory } from 'react-router-dom';

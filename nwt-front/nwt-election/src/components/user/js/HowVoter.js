@@ -1,5 +1,5 @@
 import React from 'react';
-import './HowVoter.css'
+import '../css/HowVoter.css'
 import { useHistory } from 'react-router-dom';
 
 const HowVoter = () => {

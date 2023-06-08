@@ -1,25 +1,25 @@
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
+import LoginPage from './components/user/js/LoginPage';
 import './App.css';
-import './components/SignUpPage.css';
-import SignUpPage from "./components/SignUpPage";
+import './components/user/css/SignUpPage.css';
+import SignUpPage from "./components/user/js/SignUpPage";
 import React from "react";
-import LandingPage from "./components/LandingPage";
-import './components/LandingPage.css';
-import HomePage from "./components/HomePage";
+import LandingPage from "./components/user/js/LandingPage";
+import './components/user/css/LandingPage.css';
+import HomePage from "./components/user/js/HomePage";
 import {Login} from "@mui/icons-material";
-import VotersPage from "./components/VotersPage";
-import './components/VotersPage.css';
-import Legislativa from "./components/Legislativa";
-import './components/Legislativa.css';
-import WhoVoter from "./components/WhoVoter";
-import AdminLandingPage from "./components/AdminLandingPage";
-import CreateElections from './components/CreateElections';
-import './components/AdminLandingPage.css';
+import VotersPage from "./components/user/js/VotersPage";
+import './components/user/css/VotersPage.css';
+import Legislativa from "./components/user/js/Legislativa";
+import './components/user/css/Legislativa.css';
+import WhoVoter from "./components/user/js/WhoVoter";
+import AdminLandingPage from "./components/admin/js/AdminLandingPage";
+import CreateElections from './components/user/js/CreateElections';
+import './components/admin/css/AdminLandingPage.css';
 import jwtDecode from 'jwt-decode';
-import VotingPageFinal from './components/VotingPage';
-import ElectionPage from './components/ElectionPage';
-import ChoosePSPage from './components/ChoosePollingStation';
+import VotingPageFinal from './components/user/js/VotingPage';
+import ElectionPage from './components/user/js/ElectionPage';
+import ChoosePSPage from './components/user/js/ChoosePollingStation';
 
 function App() {
     const handleLogout = () => {
