@@ -52,6 +52,7 @@ public class Election {
     private List<Candidate> candidates = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "elections")
+    @JsonIgnore
     private List<PollingStation> pollingStations = new ArrayList<>();
 
     @AssertTrue(message = "End time must be after start time")

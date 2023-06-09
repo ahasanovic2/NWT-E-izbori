@@ -34,6 +34,11 @@ public class ElectionController {
         return ResponseEntity.ok(electionService.getElections());
     }
 
+    @GetMapping("/get-election-by-id")
+    public ResponseEntity getElectionById(@RequestParam Integer electionId, HttpServletRequest request) {
+        return electionService.getElectionById(electionId,request);
+    }
+
     @PostMapping("/create-election")
     public ResponseEntity createElection(@Valid @RequestBody Election election, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         return electionService.createElection(election,redirectAttributes,request);

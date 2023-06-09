@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ElectionRepository extends JpaRepository<Election, Long> {
+public interface ElectionRepository extends JpaRepository<Election, Integer> {
 
     @Query("SELECT e FROM Election e JOIN e.pollingStations ps WHERE ps.name = :name")
     List<Election> findElectionsByPollingStationName(@Param("name") String name);

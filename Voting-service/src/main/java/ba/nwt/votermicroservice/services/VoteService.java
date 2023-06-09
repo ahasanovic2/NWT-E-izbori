@@ -3,10 +3,13 @@ package ba.nwt.votermicroservice.services;
 
 import ba.nwt.votermicroservice.grpc.GrpcClient;
 import ba.nwt.votermicroservice.models.Vote;
+import ba.nwt.votermicroservice.rabbit.RabbitConfig;
+import ba.nwt.votermicroservice.rabbit.VoteMessage;
 import ba.nwt.votermicroservice.repositories.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,9 @@ public class VoteService {
     private RestTemplate restTemplate;
 
     private GrpcClient grpcClient;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     public VoteService() {
         grpcClient = GrpcClient.get();
@@ -95,6 +101,27 @@ public class VoteService {
         vote.setElectionId(electionId.getBody());
         vote.setTimestamp(LocalDateTime.now().toString());
         voteRepository.save(vote);
+
+        VoteMessage voteMessage = new VoteMessage();
+        voteMessage.setId(vote.getId());
+        voteMessage.setCandidateId(vote.getCandidateId());
+        voteMessage.setTimestamp(vote.getTimestamp());
+        voteMessage.setVoterId(vote.getVoterId());
+        voteMessage.setElectionId(vote.getElectionId());
+        voteMessage.setListaId(null);
+
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        String token = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            token = authorizationHeader.substring(7); // Skip past "Bearer "
+        }
+
+        voteMessage.setToken(token);
+
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, voteMessage);
+
+
         return ResponseEntity.status(HttpStatus.OK).body("Successfully added vote to candidate");
     }
 

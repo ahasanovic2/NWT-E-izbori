@@ -439,4 +439,16 @@ public class ElectionService {
         grpcClient.log(userId,"Election","Get list by name","Success");
         return ResponseEntity.ok(optionalLista.get());
     }
+
+    public ResponseEntity getElectionById(Integer electionId, HttpServletRequest request) {
+        Optional<Election> optionalElection = electionRepository.findById(electionId);
+        Integer userId = getUserId(request).getBody();
+        if (optionalElection.isEmpty()) {
+            grpcClient.log(userId, "Election", "Get election by ID", "Fail");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "ID", "No election by that ID");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        grpcClient.log(userId, "Election", "Get election by ID", "Fail");
+        return ResponseEntity.ok(optionalElection.get());
+    }
 }
