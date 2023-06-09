@@ -160,8 +160,7 @@ services:
       - eureka-server
       - mysql
       - config-server
-    links:
-      - rabbitmq:rabbitmq
+      - rabbitmq
 
   result-service:
     container_name: result-service
@@ -191,8 +190,7 @@ services:
       - eureka-server
       - mysql
       - config-server
-    links:
-      - rabbitmq:rabbitmq
+      - rabbitmq
   
   frontend:
     image: frontend:latest
