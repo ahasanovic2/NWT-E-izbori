@@ -18,7 +18,7 @@ public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @NotNull(message = "This field cannot be null")
     @Size(min = 1, message = "This field must contain at least 1 character")

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
     List<Candidate> getCandidatesByElectionName(String name);
     Optional<Candidate> getCandidateByFirstNameAndLastName(String firstName, String lastName);
 }

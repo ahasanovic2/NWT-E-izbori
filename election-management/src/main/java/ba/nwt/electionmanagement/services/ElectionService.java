@@ -10,9 +10,11 @@ import ba.nwt.electionmanagement.repositories.PollingStationRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.Http;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -356,6 +358,10 @@ public class ElectionService {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"name","No election by that name");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
+        /*if (!optionalElection.get().getStatus().equals("Finished")) {
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"status","Election is not finished");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }*/
         return ResponseEntity.status(HttpStatus.OK).body(optionalElection.get().getId());
     }
 
@@ -385,5 +391,52 @@ public class ElectionService {
         grpcClient.log(userId.getBody(), "Election","Get list id by name","Success");
         return ResponseEntity.status(HttpStatus.OK).body(optionalLista.get().getId());
 
+    }
+
+    public ResponseEntity getCandidateNameById(Integer candidateId, HttpServletRequest request) {
+        Optional<Candidate> optionalCandidate = candidateRepository.findById(candidateId);
+        Integer userId = getUserId(request).getBody();
+        if (optionalCandidate.isEmpty()) {
+            grpcClient.log(userId, "Election","Get candidate by id","Fail");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"id","No candidate by that id");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(optionalCandidate.get());
+    }
+
+    public ResponseEntity getListById(Integer listId, HttpServletRequest request) {
+        Optional<Lista> optionalLista = listaRepository.findById(listId);
+        Integer userId = getUserId(request).getBody();
+        if (optionalLista.isEmpty()) {
+            grpcClient.log(userId, "Election","Get list id by id","Fail");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"id","No list by that id");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(optionalLista.get());
+    }
+
+    public ResponseEntity getCandidateByName(String candidateFirstName, String candidateLastName, HttpServletRequest request) {
+        Optional<Candidate> optionalCandidate = candidateRepository.getCandidateByFirstNameAndLastName(candidateFirstName,candidateLastName);
+        Integer userId = getUserId(request).getBody();
+        if (optionalCandidate.isEmpty()) {
+            grpcClient.log(userId, "Election", "Get candidate by name", "Fail");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "name", "No candidate by that name");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        grpcClient.log(userId,"Election","Get candidate by name","Success");
+        return ResponseEntity.ok(optionalCandidate.get());
+    }
+
+    public ResponseEntity getListByName(String listaName, HttpServletRequest request) {
+        listaName = URLDecoder.decode(listaName,StandardCharsets.UTF_8);
+        Optional<Lista> optionalLista = listaRepository.getListaByName(listaName);
+        Integer userId = getUserId(request).getBody();
+        if (optionalLista.isEmpty()) {
+            grpcClient.log(userId, "Election", "Get list by name", "Fail");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "name", "No list by that name");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        grpcClient.log(userId,"Election","Get list by name","Success");
+        return ResponseEntity.ok(optionalLista.get());
     }
 }

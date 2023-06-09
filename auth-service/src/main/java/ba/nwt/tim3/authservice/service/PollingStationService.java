@@ -6,6 +6,7 @@ import ba.nwt.tim3.authservice.pollingstation.PollingStation;
 import ba.nwt.tim3.authservice.pollingstation.PollingStationRepository;
 import ba.nwt.tim3.authservice.user.User;
 import ba.nwt.tim3.authservice.user.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,5 +69,26 @@ public class PollingStationService {
         User user = optionalUser.get();
         PollingStation pollingStation = user.getPollingStation();
         return ResponseEntity.ok(pollingStation);
+    }
+
+    public ResponseEntity getPollingStationByName(String pollingStationName, HttpServletRequest request) {
+        Optional<PollingStation> optionalPollingStation = pollingStationRepository.findByName(pollingStationName);
+        if (optionalPollingStation.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(LocalDateTime.now(),"name","PS not present in database"));
+        }
+        return ResponseEntity.ok(optionalPollingStation.get());
+    }
+
+    public ResponseEntity getPollingStationByUserId(Integer userId, HttpServletRequest request) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(LocalDateTime.now(),"user","User ID not present in database"));
+        }
+        User user = optionalUser.get();
+        Optional<PollingStation> optionalPollingStation = pollingStationRepository.getPollingStationByUsers(user);
+        if (optionalPollingStation.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(LocalDateTime.now(),"user","User has no PS"));
+        }
+        return ResponseEntity.ok(optionalPollingStation.get());
     }
 }

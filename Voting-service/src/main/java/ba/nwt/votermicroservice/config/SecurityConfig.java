@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers(POST,"/voting/vote-for-list").hasAnyRole("ADMIN","USER")
                 .requestMatchers(GET,"/voting/get-vote-by-election").hasAnyRole("ADMIN","USER")
                 .requestMatchers(GET,"/voting/votes").hasAnyRole("ADMIN","USER")
+                .requestMatchers(GET,"/voting/votes-for-election").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/voting/**").denyAll()
                 .anyRequest()
                 .authenticated()

@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ListaRepository extends JpaRepository<Lista, Long> {
+public interface ListaRepository extends JpaRepository<Lista, Integer> {
 
     List<Lista> findAllByElectionId(Long electionId);
 
-    Optional<Lista> getListaByName(String name);
+    Optional<Lista> getListaByName(String listaName);
 
     List<Lista> getListasByElectionName(String name);
 }

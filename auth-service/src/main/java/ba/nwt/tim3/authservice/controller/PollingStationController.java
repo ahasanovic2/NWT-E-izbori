@@ -50,4 +50,14 @@ public class PollingStationController {
     public ResponseEntity getPollingStationForUser() {
         return pollingStationService.getPollingStationForUser();
     }
+
+    @GetMapping("/get-by-name")
+    public ResponseEntity getPollingStationByName(@RequestParam String pollingStationName, HttpServletRequest request) {
+        return pollingStationService.getPollingStationByName(pollingStationName,request);
+    }
+
+    @GetMapping("/user/get-by-id")
+    public ResponseEntity getPollingStationByUserId(@RequestParam Integer userId, HttpServletRequest request) {
+        return pollingStationService.getPollingStationByUserId(userId,request);
+    }
 }

@@ -54,4 +54,9 @@ public class VoteController {
     public ResponseEntity getAllVotes(HttpServletRequest request) {
         return voteService.getAllVotes(request);
     }
+
+    @GetMapping("/votes-for-election")
+    public ResponseEntity allVotes(@RequestParam Integer electionId, HttpServletRequest request) {
+        return voteService.getAllVotesForElection(electionId,request);
+    }
 }

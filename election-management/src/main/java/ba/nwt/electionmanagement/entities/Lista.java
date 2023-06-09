@@ -17,7 +17,7 @@ public class Lista {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @NotNull(message = "This field cannot be null")
     @Size(min = 2, message = "This field must be at least 2 characters")

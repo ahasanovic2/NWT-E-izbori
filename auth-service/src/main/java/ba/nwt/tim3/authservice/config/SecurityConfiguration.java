@@ -35,6 +35,8 @@ public class SecurityConfiguration {
                 .requestMatchers(POST, "/pollingStations/create").hasRole(ADMIN.name())
                 .requestMatchers(GET, "/pollingStations").hasAnyRole(ADMIN.name(), USER.name())
                 .requestMatchers(GET, "/pollingStations/user").hasAnyRole(ADMIN.name(), USER.name())
+                .requestMatchers(GET, "/pollingStations/user/get-by-id").hasAnyRole(ADMIN.name(), USER.name())
+                .requestMatchers(GET, "/pollingStations/get-by-name").hasAnyRole(ADMIN.name(), USER.name())
                 .requestMatchers("/pollingStations/**").denyAll()
                 .requestMatchers(GET, "/users").hasRole(ADMIN.name())
                 .requestMatchers(POST, "/users/{userId}/pollingStation/{pollingStationId}").hasRole(USER.name())

@@ -127,16 +127,26 @@ public class VoteService {
     public ResponseEntity<String> getAllVotes(HttpServletRequest request) {
         Integer userId = getUserId(request).getBody();
         List<Vote> votes = voteRepository.findAll();
+        return getVotesInString(votes, userId);
+    }
 
+    public ResponseEntity getAllVotesForElection(Integer electionId, HttpServletRequest request) {
+        Integer userId = getUserId(request).getBody();
+        List<Vote> votes = voteRepository.findAllByElectionId(electionId);
+        return getVotesInString(votes, userId);
+    }
+
+    private ResponseEntity getVotesInString(List<Vote> votes, Integer userId) {
         ObjectMapper mapper = new ObjectMapper();
         String votesJsonString;
         try {
             votesJsonString = mapper.writeValueAsString(votes);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            grpcClient.log(userId, "Result service", "Parse votes to string", "Fail");
             return new ResponseEntity<>("Failed to convert votes to JSON", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        grpcClient.log(userId, "Result service", "Parse votes to string", "Success");
         return new ResponseEntity<>(votesJsonString, HttpStatus.OK);
     }
-
 }

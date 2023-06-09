@@ -10,16 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-public class ResultApplication implements CommandLineRunner {
+public class ResultApplication  {
 
 	@Autowired
-	private ResultService resultService;
 	public static void main(String[] args) {
 		SpringApplication.run(ResultApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		//resultService.createRows();
-	}
 }
