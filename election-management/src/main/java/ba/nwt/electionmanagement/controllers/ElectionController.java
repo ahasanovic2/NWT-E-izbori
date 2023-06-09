@@ -61,7 +61,7 @@ public class ElectionController {
 
     @PostMapping("/election/add-lists")
     public ResponseEntity<String> addLists(@RequestParam String name, @Valid @RequestBody List<Lista> liste, HttpServletRequest request) {
-        return electionService.addLists(name,liste, request);
+        return electionService.addLists(name,liste,request);
     }
 
 

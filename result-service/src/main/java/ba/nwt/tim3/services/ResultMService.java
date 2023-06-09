@@ -82,7 +82,7 @@ public class ResultMService {
                     }
                 }
                 else if (vote.getListaId() != null) {
-                    builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/candidate/get-name")
+                    builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/list/get-name")
                             .queryParam("listId", vote.getListaId());
                     ResponseEntity<Lista> listResponseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, Lista.class);
                     Lista lista = listResponseEntity.getBody();
@@ -148,7 +148,7 @@ public class ResultMService {
                         }
                     }
                     else if (vote.getListaId() != null) {
-                        builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/candidate/get-name")
+                        builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/list/get-name")
                                 .queryParam("listId", vote.getListaId());
                         ResponseEntity<Lista> listResponseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, Lista.class);
                         Lista lista = listResponseEntity.getBody();

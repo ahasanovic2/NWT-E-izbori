@@ -148,6 +148,10 @@ services:
       - DB_PASSWORD=password
       - EUREKA_SERVER=http://eureka-server:8761/eureka
       - CONFIG_SERVER=http://config-server:8888
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
     expose:
       - 8082
     ports:
@@ -156,6 +160,8 @@ services:
       - eureka-server
       - mysql
       - config-server
+    links:
+      - rabbitmq:rabbitmq
 
   result-service:
     container_name: result-service
@@ -173,6 +179,10 @@ services:
       - DB_PASSWORD=password
       - EUREKA_SERVER=http://eureka-server:8761/eureka
       - CONFIG_SERVER=http://config-server:8888
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
     expose:
       - 8081
     ports:
@@ -181,3 +191,36 @@ services:
       - eureka-server
       - mysql
       - config-server
+    links:
+      - rabbitmq:rabbitmq
+  
+  frontend:
+    image: frontend:latest
+    container_name: frontend
+    build:
+      context: ./nwt-front/nwt-election/
+      dockerfile: Dockerfile
+    volumes:
+      - './nwt-front/nwt-election:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    restart: on-failure
+    expose:
+      - "3000"
+    ports:
+      - 3000:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_BASE_URL=http://localhost:8080
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=kukierlang
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    expose:
+      - "5672"
+    ports:
+      - 15672:15672
+      - 5672:5672
