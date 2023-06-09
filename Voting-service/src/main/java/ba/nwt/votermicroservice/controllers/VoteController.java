@@ -40,11 +40,6 @@ public class VoteController {
         return voteService.getListsForElection(name,request);
     }
 
-    @GetMapping("/election/list/get-candidates")
-    public ResponseEntity<String> getCandidatesForList(@RequestParam String name, HttpServletRequest request) {
-        return voteService.getCandidatesForList(name,request);
-    }
-
     @GetMapping("/get-vote-by-election")
     public ResponseEntity<String> getVoteByElection(@RequestParam Integer electionId, @RequestParam Integer voterId, HttpServletRequest request) {
         return voteService.getVoteByElection(electionId, voterId, request);

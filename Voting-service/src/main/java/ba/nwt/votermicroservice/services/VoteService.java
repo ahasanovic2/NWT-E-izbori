@@ -76,16 +76,6 @@ public class VoteService {
         return ResponseEntity.status(HttpStatus.OK).body(lists.getBody());
     }
 
-    public ResponseEntity<String> getCandidatesForList(String name, HttpServletRequest request) {
-        HttpEntity<String> entity = extractEntity(request);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/election/list/get-candidates")
-                .queryParam("name", name);
-        ResponseEntity<String> candidates = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
-
-        return ResponseEntity.status(HttpStatus.OK).body(candidates.getBody());
-    }
-
-
     public ResponseEntity<String> addVoteForCandidate(String electionName, String firstName, String lastName, HttpServletRequest request) {
         ResponseEntity<Integer> userId = getUserId(request);
         HttpEntity<String> entity = extractEntity(request);
