@@ -35,12 +35,11 @@ function App() {
                 localStorage.getItem('access_token') ? (
                     <Component {...props} />
                 ) : (
-                    <Redirect to="/login" />
+                    <Redirect to={{ pathname: "/login", state: { from: props.location, message: 'You need to log in to access this page' } }} />
                 )
             }
         />
-    );
-
+    );    
     return (
         <Router>
             <Switch>
@@ -50,12 +49,8 @@ function App() {
                 <Route path="/sign-up">
                     <SignUpPage />
                 </Route>
-                <Route path="/login">
-                    <LoginPage />
-                </Route>
-                <Route path="/results">
-                    <ResultsHome/>
-                </Route>
+                <Route path="/login" render={props => <LoginPage {...props} />} />
+                <PrivateRoute path="/results" component={ResultsHome} onLogout={handleLogout} />
                 <PrivateRoute path="/choose-pollingstation" component={ChoosePSPage} onLogout={handleLogout}/>
                 <PrivateRoute path="/election" component={ElectionPage} onLogout={handleLogout} />
                 <PrivateRoute path="/voting-page" component={VotingPageFinal} onLogout={handleLogout} />

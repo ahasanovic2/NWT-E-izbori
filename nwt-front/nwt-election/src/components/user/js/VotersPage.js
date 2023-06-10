@@ -6,26 +6,34 @@ import { useHistory, Switch, Route, useRouteMatch, useLocation } from 'react-rou
 
 const VotersPage = () => {
 
-    const history = useHistory();
     const match = useRouteMatch();
     const location = useLocation();
+    const history = useHistory();
 
     const handleSwitchToLanding = () => {
         history.push('/landing');
+    };
+
+    const handleSwitchToVoters = () => {
+        history.push('/voters');
     };
 
     const handleSwitchToLegislativa = () => {
         history.push('/legislativa');
     };
 
+    const handleSwitchToIzbori = () => {
+        history.push('/election')
+    };
+
+    const handleSwitchToResults = () => {
+        history.push('/results')
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         history.push('/');
-    };
-    
-    const handleSwitchToIzbori = () => {
-        history.push('/election')
     };
 
     const handleButtonClick = (route) => {
@@ -41,7 +49,7 @@ const VotersPage = () => {
                         <br/>
                         <span className="small-text">Početna stranica aplikacije</span>
                     </button>
-                    <button>Glasači
+                    <button onClick={handleSwitchToVoters}>Glasači
                         <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
                     </button>
@@ -50,6 +58,10 @@ const VotersPage = () => {
                         <span className="small-text">Izbori 2024</span>
                         <br/>
                         <span className="small-text">Rezultati 2022</span>
+                    </button>
+                    <button onClick={handleSwitchToResults}>Rezultati
+                        <br/>
+                        <span className='small-text'>Rezultati 2024</span>
                     </button>
                     <button onClick={handleSwitchToLegislativa}>Legislativa
                         <br/>

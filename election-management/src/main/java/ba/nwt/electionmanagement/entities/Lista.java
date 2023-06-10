@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"name", "electionId"})
+)
 @Getter
 @Setter
 public class Lista {
@@ -19,10 +23,9 @@ public class Lista {
     @Column(name = "id")
     private Integer id;
 
-    @NotNull(message = "This field cannot be null")
+    @NotNull(message = "This field cannot bec null")
     @Size(min = 2, message = "This field must be at least 2 characters")
     @Pattern(regexp = "^[a-zA-Z0-9]+(\\s+[a-zA-Z0-9]+)*$", message = "You can only enter alphabet characters and numbers.")
-    @Column(unique = true)
     private String name;
 
     @NotNull(message = "This field cannot be null")

@@ -13,8 +13,16 @@ const Legislativa = (props) => {
         history.push('/voters');
     };
 
+    const handleSwitchToLegislativa = () => {
+        history.push('/legislativa');
+    };
+
     const handleSwitchToIzbori = () => {
         history.push('/election')
+    };
+
+    const handleSwitchToResults = () => {
+        history.push('/results')
     };
 
     const handleLogout = () => {
@@ -28,31 +36,30 @@ const Legislativa = (props) => {
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
-                    <button onClick={handleSwitchToLanding}>
-                        Početna
-                        <br />
-                        <span className="small-text">Povratak na početnu stranicu</span>
+                    <button onClick={handleSwitchToLanding}>Početna
+                        <br/>
+                        <span className="small-text">Početna stranica aplikacije</span>
                     </button>
-                    <button onClick={handleSwitchToVoters}>
-                        Glasači
-                        <br />
+                    <button onClick={handleSwitchToVoters}>Glasači
+                        <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
                     </button>
-                    <button onClick={handleSwitchToIzbori}>
-                        Izbori
-                        <br />
+                    <button onClick={handleSwitchToIzbori}>Izbori
+                        <br/>
                         <span className="small-text">Izbori 2024</span>
-                        <br />
+                        <br/>
                         <span className="small-text">Rezultati 2022</span>
                     </button>
-                    <button>
-                        Legislativa
-                        <br />
+                    <button onClick={handleSwitchToResults}>Rezultati
+                        <br/>
+                        <span className='small-text'>Rezultati 2024</span>
+                    </button>
+                    <button onClick={handleSwitchToLegislativa}>Legislativa
+                        <br/>
                         <span className="small-text">Zakon o provođenju izbora</span>
                     </button>
-                    <button>
-                        Kontakt
-                        <br />
+                    <button>Kontakt
+                        <br/>
                         <span className="small-text">Kontaktirajte korisničku podršku ukoliko imate bilo kakvih pitanja</span>
                     </button>
                     <button onClick={handleLogout}>Odjava</button>

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import '../css/ResultsHome.css'
+import { useHistory } from 'react-router-dom';
 
 const ResultsHome = () => {
 
@@ -15,6 +16,29 @@ const ResultsHome = () => {
     const [error4, setError4] = useState('');
     const [error5, setError5] = useState('');
     const [error6, setError6] = useState('');
+    const history = useHistory();
+
+    const handleSwitchToLanding = () => {
+        history.push('/landing');
+    };
+
+    const handleSwitchToVoters = () => {
+        history.push('/voters');
+    };
+
+    const handleSwitchToLegislativa = () => {
+        history.push('/legislativa');
+    };
+
+    const handleSwitchToIzbori = () => {
+        history.push('/election')
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        history.push('/');
+    };
 
     const handleResultsOption = async (option) => {
         const token = localStorage.getItem('access_token');
@@ -185,15 +209,15 @@ const ResultsHome = () => {
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
-                    <button>Početna
+                    <button onClick={handleSwitchToLanding}>Početna
                         <br/>
                         <span className="small-text">Početna stranica aplikacije</span>
                     </button>
-                    <button>Glasači
+                    <button onClick={handleSwitchToVoters}>Glasači
                         <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
                     </button>
-                    <button>Izbori
+                    <button onClick={handleSwitchToIzbori}>Izbori
                         <br/>
                         <span className="small-text">Izbori 2024</span>
                         <br/>
@@ -203,7 +227,7 @@ const ResultsHome = () => {
                         <br/>
                         <span className='small-text'>Rezultati 2024</span>
                     </button>
-                    <button>Legislativa
+                    <button onClick={handleSwitchToLegislativa}>Legislativa
                         <br/>
                         <span className="small-text">Zakon o provođenju izbora</span>
                     </button>
@@ -211,7 +235,7 @@ const ResultsHome = () => {
                         <br/>
                         <span className="small-text">Kontaktirajte korisničku podršku ukoliko imate bilo kakvih pitanja</span>
                     </button>
-                    <button>Odjava</button>
+                    <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
             <div className='results-options'>

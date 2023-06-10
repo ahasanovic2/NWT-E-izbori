@@ -7,7 +7,7 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useHistory } from 'react-router-dom';
 
-function LoginPage() {
+function LoginPage(props) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
@@ -42,10 +42,11 @@ function LoginPage() {
             }
         }
     };
-
+    const message = props.location?.state?.message || null;
     return (
         <div className="login-page">
             <div className="frameLogIn">
+                {message && <div className='missing_login'>{message}</div>}
                 <h2 className="fontLogin">Prijava korisnika</h2>
                 <div className="input-containerLogin">
                     <img src={loginImage} alt="Login"/>

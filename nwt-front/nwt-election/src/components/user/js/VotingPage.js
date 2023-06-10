@@ -201,6 +201,10 @@ function VotingPageFinal() {
                         <br/>
                         <span className="small-text">Rezultati 2022</span>
                     </button>
+                    <button>Rezultati
+                        <br/>
+                        <span className='small-text'>Rezultati 2024</span>
+                    </button>
                     <button onClick={handleSwitchToLegislativa}>Legislativa
                         <br/>
                         <span className="small-text">Zakon o provođenju izbora</span>
