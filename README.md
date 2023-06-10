@@ -1,7 +1,7 @@
 # NWT-E-izbori
 Projekat koji predstavlja simulaciju izbornog procesa u Bosni i Hercegovini.
 
-## Backend mikroserviis
+## Backend mikroservisi
 Sljedeći servisi su oni koji čine backend aplikacije:
 1. Config server
 2. Eureka service
