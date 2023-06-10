@@ -448,7 +448,7 @@ public class ElectionService {
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "ID", "No election by that ID");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
         }
-        grpcClient.log(userId, "Election", "Get election by ID", "Fail");
+        grpcClient.log(userId, "Election", "Get election by ID", "Success");
         return ResponseEntity.ok(optionalElection.get());
     }
 }

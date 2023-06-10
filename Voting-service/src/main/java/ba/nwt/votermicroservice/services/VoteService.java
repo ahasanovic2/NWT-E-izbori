@@ -130,6 +130,27 @@ public class VoteService {
         vote.setListaId(listId.getBody());
         vote.setTimestamp(LocalDateTime.now().toString());
         voteRepository.save(vote);
+
+        VoteMessage voteMessage = new VoteMessage();
+        voteMessage.setId(vote.getId());
+        voteMessage.setListaId(vote.getListaId());
+        voteMessage.setTimestamp(vote.getTimestamp());
+        voteMessage.setVoterId(vote.getVoterId());
+        voteMessage.setElectionId(vote.getElectionId());
+        voteMessage.setCandidateId(null);
+
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        String token = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            token = authorizationHeader.substring(7); // Skip past "Bearer "
+        }
+
+        voteMessage.setToken(token);
+
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, voteMessage);
+
+
         return ResponseEntity.status(HttpStatus.OK).body("Successfully added vote to list");
     }
 
