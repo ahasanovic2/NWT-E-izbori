@@ -2,7 +2,7 @@
 Projekat koji predstavlja simulaciju izbornog procesa u Bosni i Hercegovini.
 
 ## Backend mikroservisi
-Sljedeći servisi su oni koji čine backend aplikacije:
+Servisi pobrojani ispod čine backend dio aplikacije:
 1. Config server
 2. Eureka service
 3. Api gateway
