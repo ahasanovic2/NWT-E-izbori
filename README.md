@@ -19,7 +19,7 @@ Instalacije koje su potrebne za pokretanje:
 3. Sublime text editor
 
 Koraci koje je potrebno napraviti kako bi se kreirali Docker kontejneri i uspješno pokrenuli su sljedeći:
-1. Potrebno je dodati JAVA_HOME sistemsku environment varijablu za pokretanje Java aplikacija putem komandne linije.
+1. Potrebno je dodati ***JAVA_HOME*** sistemsku environment varijablu za pokretanje Java aplikacija putem komandne linije.
    1. U putanju je potrebno staviti putanju do direktorija u kojem se nalazi JDK instalacija. Primjer jedne takve je: ```C:\Users\ahasa\.jdks\openjdk-20.0.1```
 2. Svaki od servisa navedenih u drugoj sekciji ovog dokumenta, izuzev servisa ***Config server*** i ***Eureka server***, sadrži ***wait-for-it.sh*** shell skriptu. Po defaultu, ta skripta je pisana u ***Windows*** encodingu. Za uspješno pokretanje putem Docker-a
 potrebno je otvoriti svaku od tih skripti putem ***Sublime Text***-a i prebaciti line encoding na ***Unix*** putem sljedećih komandi: ***View->Line Endings->Unix*** i nakon toga spasiti datoteku
