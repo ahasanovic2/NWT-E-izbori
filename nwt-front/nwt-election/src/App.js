@@ -13,13 +13,12 @@ import './components/user/css/VotersPage.css';
 import Legislativa from "./components/user/js/Legislativa";
 import './components/user/css/Legislativa.css';
 import WhoVoter from "./components/user/js/WhoVoter";
-import AdminLandingPage from "./components/admin/js/AdminLandingPage";
-import CreateElections from './components/user/js/CreateElections';
 import './components/admin/css/AdminLandingPage.css';
 import jwtDecode from 'jwt-decode';
 import VotingPageFinal from './components/user/js/VotingPage';
 import ElectionPage from './components/user/js/ElectionPage';
 import ChoosePSPage from './components/user/js/ChoosePollingStation';
+import ResultsHome from './components/user/js/ResultsHome';
 
 function App() {
     const handleLogout = () => {
@@ -54,14 +53,15 @@ function App() {
                 <Route path="/login">
                     <LoginPage />
                 </Route>
+                <Route path="/results">
+                    <ResultsHome/>
+                </Route>
                 <PrivateRoute path="/choose-pollingstation" component={ChoosePSPage} onLogout={handleLogout}/>
                 <PrivateRoute path="/election" component={ElectionPage} onLogout={handleLogout} />
                 <PrivateRoute path="/voting-page" component={VotingPageFinal} onLogout={handleLogout} />
                 <PrivateRoute path="/landing" component={LandingPage} onLogout={handleLogout} />
-                <PrivateRoute path="/admin-landing" component={AdminLandingPage} onLogout={handleLogout} />
                 <PrivateRoute path="/voters" component={VotersPage} />
                 <PrivateRoute path="/legislativa" component={Legislativa} onLogout={handleLogout} />
-                <PrivateRoute path="/create-elections" component={CreateElections} />
                 <Route path="/">
                     {/* Default route */}
                     <HomePage />

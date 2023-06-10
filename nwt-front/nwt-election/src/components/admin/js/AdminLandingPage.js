@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import '../css/AdminLandingPage.css';
 import '../../user/js/WhoVoter';
-import '../../user/js/CreateElections.js';
 
 const AdminLandingPage = (props) => {
     
@@ -49,7 +48,7 @@ const AdminLandingPage = (props) => {
                 </div>
             </div>
             <div className="content">
-                <h2>Dobrodošli na online glasanje na izborima u BiH</h2>
+                <h2>Govno</h2>
                 <p>
                     Online glasanje na izborima u Bosni i Hercegovini vam omogućava da udobno i sigurno glasate iz udobnosti svog doma.
                     Bez obzira gdje se nalazite, možete iskoristiti svoje biračko pravo i doprinijeti demokratskom procesu.

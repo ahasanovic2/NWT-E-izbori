@@ -1,14 +1,10 @@
 package ba.nwt.tim3.rabbit;
 
-import ba.nwt.tim3.exception.ErrorDetails;
 import ba.nwt.tim3.interfaces.ResultRepository;
 import ba.nwt.tim3.models.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.Optional;
 
 @Component
@@ -25,7 +20,6 @@ import java.util.Optional;
 public class VoteConsumer {
     private final ResultRepository resultRepository;
     private final RabbitTemplate rabbitTemplate;
-
     private final RestTemplate restTemplate;
 
     private HttpEntity<String> extractEntity(String token) {
@@ -149,6 +143,4 @@ public class VoteConsumer {
         }
         return;
     }
-
-
 }

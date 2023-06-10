@@ -191,24 +191,6 @@ services:
       - mysql
       - config-server
       - rabbitmq
-  
-  frontend:
-    image: frontend:latest
-    container_name: frontend
-    build:
-      context: ./nwt-front/nwt-election/
-      dockerfile: Dockerfile
-    volumes:
-      - './nwt-front/nwt-election:/usr/src/app'
-      - '/usr/src/app/node_modules'
-    restart: on-failure
-    expose:
-      - "3000"
-    ports:
-      - 3000:3000
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_BASE_URL=http://localhost:8080
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
