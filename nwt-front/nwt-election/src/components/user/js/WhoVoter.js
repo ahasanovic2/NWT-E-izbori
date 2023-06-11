@@ -14,6 +14,10 @@ const WhoVoter = () => {
         history.push('/legislativa');
     };
 
+    const handleSwitchToResults = () => {
+        history.push('/results')
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
@@ -40,6 +44,10 @@ const WhoVoter = () => {
                         <span className="small-text">Izbori 2024</span>
                         <br />
                         <span className="small-text">Rezultati 2022</span>
+                    </button>
+                    <button onClick={handleSwitchToResults}>Rezultati
+                        <br/>
+                        <span className='small-text'>Rezultati 2024</span>
                     </button>
                     <button onClick={handleSwitchToLegislativa}>
                         Legislativa

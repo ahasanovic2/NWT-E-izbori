@@ -67,7 +67,7 @@ const LandingPage = (props) => {
                     <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
-            <div className="content">
+            <div className="user-content">
                 <h2>Dobrodošli na online glasanje na izborima u BiH</h2>
                 <p>
                     Online glasanje na izborima u Bosni i Hercegovini vam omogućava da udobno i sigurno glasate iz udobnosti svog doma.
