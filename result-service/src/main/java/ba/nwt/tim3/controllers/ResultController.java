@@ -23,12 +23,13 @@ public class ResultController {
 
     @GetMapping("/full-election")
     public ResponseEntity getFullElectionResults(@RequestParam String electionName, HttpServletRequest request) {
-        return resultMService.getFullElectionResults(electionName, request);
+        return resultMService.getElectionResultsForPollingStation(electionName, "Total", request);
     }
 
     @GetMapping("/election/pollingStation")
-    public ResponseEntity getElectionResultsForPollingStation(@RequestParam String electionName, @RequestParam String pollingStationName, HttpServletRequest request) {
-        System.out.println("Usao je u kontroler koji treba");
+    public ResponseEntity getElectionResultsForPollingStation(@RequestParam String electionName,
+                                                              @RequestParam String pollingStationName,
+                                                              HttpServletRequest request) {
         return resultMService.getElectionResultsForPollingStation(electionName,pollingStationName,request);
     }
 

@@ -17,4 +17,5 @@ public interface ResultRepository extends JpaRepository<Result, Integer> {
     List<Result> getResultsByElectionNameAndCandidateFirstNameAndCandidateLastName(String electionName, String candidateFirstName, String CandidateLastName);
     Optional<Result> getResultsByElectionNameAndCandidateFirstNameAndCandidateLastNameAndPollingStationName(String electionName, String candidateFirstName, String candidateLastName, String pollingStationName);
     Optional<Result> getResultsByElectionNameAndListNameAndPollingStationName(String electionName, String listName, String pollingStationName);
+    Boolean existsByElectionName(String electionName);
 }
