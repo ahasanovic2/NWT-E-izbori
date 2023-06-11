@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../css/Legislativa.css';
 import { useHistory } from 'react-router-dom';
 
 const Legislativa = (props) => {
     const history = useHistory();
+    const [showContactInfo, setShowContactInfo] = useState(false);
+
+    const handleContactHover = () => {
+        setShowContactInfo(true);
+    };
+
+    const handleContactLeave = () => {
+        setShowContactInfo(false);
+    };
 
     const handleSwitchToLanding = () => {
         history.push('/landing');
@@ -58,10 +67,18 @@ const Legislativa = (props) => {
                         <br/>
                         <span className="small-text">Zakon o provođenju izbora</span>
                     </button>
-                    <button>Kontakt
+                    <button
+                        onMouseEnter={handleContactHover}
+                        onMouseLeave={handleContactLeave}
+                    >
+                        Kontakt
                         <br/>
                         <span className="small-text">Kontaktirajte korisničku podršku ukoliko imate bilo kakvih pitanja</span>
                     </button>
+                    <div className="contact-info">
+                        <p>Broj telefona: 123-456-789</p>
+                        <p>Email: info@eizbori.com</p>
+                    </div>
                     <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
