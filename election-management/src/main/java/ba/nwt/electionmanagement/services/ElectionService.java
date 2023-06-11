@@ -379,10 +379,17 @@ public class ElectionService {
         return ResponseEntity.status(HttpStatus.OK).body(optionalCandidate.get().getId());
     }
 
-    public ResponseEntity getListIdByName(String name, HttpServletRequest request) {
+    public ResponseEntity getListIdByName(String name, String electionName, HttpServletRequest request) {
+        electionName = URLDecoder.decode(electionName,StandardCharsets.UTF_8);
         ResponseEntity<Integer> userId = getUserId(request);
         name = URLDecoder.decode(name,StandardCharsets.UTF_8);
-        Optional<Lista> optionalLista = listaRepository.getListaByName(name);
+        Optional<Election> optionalElection = electionRepository.getElectionByName(electionName);
+        if (optionalElection.isEmpty()) {
+            grpcClient.log(userId.getBody(), "Election","Get election by name","Fail");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"name","No election by that name");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+        Optional<Lista> optionalLista = listaRepository.getListaByNameAndElection(name, optionalElection.get());
         if (optionalLista.isEmpty()) {
             grpcClient.log(userId.getBody(), "Election","Get list id by name","Fail");
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"name","No list by that name");
@@ -427,10 +434,18 @@ public class ElectionService {
         return ResponseEntity.ok(optionalCandidate.get());
     }
 
-    public ResponseEntity getListByName(String listaName, HttpServletRequest request) {
+    public ResponseEntity getListByName(String listaName, String electionName, HttpServletRequest request) {
+        electionName = URLDecoder.decode(electionName,StandardCharsets.UTF_8);
         listaName = URLDecoder.decode(listaName,StandardCharsets.UTF_8);
-        Optional<Lista> optionalLista = listaRepository.getListaByName(listaName);
         Integer userId = getUserId(request).getBody();
+        Optional<Election> optionalElection = electionRepository.getElectionByName(electionName);
+        if (optionalElection.isEmpty()) {
+            grpcClient.log(userId, "Election","Get election by name","Fail");
+            ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),"name","No election by that name");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails.toString());
+        }
+
+        Optional<Lista> optionalLista = listaRepository.getListaByNameAndElection(listaName, optionalElection.get());
         if (optionalLista.isEmpty()) {
             grpcClient.log(userId, "Election", "Get list by name", "Fail");
             ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "name", "No list by that name");

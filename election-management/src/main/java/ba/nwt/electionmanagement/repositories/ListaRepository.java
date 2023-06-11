@@ -16,4 +16,6 @@ public interface ListaRepository extends JpaRepository<Lista, Integer> {
     Optional<Lista> getListaByName(String listaName);
 
     List<Lista> getListasByElectionName(String name);
+
+    Optional<Lista> getListaByNameAndElection(String name, Election election);
 }

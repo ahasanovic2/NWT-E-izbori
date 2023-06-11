@@ -66,12 +66,11 @@ h1 {
 .election-card button:hover {
     background-color: #001a66;
 }
-.title{
-    font-size: 20px;
-    color: #001a66;
-    font-weight: bold;
-}
 
+.title {
+    font-size: 20px;
+    color: #fff;
+}
 
 .header {
     background-color: #0058B8;

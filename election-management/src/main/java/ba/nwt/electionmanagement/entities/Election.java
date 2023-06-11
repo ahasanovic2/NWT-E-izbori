@@ -3,15 +3,11 @@ package ba.nwt.electionmanagement.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Election {
@@ -36,7 +32,6 @@ public class Election {
     private LocalDateTime startTime;
 
     @NotNull(message = "This field cannot be null")
-    @Future(message = "End time must be after start time")
     private LocalDateTime endTime;
 
     @NotBlank(message = "This field cannot be empty")
@@ -60,6 +55,8 @@ public class Election {
         if (endTime == null || startTime == null) {
             return true;
         }
+        System.out.println("Start time: " + startTime);
+        System.out.println("End time: " + endTime);
         return endTime.isAfter(startTime);
     }
     public Election() {

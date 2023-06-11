@@ -3,6 +3,7 @@ import "../css/ElectionPage.css"
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { ElectionContext } from './ElectionContext';
+import moment from 'moment/moment';
 
 const ElectionPage = () => {
     const [elections, setElections] = useState([]);
@@ -132,16 +133,16 @@ const ElectionPage = () => {
                 <div className="election-list">
                     {elections.map(election => (
                         <div className="election-card" key={election.id} onClick={() => handleElectionClick(election.id)}>
-                            <h2 className={"title"}>{election.title}</h2>
+                            <h2 className="title">{election.name}</h2>
                             <p>{election.description}</p>
-                            <p>Start Time: {election.startTime}</p>
-                            <p>End Time: {election.endTime}</p>
-                        <p>Status: {election.status}</p>
-                        {election.status === 'Active' && (
-                            <button onClick={(event) => {
-                                event.stopPropagation();
-                                handleSwitchToVotingPage(election);
-                            }}>
+                            <p>Vrijeme početka: {moment(election.startTime).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                            <p>Vrijeme kraja: {moment(election.endTime).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                            <p>Status: <span style={{fontWeight: 'bold', color: election.status === 'Active' ? 'green' : (election.status === 'Finished' ? 'red' : 'orange')}}>{election.status}</span></p>
+                            {election.status === 'Active' && (
+                                <button onClick={(event) => {
+                                    event.stopPropagation();
+                                    handleSwitchToVotingPage(election);
+                                }}>                     
                             Glasaj
                             </button>
                         )}
