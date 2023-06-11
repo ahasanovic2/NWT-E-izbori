@@ -66,7 +66,8 @@ public class ElectionController {
 
 
     @GetMapping("/election/lists")
-    public ResponseEntity<String> getListsForElections(@RequestParam String name, HttpServletRequest request) {
+    public ResponseEntity<String> getListsForElections(@RequestParam String name,
+                                                       HttpServletRequest request) {
         return electionService.getListsForElections(name, request);
     }
 

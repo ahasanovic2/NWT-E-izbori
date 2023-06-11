@@ -34,7 +34,6 @@ public class Election {
     @NotNull(message = "This field cannot be null")
     private LocalDateTime endTime;
 
-    @NotBlank(message = "This field cannot be empty")
     @Pattern(regexp = "^(Active|Finished|NotStarted)$", message = "This field can only be Active, Finished and NotStarted")
     private String status;
 

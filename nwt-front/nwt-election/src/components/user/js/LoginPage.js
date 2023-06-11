@@ -30,7 +30,7 @@ function LoginPage(props) {
             const decodedToken = jwtDecode(tokens.access_token);
 
             if (decodedToken.role === 'ROLE_ADMIN') {
-                history.push('/adminLanding');
+                history.push('/admin-landing');
             } else {
                 history.push('/landing');
             }

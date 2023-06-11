@@ -116,6 +116,12 @@ public class ElectionService {
             pollingStation.getElections().add(election);
             pollingStationRepository.save(pollingStation);
         }
+        if (election.getStartTime().isAfter(LocalDateTime.now()))
+            election.setStatus("NotStarted");
+        else if (LocalDateTime.now().isAfter(election.getEndTime()))
+            election.setStatus("Finished");
+        else
+            election.setStatus("Active");
         electionRepository.save(election);
         grpcClient.log(userId.getBody(), "Election","Create","Success");
         Map<String, Object> response = new HashMap<>();
@@ -141,7 +147,7 @@ public class ElectionService {
         return ResponseEntity.ok("Lists added successfully to election " + election.getId());
     }
 
-    public ResponseEntity<String> getListsForElections(String name, HttpServletRequest request) {
+    public ResponseEntity<String> getListsForElections(String name,HttpServletRequest request) {
         name = URLDecoder.decode(name,StandardCharsets.UTF_8);
         ResponseEntity<Integer> userId = getUserId(request);
         Optional<Election> optionalElection = electionRepository.getElectionByName(name);

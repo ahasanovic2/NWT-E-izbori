@@ -28,23 +28,6 @@ const ElectionPage = () => {
         fetchElections();
     }, []);
 
-    //ovu logiku mozemo koristiti kad budemo mogli stvarne podatke imati
-    // const ElectionPage = () => {
-    // const [elections, setElections] = useState([]);
-    //
-    // useEffect(() => {
-    //     // Pozovi backend rutu za dohvat izbora
-    //     fetch('/api/elections/pollingStations')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //          ovdje se moze dodat uslov da li ima pravo na glasanje
-    //             setElections(data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Greška prilikom dohvata izbora:', error);
-    //         });
-    // }, []);
-
     const handleElectionClick = (electionId) => {
         // Ovdje možete implementirati logiku za prikaz dodatnih informacija o izboru
         // i omogućiti glasanje ako je status aktivan

@@ -19,6 +19,8 @@ import VotingPageFinal from './components/user/js/VotingPage';
 import ElectionPage from './components/user/js/ElectionPage';
 import ChoosePSPage from './components/user/js/ChoosePollingStation';
 import ResultsHome from './components/user/js/ResultsHome';
+import AdminLandingPage from './components/admin/js/AdminLandingPage';
+import CreatingElections from './components/admin/js/CreatingElections';
 
 function App() {
     const handleLogout = () => {
@@ -43,13 +45,12 @@ function App() {
     return (
         <Router>
             <Switch>
-                <Route path="/home">
-                    <HomePage />
-                </Route>
-                <Route path="/sign-up">
-                    <SignUpPage />
-                </Route>
+                <Route path="/home" component={HomePage}/>
+                <Route path="/sign-up" component={SignUpPage}/>
                 <Route path="/login" render={props => <LoginPage {...props} />} />
+
+                <PrivateRoute path="/admin-landing" component={AdminLandingPage} onLogout={handleLogout} />
+                <PrivateRoute path="/admin-create-elections" component={CreatingElections} onLogout={handleLogout} />
                 <PrivateRoute path="/results" component={ResultsHome} onLogout={handleLogout} />
                 <PrivateRoute path="/choose-pollingstation" component={ChoosePSPage} onLogout={handleLogout}/>
                 <PrivateRoute path="/election" component={ElectionPage} onLogout={handleLogout} />
@@ -57,6 +58,7 @@ function App() {
                 <PrivateRoute path="/landing" component={LandingPage} onLogout={handleLogout} />
                 <PrivateRoute path="/voters" component={VotersPage} />
                 <PrivateRoute path="/legislativa" component={Legislativa} onLogout={handleLogout} />
+
                 <Route path="/">
                     {/* Default route */}
                     <HomePage />
