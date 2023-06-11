@@ -122,7 +122,8 @@ public class VoteService {
                 .queryParam("electionName", electionName);
         ResponseEntity<Integer> electionId = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, Integer.class);
         builder = UriComponentsBuilder.fromHttpUrl("http://election-microservice/elections/list/get-id")
-                .queryParam("name", name);
+                .queryParam("name", name)
+                .queryParam("electionName",electionName);
         ResponseEntity<Integer> listId = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, Integer.class);
         Vote vote = new Vote();
         vote.setVoterId(userId.getBody());

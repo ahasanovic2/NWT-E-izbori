@@ -3,6 +3,7 @@ import "../css/ElectionPage.css"
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { ElectionContext } from './ElectionContext';
+import moment from 'moment/moment';
 
 const ElectionPage = () => {
     const [elections, setElections] = useState([]);
@@ -26,23 +27,6 @@ const ElectionPage = () => {
 
         fetchElections();
     }, []);
-
-    //ovu logiku mozemo koristiti kad budemo mogli stvarne podatke imati
-    // const ElectionPage = () => {
-    // const [elections, setElections] = useState([]);
-    //
-    // useEffect(() => {
-    //     // Pozovi backend rutu za dohvat izbora
-    //     fetch('/api/elections/pollingStations')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //          ovdje se moze dodat uslov da li ima pravo na glasanje
-    //             setElections(data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Greška prilikom dohvata izbora:', error);
-    //         });
-    // }, []);
 
     const handleElectionClick = (electionId) => {
         // Ovdje možete implementirati logiku za prikaz dodatnih informacija o izboru
@@ -132,16 +116,16 @@ const ElectionPage = () => {
                 <div className="election-list">
                     {elections.map(election => (
                         <div className="election-card" key={election.id} onClick={() => handleElectionClick(election.id)}>
-                            <h2 className={"title"}>{election.title}</h2>
+                            <h2 className="title">{election.name}</h2>
                             <p>{election.description}</p>
-                            <p>Start Time: {election.startTime}</p>
-                            <p>End Time: {election.endTime}</p>
-                        <p>Status: {election.status}</p>
-                        {election.status === 'Active' && (
-                            <button onClick={(event) => {
-                                event.stopPropagation();
-                                handleSwitchToVotingPage(election);
-                            }}>
+                            <p>Vrijeme početka: {moment(election.startTime).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                            <p>Vrijeme kraja: {moment(election.endTime).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                            <p>Status: <span style={{fontWeight: 'bold', color: election.status === 'Active' ? 'green' : (election.status === 'Finished' ? 'red' : 'orange')}}>{election.status}</span></p>
+                            {election.status === 'Active' && (
+                                <button onClick={(event) => {
+                                    event.stopPropagation();
+                                    handleSwitchToVotingPage(election);
+                                }}>                     
                             Glasaj
                             </button>
                         )}

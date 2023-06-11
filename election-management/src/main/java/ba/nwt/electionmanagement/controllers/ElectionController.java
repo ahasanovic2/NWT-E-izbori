@@ -66,7 +66,8 @@ public class ElectionController {
 
 
     @GetMapping("/election/lists")
-    public ResponseEntity<String> getListsForElections(@RequestParam String name, HttpServletRequest request) {
+    public ResponseEntity<String> getListsForElections(@RequestParam String name,
+                                                       HttpServletRequest request) {
         return electionService.getListsForElections(name, request);
     }
 
@@ -101,8 +102,10 @@ public class ElectionController {
     }
 
     @GetMapping("/list/get-id")
-    public ResponseEntity getListIdByName(@RequestParam String name, HttpServletRequest request) {
-        return electionService.getListIdByName(name,request);
+    public ResponseEntity getListIdByName(@RequestParam String name,
+                                          @RequestParam String electionName,
+                                          HttpServletRequest request) {
+        return electionService.getListIdByName(name,electionName,request);
     }
 
     @GetMapping("/get-candidate-by-name")
@@ -111,8 +114,10 @@ public class ElectionController {
     }
 
     @GetMapping("/get-list-by-name")
-    public ResponseEntity getListByName(@RequestParam String listaName, HttpServletRequest request) {
-        return electionService.getListByName(listaName, request);
+    public ResponseEntity getListByName(@RequestParam String listaName,
+                                        @RequestParam String electionName,
+                                        HttpServletRequest request) {
+        return electionService.getListByName(listaName, electionName ,request);
     }
 
 

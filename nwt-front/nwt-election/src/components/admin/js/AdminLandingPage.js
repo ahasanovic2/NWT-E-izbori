@@ -1,21 +1,24 @@
 import React, {useState} from 'react';
 import '../css/AdminLandingPage.css';
 import '../../user/js/WhoVoter';
+import { useHistory } from 'react-router-dom';
 
-const AdminLandingPage = (props) => {
+const AdminLandingPage = () => {
     
-    const [currentSection, setCurrentSection] = useState('dashboard');
+    const history = useHistory();
 
-    const handleSwitchToCreateElections = () => {
-        props.onFormSwitch('createElections');
+    const handleSwitchToLanding = () => {
+        history.push('/admin-landing');
     };
 
-    const handleSwitchToVoters = () => {
-        props.onFormSwitch('voters');
-    };
+    const handleSwitchToCreatingElections = () => {
+        history.push('/admin-create-elections')
+    }
 
-    const handleSwitchToLegislativa = () => {
-        props.onFormSwitch('legislativa');
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        history.push('/');
     };
 
 
@@ -25,30 +28,19 @@ const AdminLandingPage = (props) => {
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
-                    <button onClick={handleSwitchToVoters}>Glasači
+                    <button onClick={handleSwitchToLanding}>Početna
                         <br/>
-                        <span className="small-text">Sve što glasač treba da zna</span>
+                        <span className="small-text">Početna stranica aplikacije</span>
                     </button>
-                    <button>Izbori
+                    <button onClick={handleSwitchToCreatingElections}>Kreiraj izbore
                         <br/>
-                        <span className="small-text">Izbori 2024</span>
-                        <br/>
-                        <span className="small-text">Rezultati 2022</span>
+                        <span className='small-text'></span>
                     </button>
-                    <button onClick={handleSwitchToLegislativa}>Legislativa
-                        <br/>
-                        <span className="small-text">Zakon o provođenju izbora</span>
-                    </button>
-                    <button>Kontakt
-                        <br/>
-                        <span className="small-text">Kontaktirajte korisničku podršku ukoliko imate bilo kakvih pitanja</span>
-                    </button>
-                    <button onClick={handleSwitchToCreateElections}>Create User</button>
-                    <button onClick={props.onLogout}>Odjava</button>
+                    <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
-            <div className="content">
-                <h2>Govno</h2>
+            <div className="landing-content">
+                <h2>Početna stranica za administratora</h2>
                 <p>
                     Online glasanje na izborima u Bosni i Hercegovini vam omogućava da udobno i sigurno glasate iz udobnosti svog doma.
                     Bez obzira gdje se nalazite, možete iskoristiti svoje biračko pravo i doprinijeti demokratskom procesu.
