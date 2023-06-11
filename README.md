@@ -23,11 +23,11 @@ Koraci koje je potrebno napraviti kako bi se kreirali Docker kontejneri i uspje�
    1. U putanju je potrebno staviti putanju do direktorija u kojem se nalazi JDK instalacija. Primjer jedne takve je: ```C:\Users\ahasa\.jdks\openjdk-20.0.1```
 2. Svaki od servisa navedenih u drugoj sekciji ovog dokumenta, izuzev servisa ***Config server*** i ***Eureka server***, sadrži ***wait-for-it.sh*** shell skriptu. Po defaultu, ta skripta je pisana u ***Windows*** encodingu. Za uspješno pokretanje putem Docker-a
 potrebno je otvoriti svaku od tih skripti putem ***Sublime Text***-a i prebaciti line encoding na ***Unix*** putem sljedećih komandi: ***View->Line Endings->Unix*** i nakon toga spasiti datoteku
-4. Kroz terminal (ili Command Propmt) potrebno je navigirati se do direktorija svakog mikroservisa i ukucati komandu: ```.\mvnw.cmd clean package -D skipTests```
+4. Kroz terminal (ili Command Prompt) potrebno je navigirati se do direktorija svakog mikroservisa i ukucati komandu: ```.\mvnw.cmd clean package -D skipTests```
     1. Ovaj korak je neophodan kako bi se kreirali .jar datoteke koje će Docker koristiti pri izgradnji Images-a
-5. Kroz terminal potrebno je navigirati se u direktorij u kojem se nalaze direktoriji svih mikroservisa
-    1. Ukoliko ste prije toga radili korak 3, jednostavno se vratite jedan direktorij unazad
-6. U terminalu ukucati komandu ```docker-compose up --build```
+5. Kroz terminal (ili Command Prompt) potrebno je navigirati se do direktorija ```./nwt-front/nwt-election``` i unijeti komandu ```npm install``` kako bi se preuzeli svi depedendencyi korišteni za frontend aplikaciju
+6. Kroz terminal potrebno je navigirati se u direktorij u kojem se nalaze direktoriji svih mikroservisa
+7. U terminalu ukucati komandu ```docker-compose up --build```
     1. Ovom komandom će se izgraditi slike i pokrenuti kontejneri.
 
 Treba napomenuti da je putem Docker-a trenutno moguće pokrenuti samo backend dio aplikacije koji je moguće testirati putem Postman-a ili sličnog alata.
