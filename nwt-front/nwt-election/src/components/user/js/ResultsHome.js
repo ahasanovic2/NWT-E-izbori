@@ -259,26 +259,26 @@ const ResultsHome = () => {
             </div>
             <div className='results-options'>
                 <label>
-                    Input election:
+                    Unesite ime izbora:
                     <input type="text" value={election} onChange={e => setElection(e.target.value)} />
                 </label>
                 <label>
-                    Input list:
+                    Unesite ime liste:
                     <input type="text" value={list} onChange={e => setList(e.target.value)} />
                 </label>
                 <label>
-                    Input candidate first name:
+                    Unesite ime kandidata:
                     <input type="text" value={candidateFirstName} onChange={e => setCandidateFirstName(e.target.value)} />
                 </label>
                 <label>
-                    Input candidate last name:
+                    Unesite prezime kandidata:
                     <input type="text" value={candidateLastName} onChange={e => setCandidateLastName(e.target.value)} />
                 </label>
                 <label>
-                    Input polling station:
+                    Unesite naziv izbornog mjesta:
                     <input type="text" value={pollingStation} onChange={e => setPollingStation(e.target.value)} />
                 </label>
-                <button onClick={handleResults}>Get results</button>
+                <button onClick={handleResults}>Dohvati rezultate</button>
                 {error1 && <p className="error-message">{error1}</p>}
                 {error2 && <p className="error-message">{error2}</p>}
                 {error3 && <p className="error-message">{error3}</p>}
@@ -290,10 +290,10 @@ const ResultsHome = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>List Name</th>
-                            <th>Candidate</th>
-                            <th>Polling Station Name</th>
-                            <th>Vote Count</th>
+                            <th>Lista</th>
+                            <th>Kandidat</th>
+                            <th>Izborno mjesto</th>
+                            <th>Broj glasova</th>
                         </tr>
                     </thead>
                     <tbody>
