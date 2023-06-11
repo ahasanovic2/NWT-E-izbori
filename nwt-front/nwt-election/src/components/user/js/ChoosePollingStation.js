@@ -10,14 +10,19 @@ function ChoosePSPage() {
     useEffect(() => {
         const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
         const token = localStorage.getItem('access_token');
-
+    
         fetch(`${BASE_URL}/auth-service/pollingStations`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
             .then(response => response.json())
-            .then(data => setPollingStations(data))
+            .then(data => {
+                setPollingStations(data);
+                if(data[0]){
+                   setSelectedStation(data[0].name); // set first polling station as default
+                }
+            })
             .catch(err => console.error(err));
     }, []);
 
