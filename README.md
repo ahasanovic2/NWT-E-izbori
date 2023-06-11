@@ -29,5 +29,3 @@ potrebno je otvoriti svaku od tih skripti putem ***Sublime Text***-a i prebaciti
 6. Kroz terminal potrebno je navigirati se u direktorij u kojem se nalaze direktoriji svih mikroservisa
 7. U terminalu ukucati komandu ```docker-compose up --build```
     1. Ovom komandom će se izgraditi slike i pokrenuti kontejneri.
-
-Treba napomenuti da je putem Docker-a trenutno moguće pokrenuti samo backend dio aplikacije koji je moguće testirati putem Postman-a ili sličnog alata.
