@@ -204,6 +204,25 @@ const ResultsHome = () => {
         }
     };
 
+    const handleResults = async () => {
+        if (election && !list && !candidateFirstName && !candidateLastName && !pollingStation) {
+            await handleResultsOption(1); // Full results for election
+        } else if (election && !list && !candidateFirstName && !candidateLastName && pollingStation) {
+            await handleResultsOption(2); // Results for election at certain polling station
+        } else if (election && !list && candidateFirstName && candidateLastName && !pollingStation) {
+            await handleResultsOption(3); // Full results for one candidate at certain election
+        } else if (election && list && !candidateFirstName && !candidateLastName && !pollingStation) {
+            await handleResultsOption(4); // Full results for one list at certain election
+        } else if (election && !list && candidateFirstName && candidateLastName && pollingStation) {
+            await handleResultsOption(5); // Results for one candidate at certain election at certain polling station
+        } else if (election && list && !candidateFirstName && !candidateLastName && pollingStation) {
+            await handleResultsOption(6); // Results for one list at certain election at certain polling station
+        } else {
+            // Handle the case where input fields are not in any of the expected combinations
+            console.log("Invalid combination of input fields");
+        }
+    };
+
     return(
         <div className='results-home'>
             <div className="header">
@@ -259,17 +278,12 @@ const ResultsHome = () => {
                     Input polling station:
                     <input type="text" value={pollingStation} onChange={e => setPollingStation(e.target.value)} />
                 </label>
-                <button onClick={() => handleResultsOption(1)}>Get full results for election</button>
+                <button onClick={handleResults}>Get results</button>
                 {error1 && <p className="error-message">{error1}</p>}
-                <button onClick={() => handleResultsOption(2)}>Get results for election at certain polling station</button>
                 {error2 && <p className="error-message">{error2}</p>}
-                <button onClick={() => handleResultsOption(3)}>Get full results for one candidate at certain election</button>
                 {error3 && <p className="error-message">{error3}</p>}
-                <button onClick={() => handleResultsOption(4)}>Get full results for one list at certain election</button>
                 {error4 && <p className="error-message">{error4}</p>}
-                <button onClick={() => handleResultsOption(5)}>Get results for one candidate at certain election at certain polling station</button>
                 {error5 && <p className="error-message">{error5}</p>}
-                <button onClick={() => handleResultsOption(6)}>Get results for one list at certain election at certain polling station</button>
                 {error6 && <p className="error-message">{error6}</p>}
             </div>
             <div className='results-table'>

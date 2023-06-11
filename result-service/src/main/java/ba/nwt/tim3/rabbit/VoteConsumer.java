@@ -70,7 +70,6 @@ public class VoteConsumer {
 
     @RabbitListener(queues = "voting-queue")
     public void consumeMessageFromQueue(VoteMessage voteMessage) {
-        HttpEntity<String> entity = extractEntity(voteMessage.getToken());
         PollingStation pollingStation = getPollingStation(voteMessage.getVoterId(), voteMessage.getToken());
         Election election = getElection(voteMessage.getElectionId(), voteMessage.getToken());
         if (voteMessage.getCandidateId() != null) {
@@ -127,8 +126,7 @@ public class VoteConsumer {
                 result1.setVoteCount(1);
                 result1.setPollingStationName("Total");
                 resultRepository.save(result1);
-            }
-            else {
+            } else {
                 Result result = optionalResult.get();
                 result.setVoteCount(result.getVoteCount() + 1);
                 resultRepository.save(result);
@@ -141,6 +139,5 @@ public class VoteConsumer {
                 resultRepository.save(result1);
             }
         }
-        return;
     }
 }
