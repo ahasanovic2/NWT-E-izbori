@@ -1,0 +1,17 @@
+.createElection h2{
+    color:blue;
+    text-align: center;
+}
+
+.createElection {
+    border: 2px solid black;
+    border-radius: 10px; /* Add rounded corners with a 10px radius */
+    padding: 10px;
+  }
+
+.createElection form > div{
+
+    margin-bottom: 10px;
+
+
+}  
