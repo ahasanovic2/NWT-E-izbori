@@ -74,7 +74,7 @@ public class VoteConsumer {
         Election election = getElection(voteMessage.getElectionId(), voteMessage.getToken());
         if (voteMessage.getCandidateId() != null) {
             Candidate candidate = getCandidate(voteMessage.getCandidateId(), voteMessage.getToken());
-            Optional<Result> optionalResult = resultRepository.getResultsByElectionNameAndCandidateFirstNameAndCandidateLastNameAndPollingStationName(
+            Optional<Result> optionalResult = resultRepository.getResultByElectionNameAndCandidateFirstNameAndCandidateLastNameAndPollingStationName(
                     election.getName(), candidate.getFirstName(), candidate.getLastName(), pollingStation.getName()
             );
             if (optionalResult.isEmpty()) {
@@ -85,7 +85,17 @@ public class VoteConsumer {
                 result.setVoteCount(1);
                 result.setPollingStationName(pollingStation.getName());
                 resultRepository.save(result);
+            }
+            else {
+                Result result = optionalResult.get();
+                result.setVoteCount(result.getVoteCount() + 1);
+                resultRepository.save(result);
+            }
 
+            optionalResult = resultRepository.getResultByElectionNameAndCandidateFirstNameAndCandidateLastNameAndPollingStationName(
+                    election.getName(), candidate.getFirstName(), candidate.getLastName(), "Total"
+            );
+            if (optionalResult.isEmpty()) {
                 Result result1 = new Result();
                 result1.setElectionName(election.getName());
                 result1.setCandidateLastName(candidate.getLastName());
@@ -95,13 +105,6 @@ public class VoteConsumer {
                 resultRepository.save(result1);
             }
             else {
-                Result result = optionalResult.get();
-                result.setVoteCount(result.getVoteCount() + 1);
-                resultRepository.save(result);
-
-                optionalResult = resultRepository.getResultsByElectionNameAndCandidateFirstNameAndCandidateLastNameAndPollingStationName(
-                        election.getName(), candidate.getFirstName(), candidate.getLastName(), "Total"
-                );
                 Result result1 = optionalResult.get();
                 result1.setVoteCount(result1.getVoteCount() + 1);
                 resultRepository.save(result1);
@@ -109,7 +112,7 @@ public class VoteConsumer {
         }
         else if (voteMessage.getListaId() != null) {
             Lista lista = getLista(voteMessage.getListaId(), voteMessage.getToken());
-            Optional<Result> optionalResult = resultRepository.getResultsByElectionNameAndListNameAndPollingStationName(
+            Optional<Result> optionalResult = resultRepository.getResultByElectionNameAndListNameAndPollingStationName(
                     election.getName(), lista.getName(), pollingStation.getName()
             );
             if (optionalResult.isEmpty()) {
@@ -119,21 +122,23 @@ public class VoteConsumer {
                 result.setVoteCount(1);
                 result.setPollingStationName(pollingStation.getName());
                 resultRepository.save(result);
-
+            } else {
+                Result result = optionalResult.get();
+                result.setVoteCount(result.getVoteCount() + 1);
+                resultRepository.save(result);
+            }
+            optionalResult = resultRepository.getResultByElectionNameAndListNameAndPollingStationName(
+                    election.getName(), lista.getName(), "Total"
+            );
+            if (optionalResult.isEmpty()) {
                 Result result1 = new Result();
                 result1.setElectionName(election.getName());
                 result1.setListName(lista.getName());
                 result1.setVoteCount(1);
                 result1.setPollingStationName("Total");
                 resultRepository.save(result1);
-            } else {
-                Result result = optionalResult.get();
-                result.setVoteCount(result.getVoteCount() + 1);
-                resultRepository.save(result);
-
-                optionalResult = resultRepository.getResultsByElectionNameAndListNameAndPollingStationName(
-                        election.getName(), lista.getName(), "Total"
-                );
+            }
+            else {
                 Result result1 = optionalResult.get();
                 result1.setVoteCount(result1.getVoteCount() + 1);
                 resultRepository.save(result1);
