@@ -19,7 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VoteConsumer {
     private final ResultRepository resultRepository;
-    private final RabbitTemplate rabbitTemplate;
     private final RestTemplate restTemplate;
 
     private HttpEntity<String> extractEntity(String token) {
