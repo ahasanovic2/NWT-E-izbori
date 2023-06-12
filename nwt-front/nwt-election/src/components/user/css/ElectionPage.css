@@ -126,3 +126,17 @@ h1 {
     text-align: center;
     color: #003399;
 }
+
+.contact-info {
+    display: none; /* Inicijalno sakrivanje kontaktnih informacija */
+    margin-top: 20px;
+}
+
+.nav-buttons button:hover + .contact-info {
+    display: block; /* Prikazivanje kontaktnih informacija kada je dugme u hover stanju */
+}
+
+.contact-info p {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
