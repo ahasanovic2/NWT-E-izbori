@@ -1,5 +1,5 @@
-.pollingstation-content {
-    margin-top: 25%;
+.content-ps {
+    margin-top: 30%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,12 +7,8 @@
     width: 100%;
 }
 
-.pollingstation-content h1 {
-    text-align: center;
-}
-
-.pollingstation-content form {
-    width: 20%;
+.content-ps form {
+    width: 40%;
     border: 2px solid black;
     padding: 20px;
     padding-right: 30px;
@@ -22,20 +18,20 @@
     background-color: #f0f0f0;
 }
 
-.pollingstation-content form label {
+.content-ps form label {
     display: block;
     margin-bottom: 10px;
 }
 
-.pollingstation-content form input, 
-.pollingstation-content form select {
+.content-ps form input, 
+.content-ps form select {
     width: 100%;
     margin-top: 5px;
     margin-bottom: 15px;
     padding: 5px;
 }
 
-.pollingstation-content form button {
+.content-ps form button {
     display: block;
     margin: 0 auto;
     margin-top: 20px;
@@ -55,3 +51,29 @@
     display: flex;
     flex-direction: row;
 }
+
+
+.content-ps form table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+  }
+  
+  .content-ps form th, 
+  .content-ps form td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .content-ps form th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #f0f0f0;
+  }
+
+  .dugme {
+    background-color: blue;
+    color: #fff;
+  }
+  

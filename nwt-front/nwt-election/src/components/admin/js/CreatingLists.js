@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import '../css/CreatingLists.css';
 import { useHistory } from "react-router-dom";
 
@@ -10,6 +10,24 @@ const CreatingLists = () => {
     const [description, setDescription] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [errorMessageDescription, setErrorMessageDescription] = useState("");
+    const [elections, setElections] = useState([]);
+
+    const fetchElections = async () => {
+        const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
+        const token = localStorage.getItem('access_token');
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', `Bearer ${token}`);
+
+        const response = await fetch(`${BASE_URL}/election-microservice/elections`, { headers });
+        const data = await response.json();
+        setElections(data);
+    };
+
+    useEffect(() => {
+        fetchElections();
+    }, []);
+
 
     const handleSwitchToLanding = () => {
         history.push('/admin-landing');
@@ -133,7 +151,12 @@ const CreatingLists = () => {
                 <form onSubmit={handleSubmit}>
                     <label>
                         Naziv izbora:
-                        <input type="text" value={electionName} onChange={e => setElectionName(e.target.value)} required/>
+                        <select value={electionName} onChange={e => setElectionName(e.target.value)} required>
+                            <option value="">--Please choose an election--</option>
+                            {elections.map(election => (
+                                <option key={election.id} value={election.name}>{election.name}</option>
+                            ))}
+                        </select>
                     </label>
                     <label>
                         Naziv liste:

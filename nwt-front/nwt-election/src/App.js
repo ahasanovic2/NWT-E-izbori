@@ -24,6 +24,7 @@ import CreatingLists from './components/admin/js/CreatingLists';
 import CreatingElections from './components/admin/js/CreatingElections';
 import CreatingCandidates from './components/admin/js/CreatingCandidates';
 import CreatingPollingStations from './components/admin/js/CreatingPollingStations';
+import AssociatePollingStations from './components/admin/js/AssociatePollingStations';
 
 function App() {
     const handleLogout = () => {
@@ -52,6 +53,7 @@ function App() {
                 <Route path="/sign-up" component={SignUpPage}/>
                 <Route path="/login" render={props => <LoginPage {...props} />} />
                 <PrivateRoute path="/admin-create-pollingstations" component={CreatingPollingStations} onLogout={handleLogout}/>
+                <PrivateRoute path="/admin-add-pollingstations" component={AssociatePollingStations} onLogout={handleLogout}/>
                 <PrivateRoute path="/admin-create-candidates" component={CreatingCandidates} onLogout={handleLogout}/>
                 <PrivateRoute path="/admin-create-lists" component={CreatingLists} onLogout={handleLogout}/>
                 <PrivateRoute path="/admin-landing" component={AdminLandingPage} onLogout={handleLogout} />
