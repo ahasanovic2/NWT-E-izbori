@@ -137,9 +137,9 @@ const AssociatePollingStations = () => {
             <div className="content-ps">
             <form onSubmit={handleSubmit}>
                 <label>
-                    Select Election:
+                    Odaberi izbore:
                     <select value={selectedElection} onChange={(e) => setSelectedElection(e.target.value)}>
-                    <option value="">--Please choose an election--</option>
+                    <option value="">--Molimo odaberite izbore--</option>
                     {elections.map(election => (
                         <option key={election.id} value={election.name}>{election.name}</option>
                     ))}

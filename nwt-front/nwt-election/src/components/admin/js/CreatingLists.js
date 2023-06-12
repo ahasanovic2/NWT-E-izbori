@@ -152,7 +152,7 @@ const CreatingLists = () => {
                     <label>
                         Naziv izbora:
                         <select value={electionName} onChange={e => setElectionName(e.target.value)} required>
-                            <option value="">--Please choose an election--</option>
+                        <option value="">--Molimo odaberite izbore--</option>
                             {elections.map(election => (
                                 <option key={election.id} value={election.name}>{election.name}</option>
                             ))}
