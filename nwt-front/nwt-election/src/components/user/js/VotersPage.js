@@ -19,6 +19,7 @@ const VotersPage = () => {
         setShowContactInfo(false);
     };
 
+
     const handleSwitchToLanding = () => {
         history.push('/landing');
     };
