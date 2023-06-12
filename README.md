@@ -1,6 +1,12 @@
 # NWT-E-izbori
 Projekat koji predstavlja simulaciju izbornog procesa u Bosni i Hercegovini.
 
+## Članovi tima
+1. [Ahmedin Hasanović](mailto:ahasanovic2@etf.unsa.ba)
+2. [Vedad Dervišević](mailto:vdervisevi1@etf.unsa.ba)
+3. [Ema Kalmar](mailto:ekalmar1@etf.unsa.ba)
+4. [Amina Šehić](mailto:asehic2@etf.unsa.ba)
+
 ## Backend mikroservisi
 Servisi pobrojani ispod čine backend dio aplikacije:
 1. Config server
@@ -28,3 +34,6 @@ potrebno je otvoriti svaku od tih skripti putem ***Sublime Text***-a i prebaciti
 4. Kroz terminal potrebno je navigirati se u direktorij u kojem se nalaze direktoriji svih mikroservisa
 5. U terminalu ukucati komandu ```docker-compose up --build```
     1. Ovom komandom će se izgraditi slike i pokrenuti kontejneri.
+
+## Video uredak
+Na sljedećem linku prikazano je buildanje projekta putem dockera i prikaz svih funkcionalnosti preko frontenda: [VIDEO](https://www.youtube.com/playlist?list=PL06yrr3lRzGTUdAz4TFbXfj19k1e1_wiu). Prikaz frontend dijela i svih funkcionalnosti aplikacije počinje od 10:45 (10 minuta i 45 sekundi videa).
