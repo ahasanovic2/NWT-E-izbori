@@ -52,55 +52,57 @@ const AssociatePollingStations = () => {
         setElections(data);
       };
     
-      const fetchPollingStations = async () => {
+    const fetchPollingStations = async () => {
         const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
         const token = localStorage.getItem('access_token');
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', `Bearer ${token}`);
-    
+
         const response = await fetch(`${BASE_URL}/auth-service/pollingStations`, { headers });
         const data = await response.json();
         setPollingStations(data);
-      };
+    };
     
-      useEffect(() => {
+    useEffect(() => {
         fetchElections();
         fetchPollingStations();
-      }, []);
+    }, []);
 
-      const handlePollingStationChange = (e) => {
+    const handlePollingStationChange = (e) => {
         if(e.target.checked) {
-          setSelectedPollingStations([...selectedPollingStations, e.target.value]);
+            setSelectedPollingStations([...selectedPollingStations, Number(e.target.value)]);
         } else {
-          setSelectedPollingStations(selectedPollingStations.filter(ps => ps !== e.target.value));
+            setSelectedPollingStations(selectedPollingStations.filter(ps => ps !== Number(e.target.value)));
         }
-      };
+    };    
     
-      const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
         const token = localStorage.getItem('access_token');
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', `Bearer ${token}`);
-    
-        const body = JSON.stringify(selectedPollingStations.map(ps => ps.id));
-        const response = await fetch(`http://localhost:8080/election-microservice/elections/election/set-pollingstations?name=${selectedElection}`, {
-          method: 'POST',
-          headers,
-          body
+
+        const body = JSON.stringify(selectedPollingStations);
+        console.log(body);
+        const response = await fetch(`${BASE_URL}/election-microservice/elections/election/set-pollingstations?name=${selectedElection}`, {
+            method: 'POST',
+            headers,
+            body
         });
-    
+
         if (!response.ok) {
-          const errorData = await response.json();
-          setErrorMessage(errorData.message);
+            const errorData = await response.json();
+            setErrorMessage(errorData.message);
         } else {
-          alert('Successfully added polling stations to election');
-          setErrorMessage("");
-          setSelectedElection("");
-          setSelectedPollingStations([]);
+            alert('Successfully added polling stations to election');
+            setErrorMessage("");
+            setSelectedElection("");
+            setSelectedPollingStations([]);
         }
-      };
+    };
 
     return (
         <div className="polling-stations-2">
@@ -166,7 +168,7 @@ const AssociatePollingStations = () => {
                             id={ps.name} 
                             name={ps.name} 
                             value={ps.id} 
-                            checked={selectedPollingStations.includes(ps.id.toString())} 
+                            checked={selectedPollingStations.includes(Number(ps.id))}
                             onChange={handlePollingStationChange} 
                         />
                         </td>
