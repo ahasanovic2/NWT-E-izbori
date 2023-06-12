@@ -27,6 +27,7 @@ const ResultsHome = () => {
         setShowContactInfo(false);
     };
 
+
     const handleSwitchToLanding = () => {
         history.push('/landing');
     };
@@ -41,6 +42,10 @@ const ResultsHome = () => {
 
     const handleSwitchToIzbori = () => {
         history.push('/election')
+    };
+
+    const handleSwitchToResults = () => {
+        history.push('/results')
     };
 
     const handleLogout = () => {
@@ -251,7 +256,7 @@ const ResultsHome = () => {
                         <br/>
                         <span className="small-text">Rezultati 2022</span>
                     </button>
-                    <button>Rezultati
+                    <button onClick={handleSwitchToResults}>Rezultati
                         <br/>
                         <span className='small-text'>Rezultati 2024</span>
                     </button>

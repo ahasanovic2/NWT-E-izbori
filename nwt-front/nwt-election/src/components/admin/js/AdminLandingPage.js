@@ -13,7 +13,23 @@ const AdminLandingPage = () => {
 
     const handleSwitchToCreatingElections = () => {
         history.push('/admin-create-elections')
-    }
+    };
+
+    const handleSwitchToCreatingLists = () => {
+        history.push('/admin-create-lists');
+    };
+
+    const handleSwitchToCreatingCandidates = () => {
+        history.push('/admin-create-candidates');
+    };
+
+    const handleSwitchToCreatingPollingStations = () => {
+        history.push('/admin-create-pollingstations');
+    };
+
+    const handleSwitchToAddPSToElection = () => {
+        history.push('/admin-add-pollingstations');
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
@@ -33,6 +49,22 @@ const AdminLandingPage = () => {
                         <span className="small-text">Početna stranica aplikacije</span>
                     </button>
                     <button onClick={handleSwitchToCreatingElections}>Kreiraj izbore
+                        <br/>
+                        <span className='small-text'></span>
+                    </button>
+                    <button onClick={handleSwitchToCreatingLists}>Kreiraj liste
+                        <br/>
+                        <span className='small-text'></span>
+                    </button>
+                    <button onClick={handleSwitchToCreatingCandidates}>Kreiraj kandidate
+                        <br/>
+                        <span className='small-text'></span>
+                    </button>
+                    <button onClick={handleSwitchToCreatingPollingStations}>Kreiraj izborne stanice
+                        <br/>
+                        <span className='small-text'></span>
+                    </button>
+                    <button onClick={handleSwitchToAddPSToElection}>Dodijeli izborne stanice izborima
                         <br/>
                         <span className='small-text'></span>
                     </button>

@@ -1,18 +1,14 @@
 import React, {useState} from "react";
-import '../css/CreatingElections.css';
+import '../css/CreatingPollingStations.css';
 import { useHistory } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
-
-const CreatingElections = () => {
+const CreatingPollingStations = () => {
     const history = useHistory();
     const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [startTime, setStartTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(new Date());
-    const [errorMessageTime, setErrorMessageTime] = useState("");
-    const [errorMessageDescription, setErrorMessageDescription] = useState("");
+    const [address, setAddress] = useState("");
+    const [opcina, setOpcina] = useState("");
+    const [kanton, setKanton] = useState("Unsko Sanski");
+    const [entitet, setEntitet] = useState("FederacijaBiH");
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleSwitchToLanding = () => {
@@ -47,22 +43,8 @@ const CreatingElections = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrorMessageDescription("");
-        setErrorMessageTime("");
+        setErrorMessage("");
 
-        if (description.length < 20) {
-            setErrorMessageDescription("Description must be at least 20 characters long");
-            return;
-        }
-        if (startTime >= endTime) {
-            setErrorMessageTime("Start time cannot be after end time");
-            return;
-        }
-
-        setErrorMessageDescription("");
-        setErrorMessageTime("");
-        
-        // Prepare request
         const token = localStorage.getItem('access_token');
         const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
         const headers = new Headers();
@@ -71,32 +53,47 @@ const CreatingElections = () => {
     
         const body = JSON.stringify({
             name,
-            description,
-            startTime: startTime.toISOString(),
-            endTime: endTime.toISOString()
+            address,
+            opcina,
+            kanton: entitet === 'FederacijaBiH' ? kanton : undefined,
+            entitet
         });
     
-        // Send request
-        const response = await fetch(`${BASE_URL}/election-microservice/elections/create-election`, {
+        const response = await fetch(`${BASE_URL}/auth-service/pollingStations/create`, {
             method: 'POST',
             headers,
             body
         });
-    
-        // Handle response
+
         if (!response.ok) {
             const errorData = await response.json();
-            setErrorMessage(errorData[0].message);
-            alert('Something went wrong');
+            if(Array.isArray(errorData)) {
+                setErrorMessage(errorData[0].message);
+            } else {
+                setErrorMessage(errorData.message);
+            }
         } else {
-            alert('Successfuly added elections');
-            setErrorMessage(""); // Clear the error message upon successful request
-            history.push('/admin-landing');
+            alert('Successfully added polling station');
+            setErrorMessage("");
+            setName("");
+            setAddress("");
+            setOpcina("");
+            setKanton("Unsko Sanski");
+            setEntitet("FederacijaBiH");
         }
     };
 
+    const handleReset = () => {
+        setName("");
+        setAddress("");
+        setErrorMessage("");
+        setOpcina("");
+        setKanton("Unsko Sanski");
+        setEntitet("FederacijaBiH");
+    };
+
     return (
-        <div className="creating-elections">
+        <div className="polling-stations">
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
@@ -123,37 +120,56 @@ const CreatingElections = () => {
                     <button onClick={handleSwitchToAddPSToElection}>Dodijeli izborne stanice izborima
                         <br/>
                         <span className='small-text'></span>
-                    </button>
+                    </button>                    
                     <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
-            <div className="content">
+            <div className="pollingstation-content">
                 <form onSubmit={handleSubmit}>
                     <label>
                         Naziv:
                         <input type="text" value={name} onChange={e => setName(e.target.value)} required/>
                     </label>
-                    <br/>
                     <label>
-                        Opis:
-                        <textarea value={description} onChange={e => setDescription(e.target.value)} required minLength={20}/>
-                    </label>
-                    {errorMessageDescription && <p className="error-class">{errorMessageDescription}</p>}
-                    <br/>
-                    <label>
-                        Početak izbora:
-                        <DatePicker selected={startTime} onChange={date => setStartTime(date)} showTimeSelect dateFormat="Pp" minDate={new Date()} />
+                        Adresa:
+                        <input type="text" value={address} onChange={e => setAddress(e.target.value)} required/>
                     </label>
                     <label>
-                        Kraj izbora:
-                        <DatePicker selected={endTime} onChange={date => setEndTime(date)} showTimeSelect dateFormat="Pp" minDate={startTime} />
+                        Opcina:
+                        <input type="text" value={opcina} onChange={e => setOpcina(e.target.value)} required/>
                     </label>
-                    {errorMessageTime && <p className="error-class">{errorMessageTime}</p>}
-                    <button type="submit">Potvrdi</button>
+                    <label>
+                        Entitet:
+                        <select value={entitet} onChange={e => setEntitet(e.target.value)}>
+                            <option value="FederacijaBiH">FederacijaBiH</option>
+                            <option value="RepublikaSrpska">RepublikaSrpska</option>
+                        </select>
+                    </label>
+                    {entitet === 'FederacijaBiH' &&
+                    <label>
+                        Kanton:
+                        <select value={kanton} onChange={e => setKanton(e.target.value)}>
+                            <option value="Unsko Sanski">Unsko Sanski</option>
+                            <option value="Posavski">Posavski</option>
+                            <option value="Tuzlanski">Tuzlanski</option>
+                            <option value="Zenicko Dobojski">Zenicko Dobojski</option>
+                            <option value="Bosansko Podrinjski">Bosansko Podrinjski</option>
+                            <option value="Srednjobosanski">Srednjobosanski</option>
+                            <option value="Hercegovacko neretvanski">Hercegovacko neretvanski</option>
+                            <option value="Zapadnohercegovacki">Zapadnohercegovacki</option>
+                            <option value="Sarajevo">Sarajevo</option>
+                            <option value="Kanton 10">Kanton 10</option>
+                        </select>
+                    </label>}
                     {errorMessage && <p className="error-class">{errorMessage}</p>}
+                    <div className="dugmad">
+                        <button type="button" id="clear-form" onClick={handleReset}>Očisti formu</button>
+                        <button type="submit">Potvrdi</button>
+                    </div>
                 </form>
             </div>
         </div>
     );
 };
-export default CreatingElections;
+
+export default CreatingPollingStations;

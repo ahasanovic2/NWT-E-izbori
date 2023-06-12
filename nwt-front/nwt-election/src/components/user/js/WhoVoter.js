@@ -15,12 +15,21 @@ const WhoVoter = () => {
         setShowContactInfo(false);
     };
 
+
     const handleSwitchToLanding = () => {
         history.push('/landing');
     };
 
+    const handleSwitchToVoters = () => {
+        history.push('/voters');
+    };
+
     const handleSwitchToLegislativa = () => {
         history.push('/legislativa');
+    };
+
+    const handleSwitchToIzbori = () => {
+        history.push('/election')
     };
 
     const handleSwitchToResults = () => {
@@ -42,24 +51,21 @@ const WhoVoter = () => {
                         <br/>
                         <span className="small-text">Početna stranica aplikacije</span>
                     </button>
-                    <button onClick={() => history.push('/voters')}>
-                        Glasači
-                        <br />
+                    <button onClick={handleSwitchToVoters}>Glasači
+                        <br/>
                         <span className="small-text">Sve što glasač treba da zna</span>
                     </button>
-                    <button onClick={() => history.push('/izbori')}>
-                        Izbori
-                        <br />
+                    <button onClick={handleSwitchToIzbori}>Izbori
+                        <br/>
                         <span className="small-text">Izbori 2024</span>
-                        <br />
+                        <br/>
                         <span className="small-text">Rezultati 2022</span>
                     </button>
                     <button onClick={handleSwitchToResults}>Rezultati
                         <br/>
                         <span className='small-text'>Rezultati 2024</span>
                     </button>
-                    <button onClick={handleSwitchToLegislativa}>
-                        Legislativa
+                    <button onClick={handleSwitchToLegislativa}>Legislativa
                         <br/>
                         <span className="small-text">Zakon o provođenju izbora</span>
                     </button>

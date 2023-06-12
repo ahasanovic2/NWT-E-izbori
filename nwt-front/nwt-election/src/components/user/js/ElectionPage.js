@@ -80,7 +80,7 @@ const ElectionPage = () => {
     return (
         <ElectionContext.Provider value={selectedElection}>
         <div>
-            <div className="header">
+        <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
                     <button onClick={handleSwitchToLanding}>Početna
