@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import '../css/CreatingLists.css';
+import '../css/CreatingCandidates.css';
 import { useHistory } from "react-router-dom";
 
-const CreatingLists = () => {
-
+const CreatingCandidates = () => {
     const history = useHistory();
     const [electionName, setElectionName] = useState("");
-    const [name, setName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [description, setDescription] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [errorMessageDescription, setErrorMessageDescription] = useState("");
@@ -58,11 +58,12 @@ const CreatingLists = () => {
         headers.append('Authorization', `Bearer ${token}`);
     
         const body = JSON.stringify([{
-            name,
+            firstName,
+            lastName,
             description
         }]);
     
-        const response = await fetch(`${BASE_URL}/election-microservice/elections/election/add-lists?name=${electionName}`, {
+        const response = await fetch(`${BASE_URL}/election-microservice/elections/election/add-candidates?name=${electionName}`, {
             method: 'POST',
             headers,
             body
@@ -79,10 +80,11 @@ const CreatingLists = () => {
                 setErrorMessage(errorData.message);
             }
         } else {
-            alert('Successfully added list');
+            alert('Successfully added candidate');
             setErrorMessage("");
             // Reset the input fields except for election name
-            setName("");
+            setFirstName("");
+            setLastName("");
             setDescription("");
     
         }
@@ -90,15 +92,16 @@ const CreatingLists = () => {
 
     const handleReset = () => {
         setElectionName("");
-        setName("");
+        setFirstName("");
+        setLastName("");
         setDescription("");
         setErrorMessage("");
         setErrorMessageDescription("");
     };
-    
 
-    return (
-        <div className="list-page">
+    
+    return(
+        <div className="candidates">
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
@@ -129,15 +132,19 @@ const CreatingLists = () => {
                     <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
-            <div className="list-content">
+            <div className="candidates-content">
                 <form onSubmit={handleSubmit}>
                     <label>
                         Naziv izbora:
                         <input type="text" value={electionName} onChange={e => setElectionName(e.target.value)} required/>
                     </label>
                     <label>
-                        Naziv liste:
-                        <input type="text" value={name} onChange={e => setName(e.target.value)} required/>
+                        Ime kandidata:
+                        <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} required/>
+                    </label>
+                    <label>
+                        Prezime kandidata:
+                        <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} required/>
                     </label>
                     <label>
                         Opis:
@@ -153,6 +160,7 @@ const CreatingLists = () => {
             </div>
         </div>
     );
-}
 
-export default CreatingLists;
+};
+
+export default CreatingCandidates;

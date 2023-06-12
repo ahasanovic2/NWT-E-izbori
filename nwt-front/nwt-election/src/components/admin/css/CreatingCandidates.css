@@ -1,12 +1,13 @@
-.list-content {
+.candidates-content {
     margin-top: 30%;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 200px;
+    width: 100%;
 }
 
-.list-content form {
+.candidates-content form {
     width: 30%;
     border: 2px solid black;
     padding: 20px;
@@ -17,23 +18,23 @@
     background-color: #f0f0f0;
 }
 
-.list-content form label {
+.candidates-content form label {
     display: block;
     margin-bottom: 10px;
 }
 
-.list-content form input, .list-content form textarea {
+.candidates-content form input, .candidates-content form textarea {
     width: 100%;
     margin-top: 5px;
     margin-bottom: 15px;
     padding: 5px;
 }
 
-.list-content form textarea {
+.candidates-content form textarea {
     height: 50px;
 }
 
-.list-content form button {
+.candidates-content form button {
     display: block;
     margin: 0 auto;
     margin-top: 20px;

@@ -22,6 +22,7 @@ import ResultsHome from './components/user/js/ResultsHome';
 import AdminLandingPage from './components/admin/js/AdminLandingPage';
 import CreatingLists from './components/admin/js/CreatingLists';
 import CreatingElections from './components/admin/js/CreatingElections';
+import CreatingCandidates from './components/admin/js/CreatingCandidates';
 
 function App() {
     const handleLogout = () => {
@@ -49,7 +50,8 @@ function App() {
                 <Route path="/home" component={HomePage}/>
                 <Route path="/sign-up" component={SignUpPage}/>
                 <Route path="/login" render={props => <LoginPage {...props} />} />
-                <Route path="/admin-create-lists" component={CreatingLists} onLogout={handleLogout}/>
+                <PrivateRoute path="/admin-create-candidates" component={CreatingCandidates} onLogout={handleLogout}/>
+                <PrivateRoute path="/admin-create-lists" component={CreatingLists} onLogout={handleLogout}/>
                 <PrivateRoute path="/admin-landing" component={AdminLandingPage} onLogout={handleLogout} />
                 <PrivateRoute path="/admin-create-elections" component={CreatingElections} onLogout={handleLogout} />
                 <PrivateRoute path="/results" component={ResultsHome} onLogout={handleLogout} />
