@@ -1,19 +1,15 @@
 import React, {useState} from "react";
-import '../css/CreatingElections.css';
+import '../css/CreatingLists.css';
 import { useHistory } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
+const CreatingLists = () => {
 
-const CreatingElections = () => {
     const history = useHistory();
+    const [electionName, setElectionName] = useState("");
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [startTime, setStartTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(new Date());
-    const [errorMessageTime, setErrorMessageTime] = useState("");
-    const [errorMessageDescription, setErrorMessageDescription] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessageDescription, setErrorMessageDescription] = useState("");
 
     const handleSwitchToLanding = () => {
         history.push('/admin-landing');
@@ -35,56 +31,62 @@ const CreatingElections = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage("");
         setErrorMessageDescription("");
-        setErrorMessageTime("");
 
         if (description.length < 20) {
             setErrorMessageDescription("Description must be at least 20 characters long");
             return;
         }
-        if (startTime >= endTime) {
-            setErrorMessageTime("Start time cannot be after end time");
-            return;
-        }
-
-        setErrorMessageDescription("");
-        setErrorMessageTime("");
-        
-        // Prepare request
+    
         const token = localStorage.getItem('access_token');
         const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', `Bearer ${token}`);
     
-        const body = JSON.stringify({
+        const body = JSON.stringify([{
             name,
-            description,
-            startTime: startTime.toISOString(),
-            endTime: endTime.toISOString()
-        });
+            description
+        }]);
     
-        // Send request
-        const response = await fetch(`${BASE_URL}/election-microservice/elections/create-election`, {
+        const response = await fetch(`${BASE_URL}/election-microservice/elections/election/add-lists?name=${electionName}`, {
             method: 'POST',
             headers,
             body
         });
     
-        // Handle response
         if (!response.ok) {
             const errorData = await response.json();
-            setErrorMessage(errorData[0].message);
-            alert('Something went wrong');
+            // Check if errorData is an array or an object
+            if(Array.isArray(errorData)) {
+                // Handle array of errors
+                setErrorMessage(errorData[0].message);
+            } else {
+                // Handle single error object
+                setErrorMessage(errorData.message);
+            }
         } else {
-            alert('Successfuly added elections');
-            setErrorMessage(""); // Clear the error message upon successful request
-            history.push('/admin-landing');
+            alert('Successfully added list');
+            setErrorMessage("");
+            // Reset the input fields except for election name
+            setName("");
+            setDescription("");
+    
         }
     };
 
+    const handleReset = () => {
+        setElectionName("");
+        setName("");
+        setDescription("");
+        setErrorMessage("");
+        setErrorMessageDescription("");
+    };
+    
+
     return (
-        <div className="creating-elections">
+        <div className="list-page">
             <div className="header">
                 <h1>E-izbori</h1>
                 <div className="nav-buttons">
@@ -103,33 +105,30 @@ const CreatingElections = () => {
                     <button onClick={handleLogout}>Odjava</button>
                 </div>
             </div>
-            <div className="content">
+            <div className="list-content">
                 <form onSubmit={handleSubmit}>
                     <label>
-                        Naziv:
+                        Naziv izbora:
+                        <input type="text" value={electionName} onChange={e => setElectionName(e.target.value)} required/>
+                    </label>
+                    <label>
+                        Naziv liste:
                         <input type="text" value={name} onChange={e => setName(e.target.value)} required/>
                     </label>
-                    <br/>
                     <label>
                         Opis:
-                        <textarea value={description} onChange={e => setDescription(e.target.value)} required minLength={20}/>
+                        <textarea value={description} onChange={e => setDescription(e.target.value)} required/>
                     </label>
                     {errorMessageDescription && <p className="error-class">{errorMessageDescription}</p>}
-                    <br/>
-                    <label>
-                        Početak izbora:
-                        <DatePicker selected={startTime} onChange={date => setStartTime(date)} showTimeSelect dateFormat="Pp" minDate={new Date()} />
-                    </label>
-                    <label>
-                        Kraj izbora:
-                        <DatePicker selected={endTime} onChange={date => setEndTime(date)} showTimeSelect dateFormat="Pp" minDate={startTime} />
-                    </label>
-                    {errorMessageTime && <p className="error-class">{errorMessageTime}</p>}
-                    <button type="submit">Potvrdi</button>
                     {errorMessage && <p className="error-class">{errorMessage}</p>}
+                    <div className="dugmad">
+                        <button type="button" id="clear-form" onClick={handleReset}>Očisti formu</button>
+                        <button type="submit">Potvrdi</button>
+                    </div>
                 </form>
             </div>
         </div>
     );
-};
-export default CreatingElections;
+}
+
+export default CreatingLists;

@@ -15,6 +15,10 @@ const AdminLandingPage = () => {
         history.push('/admin-create-elections')
     }
 
+    const handleSwitchToCreatingLists = () => {
+        history.push('/admin-create-lists');
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
@@ -33,6 +37,10 @@ const AdminLandingPage = () => {
                         <span className="small-text">Početna stranica aplikacije</span>
                     </button>
                     <button onClick={handleSwitchToCreatingElections}>Kreiraj izbore
+                        <br/>
+                        <span className='small-text'></span>
+                    </button>
+                    <button onClick={handleSwitchToCreatingLists}>Kreiraj liste
                         <br/>
                         <span className='small-text'></span>
                     </button>

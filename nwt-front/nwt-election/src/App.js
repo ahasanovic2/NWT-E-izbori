@@ -20,6 +20,7 @@ import ElectionPage from './components/user/js/ElectionPage';
 import ChoosePSPage from './components/user/js/ChoosePollingStation';
 import ResultsHome from './components/user/js/ResultsHome';
 import AdminLandingPage from './components/admin/js/AdminLandingPage';
+import CreatingLists from './components/admin/js/CreatingLists';
 import CreatingElections from './components/admin/js/CreatingElections';
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
                 <Route path="/home" component={HomePage}/>
                 <Route path="/sign-up" component={SignUpPage}/>
                 <Route path="/login" render={props => <LoginPage {...props} />} />
-
+                <Route path="/admin-create-lists" component={CreatingLists} onLogout={handleLogout}/>
                 <PrivateRoute path="/admin-landing" component={AdminLandingPage} onLogout={handleLogout} />
                 <PrivateRoute path="/admin-create-elections" component={CreatingElections} onLogout={handleLogout} />
                 <PrivateRoute path="/results" component={ResultsHome} onLogout={handleLogout} />
