@@ -60,7 +60,7 @@ public class ResultMService {
     public ResponseEntity getElectionResultsForCandidate(String electionName, String candidateFirstName, String candidateLastName, String pollingStationName, HttpServletRequest request) {
         grpcClient = GrpcClient.get();
         Integer userId = getUserId(request).getBody();
-        Optional<Result> optionalResult = resultRepository.getResultsByElectionNameAndCandidateFirstNameAndCandidateLastNameAndPollingStationName(
+        Optional<Result> optionalResult = resultRepository.getResultByElectionNameAndCandidateFirstNameAndCandidateLastNameAndPollingStationName(
                 electionName, candidateFirstName, candidateLastName, pollingStationName
         );
         if (optionalResult.isEmpty()) {
@@ -76,7 +76,7 @@ public class ResultMService {
         grpcClient = GrpcClient.get();
         Integer userId = getUserId(request).getBody();
 
-        Optional<Result> optionalResult = resultRepository.getResultsByElectionNameAndListNameAndPollingStationName(
+        Optional<Result> optionalResult = resultRepository.getResultByElectionNameAndListNameAndPollingStationName(
                 electionName, listaName, pollingStationName
         );
         if (optionalResult.isEmpty()) {
